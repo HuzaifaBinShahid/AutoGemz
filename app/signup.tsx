@@ -3,60 +3,39 @@ import {
   useFonts,
 } from "@expo-google-fonts/chakra-petch";
 import { Mulish_400Regular } from "@expo-google-fonts/mulish";
-import { Image } from "expo-image";
-import { LinearGradient } from "expo-linear-gradient";
+import { useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import React from "react";
 import {
-  Dimensions,
-  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 
+import { AuthLayout } from "@/components/auth/AuthLayout";
 import { CommonInput } from "@/components/common/CommonInput";
 import { CommonPhoneNumber } from "@/components/common/CommonPhoneNumber";
+import AppleIcon from "@/components/ui/svgs/AppleIcon";
 import EmailIcon from "@/components/ui/svgs/EmailIcon";
+import GoogleIcon from "@/components/ui/svgs/GoogleIcon";
 import Person from "@/components/ui/svgs/Person";
 import PhoneIcon from "@/components/ui/svgs/PhoneIcon";
-import GoogleIcon from "@/components/ui/svgs/GoogleIcon";
-import AppleIcon from "@/components/ui/svgs/AppleIcon";
-
-const { width, height } = Dimensions.get("window");
 
 export default function SignupScreen() {
   const [fontsLoaded] = useFonts({
     ChakraPetch_600SemiBold,
     Mulish_400Regular,
   });
+  const router = useRouter();
 
   if (!fontsLoaded) {
     return null;
   }
 
   return (
-    <SafeAreaView style={styles.container} edges={["top"]}>
+    <AuthLayout>
       <StatusBar style="light" />
-      <Image
-        source={require("@/assets/images/AuthBg.png")}
-        style={styles.backgroundImage}
-        contentFit="cover"
-        blurRadius={2}
-        cachePolicy="memory-disk"
-      />
-      <LinearGradient
-        colors={["rgba(0,0,0,0.5)", "rgba(0,0,0,0.8)", "rgba(0,0,0,0.9)"]}
-        locations={[0, 0.5, 1]}
-        style={StyleSheet.absoluteFill}
-      />
-      <ScrollView
-        style={styles.scrollView}
-        contentContainerStyle={styles.content}
-        showsVerticalScrollIndicator={false}
-      >
         <View style={styles.header}>
           <View style={styles.redLine} />
           <Text style={styles.headerText}>CREATE YOUR ACCOUNT</Text>
@@ -73,14 +52,17 @@ export default function SignupScreen() {
           <CommonInput placeholder="EMAIL" icon={<EmailIcon />} email />
         </View>
 
-        <TouchableOpacity style={styles.nextButton}>
+        <TouchableOpacity
+          style={styles.nextButton}
+          onPress={() => router.push("/secure-account")}
+        >
           <Text style={styles.nextButtonText}>NEXT</Text>
         </TouchableOpacity>
 
         <View style={styles.loginPrompt}>
           <Text style={styles.loginText}>
             Already have an Account ?{" "}
-            <Text style={styles.loginLink}>Login</Text>
+            <Text style={styles.loginLink} onPress={() => router.push("/login")}>Login</Text>
           </Text>
         </View>
 
@@ -98,29 +80,11 @@ export default function SignupScreen() {
             <AppleIcon />
           </TouchableOpacity>
         </View>
-      </ScrollView>
-    </SafeAreaView>
+    </AuthLayout>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  backgroundImage: {
-    position: "absolute",
-    width: width,
-    height: height,
-  },
-  scrollView: {
-    flex: 1,
-    zIndex: 1,
-  },
-  content: {
-    paddingHorizontal: 24,
-    paddingTop: 40,
-    paddingBottom: 40,
-  },
   header: {
     flexDirection: "row",
     alignItems: "center",

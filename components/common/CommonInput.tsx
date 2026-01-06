@@ -3,10 +3,11 @@ import { Platform, StyleSheet, TextInput, TextInputProps, View } from "react-nat
 
 interface CommonInputProps extends TextInputProps {
   icon?: React.ReactNode;
+  rightIcon?: React.ReactNode;
   email?: boolean;
 }
 
-export function CommonInput({ icon, email = false, style, ...props }: CommonInputProps) {
+export function CommonInput({ icon, rightIcon, email = false, style, ...props }: CommonInputProps) {
   return (
     <View style={styles.container}>
       <View style={styles.inputContainer}>
@@ -19,6 +20,7 @@ export function CommonInput({ icon, email = false, style, ...props }: CommonInpu
           autoCorrect={email ? false : true}
           {...props}
         />
+        {rightIcon && <View style={styles.rightIconContainer}>{rightIcon}</View>}
       </View>
     </View>
   );
@@ -38,6 +40,9 @@ const styles = StyleSheet.create({
   },
   iconContainer: {
     marginRight: 12,
+  },
+  rightIconContainer: {
+    marginLeft: 12,
   },
   input: {
     flex: 1,
