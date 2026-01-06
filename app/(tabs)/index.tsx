@@ -1,98 +1,210 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import {
+  ChakraPetch_600SemiBold,
+  useFonts,
+} from "@expo-google-fonts/chakra-petch";
+import { Mulish_400Regular } from "@expo-google-fonts/mulish";
+import { Image } from "expo-image";
+import React from "react";
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { useColorScheme } from "@/hooks/use-color-scheme";
+import { SearchBar } from "@/components/home/SearchBar";
+import { BrowseTabs } from "@/components/home/BrowseTabs";
+import { AuctionCard } from "@/components/home/AuctionCard";
+import { NewsCard } from "@/components/home/NewsCard";
+import { BottomNav } from "@/components/home/BottomNav";
 
-import { HelloWave } from '@/components/hello-wave';
-import ParallaxScrollView from '@/components/parallax-scroll-view';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { Link } from 'expo-router';
+const auctions = [
+  {
+    id: 1,
+    image: require("@/assets/images/AuthBg.png"),
+    title: "2023 FORD MUSTANG GT",
+    currentBid: "CURRENT BID RS: 12,00,00",
+    timeRemaining: "1D 45H 3S",
+    year: "2017",
+    mileage: "152,000 km",
+    isActive: true,
+  },
+  {
+    id: 2,
+    image: require("@/assets/images/AuthBg.png"),
+    title: "2022 PORSCHE 911",
+    currentBid: "CURRENT BID RS: 15,00,00",
+    timeRemaining: "2D 12H 30S",
+    year: "2020",
+    mileage: "98,000 km",
+    isActive: true,
+  },
+];
+
+const news = [
+  {
+    id: 1,
+    image: require("@/assets/images/AuthBg.png"),
+    date: "JULY 14, 2024",
+    author: "DREW ADAMS",
+    title: "BENEFITS OF REGULAR OIL CHANGES...",
+    description: "Stay informed about new car...",
+  },
+  {
+    id: 2,
+    image: require("@/assets/images/AuthBg.png"),
+    date: "JULY 15, 2024",
+    author: "JANE SMITH",
+    title: "ELECTRIC VEHICLES: THE FUTURE...",
+    description: "Learn about the latest trends...",
+  },
+];
 
 export default function HomeScreen() {
-  return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <Link href="/modal">
-          <Link.Trigger>
-            <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-          </Link.Trigger>
-          <Link.Preview />
-          <Link.Menu>
-            <Link.MenuAction title="Action" icon="cube" onPress={() => alert('Action pressed')} />
-            <Link.MenuAction
-              title="Share"
-              icon="square.and.arrow.up"
-              onPress={() => alert('Share pressed')}
-            />
-            <Link.Menu title="More" icon="ellipsis">
-              <Link.MenuAction
-                title="Delete"
-                icon="trash"
-                destructive
-                onPress={() => alert('Delete pressed')}
-              />
-            </Link.Menu>
-          </Link.Menu>
-        </Link>
+  const [fontsLoaded] = useFonts({
+    ChakraPetch_600SemiBold,
+    Mulish_400Regular,
+  });
+  const colorScheme = useColorScheme();
+  const isDark = colorScheme === "dark";
 
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+  if (!fontsLoaded) {
+    return null;
+  }
+
+  return (
+    <SafeAreaView style={[styles.container, isDark && styles.containerDark]} edges={["top"]}>
+      <ScrollView
+        style={styles.scrollView}
+        contentContainerStyle={styles.content}
+        showsVerticalScrollIndicator={false}
+      >
+        <View style={styles.header}>
+          <View>
+            <Text style={[styles.greeting, isDark && styles.greetingDark]}>Hello Arron,</Text>
+            <Text style={[styles.welcome, isDark && styles.welcomeDark]}>
+              Welcome to AutoGemz
+            </Text>
+          </View>
+          <View style={styles.avatar}>
+            <Image
+              source={require("@/assets/images/icon.png")}
+              style={styles.avatarImage}
+              contentFit="cover"
+            />
+          </View>
+        </View>
+
+        <SearchBar />
+
+        <BrowseTabs />
+
+        <Text style={[styles.sectionTitle, isDark && styles.sectionTitleDark]}>
+          CURRENT AUCTIONS
+        </Text>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.auctionsContainer}>
+          {auctions.map((auction) => (
+            <AuctionCard
+              key={auction.id}
+              image={auction.image}
+              title={auction.title}
+              currentBid={auction.currentBid}
+              timeRemaining={auction.timeRemaining}
+              year={auction.year}
+              mileage={auction.mileage}
+              isActive={auction.isActive}
+            />
+          ))}
+        </ScrollView>
+
+        <Text style={[styles.sectionTitle, isDark && styles.sectionTitleDark, styles.newsTitle]}>
+          LATEST NEWS
+        </Text>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.newsContainer}>
+          {news.map((item) => (
+            <NewsCard
+              key={item.id}
+              image={item.image}
+              date={item.date}
+              author={item.author}
+              title={item.title}
+              description={item.description}
+            />
+          ))}
+        </ScrollView>
+      </ScrollView>
+      <BottomNav />
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
+  container: {
+    flex: 1,
+    backgroundColor: "#F4F4F4",
   },
-  stepContainer: {
-    gap: 8,
+  containerDark: {
+    backgroundColor: "#0F0F0F",
+  },
+  scrollView: {
+    flex: 1,
+  },
+  content: {
+    paddingHorizontal: 22,
+    paddingTop: 16,
+    paddingBottom: 100,
+  },
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 24,
+  },
+  greeting: {
+    fontSize: 24,
+    fontFamily: "ChakraPetch_600SemiBold",
+    color: "#494949",
+    marginBottom: 4,
+  },
+  greetingDark: {
+    color: "#F4F4F4",
+  },
+  welcome: {
+    fontSize: 14,
+    fontFamily: "Mulish_400Regular",
+    color: "#A5A5A5",
+  },
+  welcomeDark: {
+    color: "#A5A5A5",
+  },
+  avatar: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    overflow: "hidden",
+  },
+  avatarImage: {
+    width: "100%",
+    height: "100%",
+  },
+  sectionTitle: {
+    fontSize: 16,
+    fontFamily: "ChakraPetch_600SemiBold",
+    color: "#494949",
+    marginBottom: 16,
+    textTransform: "uppercase",
+  },
+  sectionTitleDark: {
+    color: "#F4F4F4",
+  },
+  newsTitle: {
+    marginTop: 32,
+  },
+  auctionsContainer: {
+    marginBottom: 16,
+  },
+  newsContainer: {
     marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
   },
 });
