@@ -11,7 +11,7 @@ import { SplashScreenComponent } from '@/components/splash-screen';
 SplashScreen.preventAutoHideAsync();
 
 export const unstable_settings = {
-  anchor: '(tabs)',
+  initialRouteName: 'index',
 };
 
 export default function RootLayout() {
@@ -45,6 +45,15 @@ export default function RootLayout() {
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <Stack>
+        <Stack.Screen name="index" options={{ headerShown: false }} />
+        <Stack.Screen name="signup" options={{ headerShown: false, animation: "fade" }} />
+        <Stack.Screen name="secure-account" options={{ headerShown: false, animation: "fade" }} />
+        <Stack.Screen name="login" options={{ headerShown: false, animation: "fade" }} />
+        <Stack.Screen name="forgot-password" options={{ headerShown: false, animation: "fade" }} />
+        <Stack.Screen name="create-password" options={{ headerShown: false, animation: "fade" }} />
+        <Stack.Screen name="verify" options={{ headerShown: false, animation: "fade" }} />
+        <Stack.Screen name="deposit" options={{ headerShown: false, animation: "fade" }} />
+        <Stack.Screen name="success" options={{ headerShown: false, animation: "fade" }} />
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
       </Stack>
