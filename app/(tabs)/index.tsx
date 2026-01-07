@@ -4,7 +4,7 @@ import {
 } from "@expo-google-fonts/chakra-petch";
 import { Mulish_400Regular } from "@expo-google-fonts/mulish";
 import { Image } from "expo-image";
-import React from "react";
+import React, { useState } from "react";
 import {
   ScrollView,
   StyleSheet,
@@ -18,6 +18,7 @@ import { BrowseTabs } from "@/components/home/BrowseTabs";
 import { AuctionCard } from "@/components/home/AuctionCard";
 import { NewsCard } from "@/components/home/NewsCard";
 import { BottomNav } from "@/components/home/BottomNav";
+import { AuctionBottomSheet } from "@/components/home/AuctionBottomSheet";
 
 const auctions = [
   {
@@ -68,6 +69,7 @@ export default function HomeScreen() {
   });
   const colorScheme = useColorScheme();
   const isDark = colorScheme === "dark";
+  const [showAuctionSheet, setShowAuctionSheet] = useState(false);
 
   if (!fontsLoaded) {
     return null;
@@ -134,7 +136,11 @@ export default function HomeScreen() {
           ))}
         </ScrollView>
       </ScrollView>
-      <BottomNav />
+      <BottomNav onAuctionPress={() => setShowAuctionSheet(true)} />
+      <AuctionBottomSheet
+        visible={showAuctionSheet}
+        onClose={() => setShowAuctionSheet(false)}
+      />
     </SafeAreaView>
   );
 }

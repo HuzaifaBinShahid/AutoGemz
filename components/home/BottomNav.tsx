@@ -8,7 +8,11 @@ import { LinearGradient } from "expo-linear-gradient";
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-export function BottomNav() {
+interface BottomNavProps {
+  onAuctionPress?: () => void;
+}
+
+export function BottomNav({ onAuctionPress }: BottomNavProps) {
   const colorScheme = useColorScheme();
   const isDark = colorScheme === "dark";
 
@@ -31,7 +35,7 @@ export function BottomNav() {
           Search
         </Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.auctionButton}>
+      <TouchableOpacity style={styles.auctionButton} onPress={onAuctionPress}>
         <AuctionNowIcon />
         <Text style={[styles.auctionText, isDark && styles.auctionTextDark]}>
           Auction Now
