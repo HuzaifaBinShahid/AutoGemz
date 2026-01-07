@@ -54,6 +54,8 @@ export default function RootLayout() {
         <Stack.Screen name="verify" options={{ headerShown: false, animation: "fade" }} />
         <Stack.Screen name="deposit" options={{ headerShown: false, animation: "fade" }} />
         <Stack.Screen name="success" options={{ headerShown: false, animation: "fade" }} />
+        <Stack.Screen name="instant-offer" options={{ headerShown: false, animation: "fade" }} />
+        <Stack.Screen name="contact-info" options={{ headerShown: false, animation: "fade" }} />
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
       </Stack>

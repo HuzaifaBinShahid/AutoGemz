@@ -1,5 +1,6 @@
 import React from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { useColorScheme } from "@/hooks/use-color-scheme";
 
 interface CheckboxProps {
   checked: boolean;
@@ -7,9 +8,12 @@ interface CheckboxProps {
 }
 
 export function Checkbox({ checked, onToggle }: CheckboxProps) {
+  const colorScheme = useColorScheme();
+  const isDark = colorScheme === "dark";
+
   return (
     <TouchableOpacity onPress={onToggle} style={styles.container}>
-      <View style={[styles.checkbox, checked && styles.checkboxChecked]}>
+      <View style={[styles.checkbox, isDark && styles.checkboxDark, checked && styles.checkboxChecked]}>
         {checked && <View style={styles.checkmark} />}
       </View>
     </TouchableOpacity>
@@ -24,9 +28,12 @@ const styles = StyleSheet.create({
     width: 20,
     height: 20,
     borderWidth: 1,
-    borderColor: "#FFFFFF",
+    borderColor: "#E5E5E5",
     justifyContent: "center",
     alignItems: "center",
+  },
+  checkboxDark: {
+    borderColor: "#737779",
   },
   checkboxChecked: {
     backgroundColor: "#DC3729",
