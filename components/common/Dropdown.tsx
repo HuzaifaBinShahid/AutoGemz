@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
   },
   dropdownDark: {
-    backgroundColor: "#111111",
+    backgroundColor: "#FFFFFF0D",
     borderColor: "#737779",
   },
   text: {

@@ -19,9 +19,16 @@ import AccountCreatedIcon from "@/components/ui/svgs/AccountCreatedIcon";
 interface AuctionListedModalProps {
   visible: boolean;
   onClose: () => void;
+  heading?: string;
+  paragraph?: string;
 }
 
-export function AuctionListedModal({ visible, onClose }: AuctionListedModalProps) {
+export function AuctionListedModal({
+  visible,
+  onClose,
+  heading = "YOUR CAR HAS BEEN LISTED FOR AUCTION!",
+  paragraph = "Great work! Your auction is now live — buyers can start placing bids right away.",
+}: AuctionListedModalProps) {
   const [fontsLoaded] = useFonts({
     ChakraPetch_600SemiBold,
     Mulish_400Regular,
@@ -46,7 +53,11 @@ export function AuctionListedModal({ visible, onClose }: AuctionListedModalProps
           <TouchableWithoutFeedback>
             <View style={[styles.modal, isDark && styles.modalDark]}>
               <TouchableOpacity style={styles.closeButton} onPress={onClose}>
-                <Text style={[styles.closeText, isDark && styles.closeTextDark]}>×</Text>
+                <Text
+                  style={[styles.closeText, isDark && styles.closeTextDark]}
+                >
+                  ×
+                </Text>
               </TouchableOpacity>
 
               <View style={styles.iconContainer}>
@@ -54,11 +65,11 @@ export function AuctionListedModal({ visible, onClose }: AuctionListedModalProps
               </View>
 
               <Text style={[styles.heading, isDark && styles.headingDark]}>
-                YOUR CAR HAS BEEN LISTED FOR AUCTION!
+                {heading}
               </Text>
 
               <Text style={[styles.paragraph, isDark && styles.paragraphDark]}>
-                Great work! Your auction is now live — buyers can start placing bids right away.
+                {paragraph}
               </Text>
 
               <View style={styles.buttonsContainer}>
@@ -72,10 +83,18 @@ export function AuctionListedModal({ visible, onClose }: AuctionListedModalProps
                   <Text style={styles.primaryButtonText}>VIEW MY AUCTION</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                  style={[styles.secondaryButton, isDark && styles.secondaryButtonDark]}
+                  style={[
+                    styles.secondaryButton,
+                    isDark && styles.secondaryButtonDark,
+                  ]}
                   onPress={onClose}
                 >
-                  <Text style={[styles.secondaryButtonText, isDark && styles.secondaryButtonTextDark]}>
+                  <Text
+                    style={[
+                      styles.secondaryButtonText,
+                      isDark && styles.secondaryButtonTextDark,
+                    ]}
+                  >
                     CANCEL
                   </Text>
                 </TouchableOpacity>
@@ -191,4 +210,3 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
   },
 });
-

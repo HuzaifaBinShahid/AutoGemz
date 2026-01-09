@@ -9,6 +9,7 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -19,6 +20,7 @@ import { AuctionCard } from "@/components/home/AuctionCard";
 import { NewsCard } from "@/components/home/NewsCard";
 import { BottomNav } from "@/components/home/BottomNav";
 import { AuctionBottomSheet } from "@/components/home/AuctionBottomSheet";
+import { useRouter } from "expo-router";
 
 const auctions = [
   {
@@ -70,6 +72,7 @@ export default function HomeScreen() {
   const colorScheme = useColorScheme();
   const isDark = colorScheme === "dark";
   const [showAuctionSheet, setShowAuctionSheet] = useState(false);
+  const router = useRouter();
 
   if (!fontsLoaded) {
     return null;
@@ -89,13 +92,16 @@ export default function HomeScreen() {
               Welcome to AutoGemz
             </Text>
           </View>
-          <View style={styles.avatar}>
+          <TouchableOpacity
+            style={styles.avatar}
+            onPress={() => router.push("/profile-settings")}
+          >
             <Image
               source={require("@/assets/images/icon.png")}
               style={styles.avatarImage}
               contentFit="cover"
             />
-          </View>
+          </TouchableOpacity>
         </View>
 
         <SearchBar />
@@ -136,7 +142,7 @@ export default function HomeScreen() {
           ))}
         </ScrollView>
       </ScrollView>
-      <BottomNav onAuctionPress={() => setShowAuctionSheet(true)} />
+      <BottomNav onAuctionPress={() => setShowAuctionSheet(true)} activeTab="home" />
       <AuctionBottomSheet
         visible={showAuctionSheet}
         onClose={() => setShowAuctionSheet(false)}

@@ -4,17 +4,20 @@ import ThemedMoreIcon from "@/components/ui/svgs/ThemedMoreIcon";
 import ThemedNotificationIcon from "@/components/ui/svgs/ThemedNotificationIcon";
 import ThemedSearchIconNav from "@/components/ui/svgs/ThemedSearchIconNav";
 import { useColorScheme } from "@/hooks/use-color-scheme";
+import { useRouter } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 interface BottomNavProps {
   onAuctionPress?: () => void;
+  activeTab?: "home" | "notification" | "search";
 }
 
-export function BottomNav({ onAuctionPress }: BottomNavProps) {
+export function BottomNav({ onAuctionPress, activeTab = "home" }: BottomNavProps) {
   const colorScheme = useColorScheme();
   const isDark = colorScheme === "dark";
+  const router = useRouter();
 
   return (
     <View style={[styles.container, isDark && styles.containerDark]}>
@@ -25,13 +28,13 @@ export function BottomNav({ onAuctionPress }: BottomNavProps) {
         style={styles.gradient}
         pointerEvents="none"
       />
-      <TouchableOpacity style={styles.navItem}>
-        <ThemedHomeIcon />
-        <Text style={[styles.navText, styles.activeNavText]}>Home</Text>
+      <TouchableOpacity style={styles.navItem} onPress={() => router.push("/(tabs)")}>
+        <ThemedHomeIcon active={activeTab === "home"} />
+        <Text style={[styles.navText, activeTab === "home" && styles.activeNavText, activeTab !== "home" && isDark && styles.navTextDark]}>Home</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.navItem}>
-        <ThemedSearchIconNav />
-        <Text style={[styles.navText, isDark && styles.navTextDark]}>
+      <TouchableOpacity style={styles.navItem} onPress={() => router.push("/search")}>
+        <ThemedSearchIconNav active={activeTab === "search"} />
+        <Text style={[styles.navText, activeTab === "search" && styles.activeNavText, activeTab !== "search" && isDark && styles.navTextDark]}>
           Search
         </Text>
       </TouchableOpacity>
@@ -41,9 +44,9 @@ export function BottomNav({ onAuctionPress }: BottomNavProps) {
           Auction Now
         </Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.navItem}>
-        <ThemedNotificationIcon />
-        <Text style={[styles.navText, isDark && styles.navTextDark]}>
+      <TouchableOpacity style={styles.navItem} onPress={() => router.push("/notifications")}>
+        <ThemedNotificationIcon active={activeTab === "notification"} />
+        <Text style={[styles.navText, activeTab === "notification" && styles.activeNavText, activeTab !== "notification" && isDark && styles.navTextDark]}>
           Notification
         </Text>
       </TouchableOpacity>
