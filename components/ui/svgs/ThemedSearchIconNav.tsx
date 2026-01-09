@@ -2,10 +2,14 @@ import React from "react";
 import Svg, { Path } from "react-native-svg";
 import { useColorScheme } from "@/hooks/use-color-scheme";
 
-const ThemedSearchIconNav = () => {
+interface ThemedSearchIconNavProps {
+  active?: boolean;
+}
+
+const ThemedSearchIconNav = ({ active = false }: ThemedSearchIconNavProps) => {
   const colorScheme = useColorScheme();
   const isDark = colorScheme === "dark";
-  const strokeColor = isDark ? "#A5A5A5" : "#475569";
+  const strokeColor = active ? "#DC3729" : (isDark ? "#A5A5A5" : "#475569");
 
   return (
     <Svg

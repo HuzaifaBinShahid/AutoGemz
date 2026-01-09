@@ -53,7 +53,10 @@ export function AuctionBottomSheet({ visible, onClose }: AuctionBottomSheetProps
               <View style={styles.buttonsContainer}>
                 <TouchableOpacity
                   style={[styles.button, styles.outlineButton]}
-                  onPress={onClose}
+                  onPress={() => {
+                    onClose();
+                    router.push("/add-car-to-auction");
+                  }}
                 >
                   <Text style={styles.buttonText}>ADD CAR TO AUCTION</Text>
                 </TouchableOpacity>

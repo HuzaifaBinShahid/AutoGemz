@@ -1,23 +1,29 @@
 import React from "react";
 import { StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
 import { useColorScheme } from "@/hooks/use-color-scheme";
+import { useRouter } from "expo-router";
 import ThemedSearchIcon from "@/components/ui/svgs/ThemedSearchIcon";
 import FiltersIcon from "@/components/ui/svgs/FiltersIcon";
 
 export function SearchBar() {
   const colorScheme = useColorScheme();
   const isDark = colorScheme === "dark";
+  const router = useRouter();
 
   return (
     <View style={styles.container}>
-      <View style={[styles.searchContainer, isDark && styles.searchContainerDark]}>
+      <TouchableOpacity
+        style={[styles.searchContainer, isDark && styles.searchContainerDark]}
+        onPress={() => router.push("/search")}
+      >
         <ThemedSearchIcon />
         <TextInput
           style={[styles.input, isDark && styles.inputDark]}
           placeholder="Search Car Auction"
           placeholderTextColor={isDark ? "#A5A5A5" : "#A5A5A5"}
+          editable={false}
         />
-      </View>
+      </TouchableOpacity>
       <TouchableOpacity style={styles.filterButton}>
         <FiltersIcon />
       </TouchableOpacity>

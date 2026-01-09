@@ -2,10 +2,14 @@ import React from "react";
 import Svg, { Path } from "react-native-svg";
 import { useColorScheme } from "@/hooks/use-color-scheme";
 
-const ThemedHomeIcon = () => {
+interface ThemedHomeIconProps {
+  active?: boolean;
+}
+
+const ThemedHomeIcon = ({ active = true }: ThemedHomeIconProps) => {
   const colorScheme = useColorScheme();
   const isDark = colorScheme === "dark";
-  const fillColor = "#DC3729";
+  const fillColor = active ? "#DC3729" : (isDark ? "#A5A5A5" : "#475569");
 
   return (
     <Svg width="20" height="20" viewBox="0 0 20 20" fill="none">
