@@ -24,7 +24,10 @@ export function SearchBar() {
           editable={false}
         />
       </TouchableOpacity>
-      <TouchableOpacity style={styles.filterButton}>
+      <TouchableOpacity
+        style={styles.filterButton}
+        onPress={() => router.push("/filters")}
+      >
         <FiltersIcon />
       </TouchableOpacity>
     </View>

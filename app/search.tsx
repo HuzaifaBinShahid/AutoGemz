@@ -21,6 +21,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Mulish_400Regular } from "@expo-google-fonts/mulish";
 import ThemedSearchIcon from "@/components/ui/svgs/ThemedSearchIcon";
 import { AuctionBottomSheet } from "@/components/home/AuctionBottomSheet";
+import { useRouter } from "expo-router";
 
 const popularSearches = [
   "Suzuki",
@@ -41,6 +42,7 @@ export default function SearchScreen() {
   });
   const colorScheme = useColorScheme();
   const isDark = colorScheme === "dark";
+  const router = useRouter();
   const [showAuctionSheet, setShowAuctionSheet] = useState(false);
 
   if (!fontsLoaded) {
@@ -67,7 +69,10 @@ export default function SearchScreen() {
               placeholderTextColor={isDark ? "#A5A5A5" : "#A5A5A5"}
             />
           </View>
-          <TouchableOpacity style={styles.filterButton}>
+          <TouchableOpacity
+            style={styles.filterButton}
+            onPress={() => router.push("/filters")}
+          >
             <FiltersIcon />
           </TouchableOpacity>
         </View>

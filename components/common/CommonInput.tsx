@@ -5,12 +5,14 @@ interface CommonInputProps extends TextInputProps {
   icon?: React.ReactNode;
   rightIcon?: React.ReactNode;
   email?: boolean;
+  containerStyle?: any;
+  inputContainerStyle?: any;
 }
 
-export function CommonInput({ icon, rightIcon, email = false, style, ...props }: CommonInputProps) {
+export function CommonInput({ icon, rightIcon, email = false, style, containerStyle, inputContainerStyle, ...props }: CommonInputProps) {
   return (
-    <View style={styles.container}>
-      <View style={styles.inputContainer}>
+    <View style={[styles.container, containerStyle]}>
+      <View style={[styles.inputContainer, inputContainerStyle]}>
         {icon && <View style={styles.iconContainer}>{icon}</View>}
         <TextInput
           style={[styles.input, style]}
@@ -34,9 +36,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: "#FFFFFF1A",
-    borderRadius: 0,
     paddingHorizontal: 16,
-    paddingVertical: 16,
+    paddingVertical: 1, 
+    borderWidth: 1,
+    borderColor: "#FFFFFF2E",
   },
   iconContainer: {
     marginRight: 12,

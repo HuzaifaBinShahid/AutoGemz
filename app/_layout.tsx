@@ -62,6 +62,11 @@ export default function RootLayout() {
         <Stack.Screen name="notifications" options={{ headerShown: false, animation: "fade" }} />
         <Stack.Screen name="profile-settings" options={{ headerShown: false, animation: "fade" }} />
         <Stack.Screen name="search" options={{ headerShown: false, animation: "fade" }} />
+        <Stack.Screen name="filters" options={{ headerShown: false, animation: "fade" }} />
+        <Stack.Screen name="results" options={{ headerShown: false, animation: "fade" }} />
+        <Stack.Screen name="detail" options={{ headerShown: false, animation: "fade" }} />
+        <Stack.Screen name="bid" options={{ headerShown: false, animation: "fade" }} />
+        <Stack.Screen name="winner" options={{ headerShown: false, animation: "fade" }} />
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
       </Stack>
