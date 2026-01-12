@@ -15,6 +15,8 @@ interface AuctionCardProps {
   year: string;
   mileage: string;
   isActive?: boolean;
+  width?: number;
+  darkBorderColor?: string;
 }
 
 export function AuctionCard({
@@ -25,12 +27,20 @@ export function AuctionCard({
   year,
   mileage,
   isActive = false,
+  width = 290,
+  darkBorderColor = "#737779",
 }: AuctionCardProps) {
   const colorScheme = useColorScheme();
   const isDark = colorScheme === "dark";
 
   return (
-    <View style={[styles.container, isDark && styles.containerDark]}>
+    <View
+      style={[
+        styles.container,
+        { width },
+        isDark && { ...styles.containerDark, borderColor: darkBorderColor },
+      ]}
+    >
       <View style={styles.mainContent}>
         <View style={styles.leftSection}>
           <View style={styles.imageContainer}>
@@ -86,7 +96,6 @@ export function AuctionCard({
 
 const styles = StyleSheet.create({
   container: {
-    width: 290,
     backgroundColor: "#FFFFFF",
     overflow: "hidden",
     padding: 6,
@@ -95,7 +104,6 @@ const styles = StyleSheet.create({
   containerDark: {
     backgroundColor: "#111111",
     borderWidth: 1,
-    borderColor: "#737779",
   },
   mainContent: {
     flexDirection: "row",
@@ -207,8 +215,8 @@ const styles = StyleSheet.create({
   },
   divider: {
     height: 1,
-    backgroundColor: "#E5E5E5",
-    marginTop: 6,
+    backgroundColor: "#737779",
+    marginTop: 8,
     marginBottom: 8,
   },
   details: {

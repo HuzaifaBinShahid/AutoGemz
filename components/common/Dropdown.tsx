@@ -8,9 +8,10 @@ interface DropdownProps {
   options?: string[];
   value?: string;
   onSelect?: (value: string) => void;
+  customIcon?: React.ReactNode;
 }
 
-export function Dropdown({ placeholder, options = [], value, onSelect }: DropdownProps) {
+export function Dropdown({ placeholder, options = [], value, onSelect, customIcon }: DropdownProps) {
   const colorScheme = useColorScheme();
   const isDark = colorScheme === "dark";
   const [isOpen, setIsOpen] = useState(false);
@@ -22,22 +23,32 @@ export function Dropdown({ placeholder, options = [], value, onSelect }: Dropdow
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-        style={[styles.dropdown, isDark && styles.dropdownDark]}
-        onPress={() => setIsOpen(true)}
-      >
-        <Text
-          style={[
-            styles.text,
-            isDark && styles.textDark,
-            !value && styles.placeholder,
-            !value && isDark && styles.placeholderDark,
-          ]}
+      <View style={styles.dropdownRow}>
+        <TouchableOpacity
+          style={[styles.dropdown, isDark && styles.dropdownDark]}
+          onPress={() => setIsOpen(true)}
         >
-          {value || placeholder}
-        </Text>
-        <DropdownArrow />
-      </TouchableOpacity>
+          <Text
+            style={[
+              styles.text,
+              isDark && styles.textDark,
+              !value && styles.placeholder,
+              !value && isDark && styles.placeholderDark,
+            ]}
+          >
+            {value || placeholder}
+          </Text>
+        </TouchableOpacity>
+        {customIcon ? (
+          <TouchableOpacity style={styles.iconButton} onPress={() => setIsOpen(true)}>
+            {customIcon}
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity style={styles.iconButton} onPress={() => setIsOpen(true)}>
+            <DropdownArrow backgroundColor={value ? "#DC3729" : undefined} />
+          </TouchableOpacity>
+        )}
+      </View>
 
       <Modal
         visible={isOpen}
@@ -77,19 +88,22 @@ const styles = StyleSheet.create({
   container: {
     marginBottom: 16,
   },
-  dropdown: {
+  dropdownRow: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between",
-    backgroundColor: "#FFFFFF",
-    borderWidth: 1,
-    borderColor: "#E5E5E5",
+  },
+  dropdown: {
+    flex: 1,
+    backgroundColor: "#F4F4F4",
+    borderWidth: 0,
     paddingHorizontal: 16,
-    paddingVertical: 16,
+    paddingVertical: 9,
+    justifyContent: "center",
   },
   dropdownDark: {
     backgroundColor: "#FFFFFF0D",
-    borderColor: "#737779",
+    borderWidth: 1,
+    borderColor: "#393939",
   },
   text: {
     flex: 1,
