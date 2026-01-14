@@ -93,7 +93,7 @@ export default function WinnerScreen() {
         {isWinner ? <CongratulationsBox /> : <AuctionClosedBanner bidAmount="16,000" rank={2} />}
         <AuctionResult />
       </ScrollView>
-      <View style={styles.bottomButtons}>
+      <View style={[styles.bottomButtons, isDark && styles.bottomButtonsDark]}>
         {isWinner ? (
           <>
             <TouchableOpacity style={styles.payNowButton}>
@@ -126,7 +126,7 @@ export default function WinnerScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#D8D8D8",
+    backgroundColor: "#F4F4F4",
   },
   containerDark: {
     backgroundColor: "#000000",
@@ -168,9 +168,12 @@ const styles = StyleSheet.create({
   bottomButtons: {
     flexDirection: "row",
     paddingHorizontal: 24,
-    paddingVertical: 16,
+    paddingVertical: 24,
     gap: 12,
     borderTopWidth: 1,
+    borderTopColor: "#D8D8D8",
+  },
+  bottomButtonsDark: {
     borderTopColor: "#494949",
   },
   payNowButton: {
@@ -203,7 +206,7 @@ const styles = StyleSheet.create({
   viewUpcomingButton: {
     flex: 1,
     backgroundColor: "#DC3729",
-    paddingVertical: 8,
+    paddingVertical: 12,
     alignItems: "center",
     justifyContent: "center",
   },

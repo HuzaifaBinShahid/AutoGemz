@@ -60,58 +60,95 @@ export function BidRankTable() {
 
   return (
     <View style={[styles.container, isDark && styles.containerDark]}>
-      <View style={styles.header}>
-        <View style={styles.headerLeft}>
-          <Text style={[styles.headerLabel, isDark && styles.headerLabelDark]}>
-            RANK
-          </Text>
-          <View style={styles.redLine} />
-          <Text style={[styles.headerLabel, isDark && styles.headerLabelDark]}>
-            BID
-          </Text>
-        </View>
-        <View style={styles.timerBox}>
+      <View style={styles.tableContainer}>
+        <View style={[styles.tableHeader, isDark && styles.tableHeaderDark]}>
+          <View style={styles.redDividerContainer}>
+            <View style={styles.redDivider} />
+          </View>
+          <View style={[styles.headerCell, styles.rankColumn]}>
+            <Text style={[styles.headerLabel, isDark && styles.headerLabelDark]}>
+              RANK
+            </Text>
+          </View>
+          <View style={styles.redDividerContainer}>
+            <View style={styles.redDivider} />
+          </View>
+          <View style={[styles.headerCell, styles.bidColumn]}>
+            <Text style={[styles.headerLabel, isDark && styles.headerLabelDark]}>
+              BID
+            </Text>
+          </View>
+          <View style={[styles.headerCell, styles.timeColumn]}>
           <Text style={[styles.timerText, isDark && styles.timerTextDark]}>
             {formatTime(1, 45, 3)}
           </Text>
+          </View>
         </View>
-      </View>
-      <View style={styles.bidsList}>
         {dummyBids.map((bid, index) => (
           <View
             key={bid.id}
             style={[
-              styles.bidRow,
+              styles.tableRow,
               bid.isSelected && styles.bidRowSelected,
-              index < dummyBids.length - 1 && styles.bidRowBorder,
+              !bid.isSelected && isDark && styles.tableRowDark,
             ]}
           >
-            <View style={styles.bidLeft}>
-              <Image source={bid.avatar} style={styles.avatar} />
-              <View style={styles.bidInfo}>
-                <Text style={[styles.rankText, isDark && styles.rankTextDark]}>
-                  {bid.rank}
-                  {bid.rank === 1
-                    ? "st"
-                    : bid.rank === 2
-                    ? "nd"
-                    : bid.rank === 3
-                    ? "rd"
-                    : "th"}{" "}
-                  Place{" "}
-                  <Text style={styles.nameText}>{bid.name}</Text>
-                  {bid.isCurrentUser && (
-                    <Text style={styles.youText}> (You)</Text>
-                  )}
-                </Text>
-                <Text style={[styles.bidAmount, isDark && styles.bidAmountDark]}>
-                  RS: {bid.bidAmount}
-                </Text>
+            <View style={[styles.tableCell, styles.rankColumn]}>
+              <View style={styles.rankCellContent}>
+                <Image source={bid.avatar} style={styles.avatar} />
+                <View style={styles.rankTextContainer}>
+                  <Text 
+                    style={[styles.rankText, isDark && styles.rankTextDark]}
+                    numberOfLines={1}
+                    ellipsizeMode="tail"
+                  >
+                    {bid.rank}
+                    {bid.rank === 1
+                      ? "st"
+                      : bid.rank === 2
+                      ? "nd"
+                      : bid.rank === 3
+                      ? "rd"
+                      : "th"}{" "}
+                    Place
+                  </Text>
+                  <Text 
+                    style={[styles.nameText, isDark && styles.nameTextDark]}
+                    numberOfLines={1}
+                    ellipsizeMode="tail"
+                  >
+                    {bid.name}
+                    {bid.isCurrentUser && (
+                      <Text style={styles.youText}> (You)</Text>
+                    )}
+                  </Text>
+                </View>
               </View>
             </View>
-            <Text style={[styles.timeText, isDark && styles.timeTextDark]}>
-              {bid.timeAgo}
-            </Text>
+            <View style={styles.grayDividerContainer}>
+              <View style={styles.grayDivider} />
+            </View>
+            <View style={[styles.tableCell, styles.bidColumn]}>
+              <Text 
+                style={[styles.bidAmount, isDark && styles.bidAmountDark]}
+                numberOfLines={1}
+                ellipsizeMode="tail"
+              >
+                RS: {bid.bidAmount}
+              </Text>
+            </View>
+            <View style={styles.grayDividerContainer}>
+              <View style={styles.grayDivider} />
+            </View>
+            <View style={[styles.tableCell, styles.timeColumn]}>
+              <Text 
+                style={[styles.timeText, isDark && styles.timeTextDark]}
+                numberOfLines={1}
+                ellipsizeMode="tail"
+              >
+                {bid.timeAgo}
+              </Text>
+            </View>
           </View>
         ))}
       </View>
@@ -125,11 +162,10 @@ export function BidRankTable() {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#FFFFFF",
+    backgroundColor: "#F4F4F4",
     marginHorizontal: 24,
     marginBottom: 24,
     borderRadius: 8,
-    padding: 16,
   },
   containerDark: {
     backgroundColor: "#111111",
@@ -138,7 +174,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 16,
+    marginBottom: 4,
+    paddingHorizontal: 0,
   },
   headerLeft: {
     flexDirection: "row",
@@ -169,38 +206,98 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontFamily: "Mulish_400Regular",
     color: "#494949",
+    backgroundColor: "#EDEDED",
+    padding: 6,
+    borderWidth: 1,
+    borderColor: "#ABABAB",
   },
   timerTextDark: {
     color: "#FFFFFF",
   },
-  bidsList: {
-    marginBottom: 16,
+  tableContainer: {
+    borderRadius: 4,
+    overflow: "hidden",
+    backgroundColor: "#F4F4F4",
   },
-  bidRow: {
+  tableHeader: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    backgroundColor: "#F4F4F4",
     alignItems: "center",
+  },
+  tableHeaderDark: {
+    backgroundColor: "#111111",
+  },
+  tableRow: {
+    flexDirection: "row",
+    borderWidth: 1,
+    borderColor: "#ABABAB",
+    backgroundColor: "#F4F4F4",
+  },
+  tableRowDark: {
+    backgroundColor: "#111111",
+  },
+  headerCell: {
     paddingVertical: 12,
+    paddingLeft: 12,
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
+  },
+  redDividerContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    paddingVertical: 4,
+  },
+  redDivider: {
+    width: 2,
+    height: 16,
+    backgroundColor: "#DC3729",
+  },
+  grayDividerContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  grayDivider: {
+    width: 1,
+    backgroundColor: "#ABABAB",
+    alignSelf: "stretch",
+  },
+  rankColumn: {
+    flex: 1.5,
+    minWidth: 0,
+  },
+  bidColumn: {
+    flex: 1.2,
+    minWidth: 0,
+  },
+  timeColumn: {
+    flex: 1.2,
+    minWidth: 0,
+    borderRightWidth: 0,
   },
   bidRowSelected: {
     backgroundColor: "#EFCECB",
   },
-  bidRowBorder: {
-    borderBottomWidth: 1,
-    borderBottomColor: "#E5E5E5",
+  tableCell: {
+    paddingVertical: 12,
+    paddingLeft: 12,
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
+    overflow: "hidden",
+    borderRightWidth: 1,
+    borderRightColor: "#ABABAB",
   },
-  bidLeft: {
+  rankCellContent: {
     flexDirection: "row",
     alignItems: "center",
-    flex: 1,
-    gap: 12,
+    gap: 6,
+    minWidth: 0,
   },
   avatar: {
-    width: 40,
-    height: 40,
+    width: 30,
+    height: 30,
     borderRadius: 20,
   },
-  bidInfo: {
+  rankTextContainer: {
     flex: 1,
   },
   rankText: {
@@ -213,7 +310,12 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
   },
   nameText: {
+    fontSize: 14,
     fontFamily: "Mulish_400Regular",
+    color: "#494949",
+  },
+  nameTextDark: {
+    color: "#FFFFFF",
   },
   youText: {
     color: "#DC3729",
@@ -239,6 +341,7 @@ const styles = StyleSheet.create({
     fontFamily: "Mulish_400Regular",
     color: "#494949",
     lineHeight: 18,
+    marginTop: 16,
   },
   footerTextDark: {
     color: "#FFFFFF",

@@ -67,6 +67,7 @@ export default function RootLayout() {
         <Stack.Screen name="detail" options={{ headerShown: false, animation: "fade" }} />
         <Stack.Screen name="bid" options={{ headerShown: false, animation: "fade" }} />
         <Stack.Screen name="winner" options={{ headerShown: false, animation: "fade" }} />
+        <Stack.Screen name="more" options={{ headerShown: false, animation: "fade" }} />
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
       </Stack>

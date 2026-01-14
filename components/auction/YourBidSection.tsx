@@ -109,10 +109,10 @@ export function YourBidSection() {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#FFFFFF",
+    backgroundColor: "#F4F4F4",
     marginHorizontal: 24,
     marginBottom: 24,
-    padding: 20,
+    paddingVertical: 20,
     borderRadius: 8,
   },
   containerDark: {

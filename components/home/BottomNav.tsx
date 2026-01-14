@@ -4,14 +4,14 @@ import ThemedMoreIcon from "@/components/ui/svgs/ThemedMoreIcon";
 import ThemedNotificationIcon from "@/components/ui/svgs/ThemedNotificationIcon";
 import ThemedSearchIconNav from "@/components/ui/svgs/ThemedSearchIconNav";
 import { useColorScheme } from "@/hooks/use-color-scheme";
-import { useRouter } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
+import { useRouter } from "expo-router";
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 interface BottomNavProps {
   onAuctionPress?: () => void;
-  activeTab?: "home" | "notification" | "search";
+  activeTab?: "home" | "notification" | "search" | "more";
 }
 
 export function BottomNav({ onAuctionPress, activeTab = "home" }: BottomNavProps) {
@@ -50,9 +50,20 @@ export function BottomNav({ onAuctionPress, activeTab = "home" }: BottomNavProps
           Notification
         </Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.navItem}>
-        <ThemedMoreIcon />
-        <Text style={[styles.navText, isDark && styles.navTextDark]}>More</Text>
+      <TouchableOpacity
+        style={styles.navItem}
+        onPress={() => router.push("/more")}
+      >
+        <ThemedMoreIcon active={activeTab === "more"} />
+        <Text
+          style={[
+            styles.navText,
+            activeTab === "more" && styles.activeNavTextOrange,
+            activeTab !== "more" && isDark && styles.navTextDark,
+          ]}
+        >
+          More
+        </Text>
       </TouchableOpacity>
     </View>
   );
@@ -91,7 +102,9 @@ const styles = StyleSheet.create({
   },
   activeNavText: {
     color: "#DC3729",
-
+  },
+  activeNavTextOrange: {
+    color: "#FF6B35",
   },
   auctionButton: {
     alignItems: "center",

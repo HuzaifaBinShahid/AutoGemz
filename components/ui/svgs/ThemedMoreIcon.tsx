@@ -2,10 +2,18 @@ import React from "react";
 import Svg, { Path } from "react-native-svg";
 import { useColorScheme } from "@/hooks/use-color-scheme";
 
-const ThemedMoreIcon = () => {
+interface ThemedMoreIconProps {
+  active?: boolean;
+}
+
+const ThemedMoreIcon = ({ active = false }: ThemedMoreIconProps) => {
   const colorScheme = useColorScheme();
   const isDark = colorScheme === "dark";
-  const strokeColor = isDark ? "#A5A5A5" : "#475569";
+  const strokeColor = active
+    ? "#FF6B35"
+    : isDark
+    ? "#A5A5A5"
+    : "#475569";
 
   return (
     <Svg width="20" height="20" viewBox="0 0 20 20" fill="none">

@@ -87,7 +87,7 @@ export default function BidScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#D8D8D8",
+    backgroundColor: "#F4F4F4",
   },
   containerDark: {
     backgroundColor: "#000000",
