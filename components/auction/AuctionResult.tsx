@@ -28,6 +28,7 @@ export function AuctionResult() {
           12
         </Text>
       </View>
+      <View style={styles.dashedLine} />
       <View style={styles.resultItem}>
         <Text style={[styles.resultLabel, isDark && styles.resultLabelDark]}>
           Time closed:
@@ -48,7 +49,7 @@ export function AuctionResult() {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#FFFFFF",
+    backgroundColor: "#F4F4F4",
     marginHorizontal: 24,
     marginBottom: 24,
 
@@ -74,7 +75,7 @@ const styles = StyleSheet.create({
   resultLabel: {
     fontSize: 14,
     fontFamily: "Mulish_400Regular",
-    color: "#494949",
+    color: "black",
   },
   resultLabelDark: {
     color: "#FFFFFF",
@@ -86,6 +87,12 @@ const styles = StyleSheet.create({
   },
   resultValueDark: {
     color: "#FFFFFF",
+  },
+  dashedLine: {
+    borderBottomWidth: 1,
+    borderBottomColor: "#E5E5E5",
+    borderStyle: "dashed",
+    marginVertical: 12,
   },
   warningRow: {
     flexDirection: "row",
