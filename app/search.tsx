@@ -108,7 +108,7 @@ export default function SearchScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#111111",
+    backgroundColor: "#F4F4F4",
   },
   containerDark: {
     backgroundColor: "#000000",
@@ -124,20 +124,17 @@ const styles = StyleSheet.create({
   searchBarContainer: {
     flexDirection: "row",
     marginBottom: 32,
-    gap: 12,
   },
   searchContainer: {
     flex: 1,
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#FFFFFF",
+    backgroundColor: "#D8D8D8",
     paddingHorizontal: 16,
-    paddingVertical: 12,
-    borderRadius: 8,
     gap: 12,
   },
   searchContainerDark: {
-    backgroundColor: "#111111",
+    backgroundColor: "#494949",
   },
   input: {
     flex: 1,
@@ -146,7 +143,7 @@ const styles = StyleSheet.create({
     color: "#494949",
   },
   inputDark: {
-    color: "#FFFFFF",
+    color: "#494949",
   },
   filterButton: {
     width: 46,
@@ -155,11 +152,11 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 16,
     fontFamily: "ChakraPetch_600SemiBold",
-    color: "#494949",
+    color: "#ABABAB",
     marginBottom: 16,
   },
   sectionTitleDark: {
-    color: "#FFFFFF",
+    color: "#EDEDED",
   },
   listContainer: {
     backgroundColor: "#FFFFFF",
