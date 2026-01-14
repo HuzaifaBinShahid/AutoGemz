@@ -1,3 +1,5 @@
+import AccountCreatedIcon from "@/components/ui/svgs/AccountCreatedIcon";
+import { useColorScheme } from "@/hooks/use-color-scheme";
 import {
   ChakraPetch_600SemiBold,
   useFonts,
@@ -13,14 +15,14 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import { useColorScheme } from "@/hooks/use-color-scheme";
-import AccountCreatedIcon from "@/components/ui/svgs/AccountCreatedIcon";
 
 interface AuctionListedModalProps {
   visible: boolean;
   onClose: () => void;
   heading?: string;
   paragraph?: string;
+  primaryButtonText?: string;
+  onPrimaryButtonPress?: () => void;
 }
 
 export function AuctionListedModal({
@@ -28,6 +30,8 @@ export function AuctionListedModal({
   onClose,
   heading = "YOUR CAR HAS BEEN LISTED FOR AUCTION!",
   paragraph = "Great work! Your auction is now live — buyers can start placing bids right away.",
+  primaryButtonText = "VIEW MY AUCTION",
+  onPrimaryButtonPress,
 }: AuctionListedModalProps) {
   const [fontsLoaded] = useFonts({
     ChakraPetch_600SemiBold,
@@ -76,11 +80,15 @@ export function AuctionListedModal({
                 <TouchableOpacity
                   style={styles.primaryButton}
                   onPress={() => {
-                    onClose();
-                    router.push("/(tabs)");
+                    if (onPrimaryButtonPress) {
+                      onPrimaryButtonPress();
+                    } else {
+                      onClose();
+                      router.push("/(tabs)");
+                    }
                   }}
                 >
-                  <Text style={styles.primaryButtonText}>VIEW MY AUCTION</Text>
+                  <Text style={styles.primaryButtonText}>{primaryButtonText}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={[

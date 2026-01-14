@@ -236,7 +236,6 @@ const styles = StyleSheet.create({
   profileBox: {
     backgroundColor: "#FFFFFF",
     padding: 24,
-    borderRadius: 8,
     marginBottom: 24,
     alignItems: "center",
   },
@@ -283,25 +282,24 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 16,
     fontFamily: "Mulish_400Regular",
-    color: "#494949",
+    color: "#111111",
     marginBottom: 8,
   },
   labelDark: {
-    color: "#FFFFFF",
+    color: "#A5A5A5",
   },
   input: {
     backgroundColor: "#FFFFFF",
-    borderWidth: 1,
+    borderWidth: 0.3,
     borderColor: "#E5E5E5",
     paddingHorizontal: 16,
-    paddingVertical: 16,
-    fontSize: 16,
+    fontSize: 12,
     fontFamily: "Mulish_400Regular",
     color: "#494949",
   },
   inputDark: {
     backgroundColor: "#FFFFFF0D",
-    borderColor: "#737779",
+    borderColor: "#FFFFFF2E",
     color: "#FFFFFF",
   },
   dateInputContainer: {

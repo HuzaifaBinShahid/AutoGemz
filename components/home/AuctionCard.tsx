@@ -47,7 +47,7 @@ export function AuctionCard({
             <Image source={image} style={styles.image} contentFit="cover" />
             {isActive && (
               <View style={styles.activeBadge}>
-                <Text style={styles.activeText}>ACTIVE</Text>
+                <Text style={[styles.activeText, isDark && styles.activeTextDark]}>ACTIVE</Text>
               </View>
             )}
           </View>
@@ -104,6 +104,7 @@ const styles = StyleSheet.create({
   containerDark: {
     backgroundColor: "#111111",
     borderWidth: 1,
+    borderColor: "#737779",
   },
   mainContent: {
     flexDirection: "row",
@@ -124,14 +125,16 @@ const styles = StyleSheet.create({
     position: "absolute",
     right: 0,
     backgroundColor: "#2DD4BF",
-    paddingHorizontal: 8,
-    paddingVertical: 4,
+    paddingHorizontal: 12,
   },
   activeText: {
     fontSize: 10,
     fontFamily: "ChakraPetch_600SemiBold",
     color: "#FFFFFF",
     textTransform: "uppercase",
+  },
+  activeTextDark: {
+    color: "black",
   },
   content: {
     flex: 1,
@@ -215,7 +218,7 @@ const styles = StyleSheet.create({
   },
   divider: {
     height: 1,
-    backgroundColor: "#737779",
+    backgroundColor: "#E5E5E5",
     marginTop: 8,
     marginBottom: 8,
   },
@@ -223,7 +226,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    paddingHorizontal: 12,
+    paddingHorizontal: 4,
     paddingBottom: 8,
   },
   detailItem: {
@@ -234,7 +237,7 @@ const styles = StyleSheet.create({
   detailText: {
     fontSize: 12,
     fontFamily: "Mulish_400Regular",
-    color: "#494949",
+    color: "black",
   },
   detailTextDark: {
     color: "#F4F4F4",

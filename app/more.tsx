@@ -1,4 +1,5 @@
 import { useColorScheme } from "@/hooks/use-color-scheme";
+import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import {
   ScrollView,
@@ -31,26 +32,32 @@ export default function MoreScreen() {
   const isDark = colorScheme === "dark";
   const [showAuctionSheet, setShowAuctionSheet] = useState(false);
 
+  const router = useRouter();
+
   const menuItems: MenuItem[] = [
     {
       id: "1",
       label: "My Auction Cars",
       icon: <MyAuctionCars />,
+      onPress: () => router.push("/my-auction-cars"),
     },
     {
       id: "2",
       label: "Dealer Instant Offers",
       icon: <DealerOffers />,
+      onPress: () => router.push("/instant-offers"),
     },
     {
       id: "3",
       label: "Payments & Receipts",
       icon: <PaymentReciepts />,
+      onPress: () => router.push("/payments-receipts"),
     },
     {
       id: "4",
       label: "Scheduled Bid",
       icon: <ScheduleBidIcon />,
+      onPress: () => router.push("/schedule-bid"),
     },
     {
       id: "5",

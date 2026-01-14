@@ -5,12 +5,14 @@ interface BidCountdownBannerProps {
   hours?: number;
   minutes?: number;
   seconds?: number;
+  format?: "default" | "compact";
 }
 
 export function BidCountdownBanner({
   hours = 1,
   minutes = 59,
   seconds = 59,
+  format = "default",
 }: BidCountdownBannerProps) {
   const [time, setTime] = useState({ hours, minutes, seconds });
 
@@ -41,6 +43,22 @@ export function BidCountdownBanner({
 
     return () => clearInterval(timer);
   }, []);
+
+  const formatTime = (value: number) => {
+    return value.toString().padStart(2, "0");
+  };
+
+  if (format === "compact") {
+    return (
+      <View style={styles.container}>
+        <View style={styles.timeContainer}>
+          <Text style={styles.timeValue}>
+            {formatTime(time.hours)}D {formatTime(time.minutes)}H {formatTime(time.seconds)}S
+          </Text>
+        </View>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>

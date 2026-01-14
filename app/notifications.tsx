@@ -73,7 +73,7 @@ export default function NotificationsScreen() {
       </View>
       <ScrollView
         style={styles.scrollView}
-        contentContainerStyle={styles.content}
+        contentContainerStyle={[styles.content, isDark && styles.contentDark]}
         showsVerticalScrollIndicator={false}
       >
         {notifications.map((notification, index) => (
@@ -154,6 +154,10 @@ const styles = StyleSheet.create({
   content: {
     paddingTop: 16,
     paddingBottom: 40,
+    backgroundColor: "#FFFFFF",
+  },
+  contentDark: {
+    backgroundColor: "#000000",
   },
   notificationItem: {
     flexDirection: "row",
