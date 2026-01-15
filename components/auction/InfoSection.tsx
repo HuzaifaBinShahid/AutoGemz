@@ -48,9 +48,9 @@ export function InfoSection({ title, items }: InfoSectionProps) {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "#FFFFFF",
-    paddingHorizontal: 16,
-    paddingVertical: 20,
-    marginHorizontal: 24,
+    paddingHorizontal: 8,
+    paddingVertical: 12,
+    marginHorizontal: 12,
     marginBottom: 24,
   },
   containerDark: {
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     marginRight: 12,
   },
   title: {
-    fontSize: 20,
+    fontSize: 18,
     fontFamily: "ChakraPetch_600SemiBold",
     color: "#494949",
     textTransform: "uppercase",
@@ -86,21 +86,23 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   itemLabel: {
-    fontSize: 12,
+    fontSize: 10,
     fontFamily: "Mulish_400Regular",
     color: "#494949",
     marginBottom: 8,
+    fontWeight: "bold",
   },
   itemLabelDark: {
-    color: "#FFFFFF",
+    color: "white",
   },
   itemValue: {
-    fontSize: 14,
+    fontSize: 8,
     fontFamily: "Mulish_400Regular",
-    color: "#494949",
+    color: "#0000008C",
+    fontWeight: "bold",
   },
   itemValueDark: {
-    color: "#FFFFFF",
+    color: "#FFFFFF99",
   },
   itemValueHighlight: {
     color: "#DC3729",

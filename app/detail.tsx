@@ -82,6 +82,15 @@ export default function DetailScreen() {
         />
         <CarInspection />
         <CarDetailsTable />
+        <TouchableOpacity
+          style={[styles.loadMoreButton, isDark && styles.loadMoreButtonDark]}
+          onPress={() => router.push("/car-inspection-report")}
+          activeOpacity={0.8}
+        >
+          <Text style={[styles.loadMoreText, isDark && styles.loadMoreTextDark]}>
+            Load More
+          </Text>
+        </TouchableOpacity>
         <InfoSection
           title="CAR SPECIFICATION"
           items={[
@@ -141,5 +150,26 @@ const styles = StyleSheet.create({
   },
   content: {
     paddingBottom: 24,
+  },
+  loadMoreButton: {
+    alignSelf: "center",
+    marginVertical: 24,
+    paddingHorizontal: 24,
+    paddingVertical: 12,
+    borderWidth: 1,
+    borderColor: "#DC3729",
+    backgroundColor: "#FFFFFF",
+  },
+  loadMoreButtonDark: {
+    backgroundColor: "#111111",
+  },
+  loadMoreText: {
+    fontSize: 14,
+    fontFamily: "ChakraPetch_600SemiBold",
+    color: "#DC3729",
+    textTransform: "uppercase",
+  },
+  loadMoreTextDark: {
+    color: "#DC3729",
   },
 });
