@@ -79,6 +79,7 @@ export default function RootLayout() {
         <Stack.Screen name="electrical-electronics" options={{ headerShown: false, animation: "fade" }} />
         <Stack.Screen name="vehicle-pictures" options={{ headerShown: false, animation: "fade" }} />
         <Stack.Screen name="comments" options={{ headerShown: false, animation: "fade" }} />
+        <Stack.Screen name="exterior-condition" options={{ headerShown: false, animation: "fade" }} />
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
       </Stack>

@@ -21,7 +21,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 interface InspectionItem {
   label: string;
   value: string;
-  status: "red" | "green" | "neutral";
+  status: "red" | "green";
   hasViewButton?: boolean;
 }
 
