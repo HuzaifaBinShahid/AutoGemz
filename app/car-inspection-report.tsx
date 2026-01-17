@@ -52,7 +52,7 @@ export default function CarInspectionReportScreen() {
       id: "1",
       label: "Exterior Condition",
       icon: <ExteriorConditions />,
-      onPress: () => { },
+      onPress: () => router.push("/exterior-condition"),
     },
     {
       id: "2",

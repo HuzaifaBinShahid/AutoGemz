@@ -58,7 +58,7 @@ export function AuctionBottomSheet({ visible, onClose }: AuctionBottomSheetProps
                     router.push("/add-car-to-auction");
                   }}
                 >
-                  <Text style={styles.buttonText}>ADD CAR TO AUCTION</Text>
+                  <Text style={[styles.buttonText, isDark && styles.buttonTextDark]}>ADD CAR TO AUCTION</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={[styles.button, styles.solidButton]}
@@ -67,7 +67,7 @@ export function AuctionBottomSheet({ visible, onClose }: AuctionBottomSheetProps
                     router.push("/instant-offer");
                   }}
                 >
-                  <Text style={styles.buttonText}>INSTANT OFFER</Text>
+                  <Text style={[styles.buttonText, isDark && styles.buttonTextDark]}>INSTANT OFFER</Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -134,10 +134,13 @@ const styles = StyleSheet.create({
     backgroundColor: "#DC3729",
   },
   buttonText: {
-    fontSize: 14,
+    fontSize: 12,
     fontFamily: "ChakraPetch_600SemiBold",
-    color: "#FFFFFF",
+    color: "black",
     textTransform: "uppercase",
+  },
+  buttonTextDark: {
+    color: "white",
   },
 });
 
