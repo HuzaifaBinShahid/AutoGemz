@@ -7,6 +7,7 @@ import 'react-native-reanimated';
 
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { SplashScreenComponent } from '@/components/splash-screen';
+import { Colors } from '@/constants/theme';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -42,45 +43,73 @@ export default function RootLayout() {
     );
   }
 
+  const backgroundColor = Colors[colorScheme ?? 'light'].background;
+
+  const customDarkTheme = {
+    ...DarkTheme,
+    colors: {
+      ...DarkTheme.colors,
+      background: backgroundColor,
+      card: backgroundColor,
+    },
+  };
+
+  const customLightTheme = {
+    ...DefaultTheme,
+    colors: {
+      ...DefaultTheme.colors,
+      background: backgroundColor,
+      card: backgroundColor,
+    },
+  };
+
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="index" options={{ headerShown: false }} />
-        <Stack.Screen name="signup" options={{ headerShown: false, animation: "fade" }} />
-        <Stack.Screen name="secure-account" options={{ headerShown: false, animation: "fade" }} />
-        <Stack.Screen name="login" options={{ headerShown: false, animation: "fade" }} />
-        <Stack.Screen name="forgot-password" options={{ headerShown: false, animation: "fade" }} />
-        <Stack.Screen name="create-password" options={{ headerShown: false, animation: "fade" }} />
-        <Stack.Screen name="verify" options={{ headerShown: false, animation: "fade" }} />
-        <Stack.Screen name="deposit" options={{ headerShown: false, animation: "fade" }} />
-        <Stack.Screen name="success" options={{ headerShown: false, animation: "fade" }} />
-        <Stack.Screen name="instant-offer" options={{ headerShown: false, animation: "fade" }} />
-        <Stack.Screen name="contact-info" options={{ headerShown: false, animation: "fade" }} />
-        <Stack.Screen name="add-car-to-auction" options={{ headerShown: false, animation: "fade" }} />
-        <Stack.Screen name="upload-media" options={{ headerShown: false, animation: "fade" }} />
-        <Stack.Screen name="auction-contact" options={{ headerShown: false, animation: "fade" }} />
-        <Stack.Screen name="notifications" options={{ headerShown: false, animation: "fade" }} />
-        <Stack.Screen name="profile-settings" options={{ headerShown: false, animation: "fade" }} />
-        <Stack.Screen name="search" options={{ headerShown: false, animation: "fade" }} />
-        <Stack.Screen name="filters" options={{ headerShown: false, animation: "fade" }} />
-        <Stack.Screen name="results" options={{ headerShown: false, animation: "fade" }} />
-        <Stack.Screen name="detail" options={{ headerShown: false, animation: "fade" }} />
-        <Stack.Screen name="bid" options={{ headerShown: false, animation: "fade" }} />
-        <Stack.Screen name="winner" options={{ headerShown: false, animation: "fade" }} />
-        <Stack.Screen name="more" options={{ headerShown: false, animation: "fade" }} />
-        <Stack.Screen name="my-auction-cars" options={{ headerShown: false, animation: "fade" }} />
-        <Stack.Screen name="instant-offers" options={{ headerShown: false, animation: "fade" }} />
-        <Stack.Screen name="payments-receipts" options={{ headerShown: false, animation: "fade" }} />
-        <Stack.Screen name="payment-details" options={{ headerShown: false, animation: "fade" }} />
-        <Stack.Screen name="schedule-bid" options={{ headerShown: false, animation: "fade" }} />
-        <Stack.Screen name="car-inspection-report" options={{ headerShown: false, animation: "fade" }} />
-        <Stack.Screen name="ac-heater" options={{ headerShown: false, animation: "fade" }} />
-        <Stack.Screen name="breaks" options={{ headerShown: false, animation: "fade" }} />
-        <Stack.Screen name="electrical-electronics" options={{ headerShown: false, animation: "fade" }} />
-        <Stack.Screen name="vehicle-pictures" options={{ headerShown: false, animation: "fade" }} />
-        <Stack.Screen name="comments" options={{ headerShown: false, animation: "fade" }} />
-        <Stack.Screen name="exterior-condition" options={{ headerShown: false, animation: "fade" }} />
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+    <ThemeProvider value={colorScheme === 'dark' ? customDarkTheme : customLightTheme}>
+      <Stack
+        screenOptions={{
+          headerShown: false,
+          animation: 'none',
+          contentStyle: {
+            backgroundColor: backgroundColor,
+          },
+        }}
+      >
+        <Stack.Screen name="index" />
+        <Stack.Screen name="signup" />
+        <Stack.Screen name="secure-account" />
+        <Stack.Screen name="login" />
+        <Stack.Screen name="forgot-password" />
+        <Stack.Screen name="create-password" />
+        <Stack.Screen name="verify" />
+        <Stack.Screen name="deposit" />
+        <Stack.Screen name="success" />
+        <Stack.Screen name="instant-offer" />
+        <Stack.Screen name="contact-info" />
+        <Stack.Screen name="add-car-to-auction" />
+        <Stack.Screen name="upload-media" />
+        <Stack.Screen name="auction-contact" />
+        <Stack.Screen name="notifications" />
+        <Stack.Screen name="profile-settings" />
+        <Stack.Screen name="search" />
+        <Stack.Screen name="filters" />
+        <Stack.Screen name="results" />
+        <Stack.Screen name="detail" />
+        <Stack.Screen name="bid" />
+        <Stack.Screen name="winner" />
+        <Stack.Screen name="more" />
+        <Stack.Screen name="my-auction-cars" />
+        <Stack.Screen name="instant-offers" />
+        <Stack.Screen name="payments-receipts" />
+        <Stack.Screen name="payment-details" />
+        <Stack.Screen name="schedule-bid" />
+        <Stack.Screen name="car-inspection-report" />
+        <Stack.Screen name="ac-heater" />
+        <Stack.Screen name="breaks" />
+        <Stack.Screen name="electrical-electronics" />
+        <Stack.Screen name="vehicle-pictures" />
+        <Stack.Screen name="comments" />
+        <Stack.Screen name="exterior-condition" />
+        <Stack.Screen name="(tabs)" />
         <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
       </Stack>
       <StatusBar style="auto" />
