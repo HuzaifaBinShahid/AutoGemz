@@ -2,12 +2,23 @@ import { InfoSection } from "@/components/auction/InfoSection";
 import { MenuList } from "@/components/inspection/MenuList";
 import { OverallRating } from "@/components/inspection/OverallRating";
 import BackArrow from "@/components/ui/svgs/BackArrow";
-import InspectionIcon from "@/components/ui/svgs/InspectionIcon";
+import Breaks from "@/components/ui/svgs/Breaks";
+import Comments from "@/components/ui/svgs/Comments";
+import Electronic from "@/components/ui/svgs/Electronical";
+import EngineTransmissions from "@/components/ui/svgs/EngineTransmissions";
+import ExteriorBody from "@/components/ui/svgs/ExteriorBody";
+import ExteriorConditions from "@/components/ui/svgs/ExteriorConditions";
+import Heater from "@/components/ui/svgs/Heater";
+import Interior from "@/components/ui/svgs/Interior";
+import MainIcon from "@/components/ui/svgs/MainIcon";
 import ShareIcon from "@/components/ui/svgs/ShareIcon";
+import SuspensionIcon from "@/components/ui/svgs/SuspensionIcon";
+import TestDriveIcon from "@/components/ui/svgs/TestDriveIcon";
+import TyresIcon from "@/components/ui/svgs/TyresIcon";
 import { useColorScheme } from "@/hooks/use-color-scheme";
 import {
-    ChakraPetch_600SemiBold,
-    useFonts,
+  ChakraPetch_600SemiBold,
+  useFonts,
 } from "@expo-google-fonts/chakra-petch";
 import { Mulish_400Regular } from "@expo-google-fonts/mulish";
 import { Image } from "expo-image";
@@ -15,11 +26,11 @@ import { useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import React from "react";
 import {
-    ScrollView,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -40,80 +51,80 @@ export default function CarInspectionReportScreen() {
     {
       id: "1",
       label: "Exterior Condition",
-      icon: <InspectionIcon color="#DC3729" />,
-      onPress: () => {},
+      icon: <ExteriorConditions />,
+      onPress: () => { },
     },
     {
       id: "2",
       label: "Body Frame Accident",
-      icon: <InspectionIcon color="#DC3729" />,
-      onPress: () => {},
+      icon: <ExteriorBody />,
+      onPress: () => { },
     },
     {
       id: "3",
       label: "Engine/Transmission",
-      icon: <InspectionIcon color="#DC3729" />,
-      onPress: () => {},
+      icon: <EngineTransmissions />,
+      onPress: () => { },
     },
     {
       id: "4",
       label: "Suspension/Steering",
-      icon: <InspectionIcon color="#DC3729" />,
-      onPress: () => {},
+      icon: <SuspensionIcon />,
+      onPress: () => { },
     },
     {
       id: "5",
       label: "Interior",
-      icon: <InspectionIcon color="#DC3729" />,
-      onPress: () => {},
+      icon: <Interior />,
+      onPress: () => { },
     },
     {
       id: "6",
       label: "AC / Heater",
-      icon: <InspectionIcon color="#DC3729" />,
-      onPress: () => {},
+      icon: <Heater />,
+      onPress: () => router.push("/ac-heater"),
     },
     {
       id: "7",
       label: "Breaks",
-      icon: <InspectionIcon color="#DC3729" />,
-      onPress: () => {},
+      icon: <Breaks />,
+      onPress: () => router.push("/breaks"),
     },
     {
       id: "8",
       label: "Electrical & Electronics",
-      icon: <InspectionIcon color="#DC3729" />,
-      onPress: () => {},
+      icon: <Electronic />,
+      onPress: () => router.push("/electrical-electronics"),
     },
     {
       id: "9",
       label: "Exterior & Body",
-      icon: <InspectionIcon color="#DC3729" />,
-      onPress: () => {},
+      icon: <ExteriorBody />,
+      onPress: () => { },
     },
     {
       id: "10",
       label: "Tyres",
-      icon: <InspectionIcon color="#DC3729" />,
-      onPress: () => {},
+      icon: <TyresIcon />,
+      onPress: () => { },
     },
     {
       id: "11",
       label: "Test Drive",
-      icon: <InspectionIcon color="#DC3729" />,
-      onPress: () => {},
+      icon: <TestDriveIcon />,
+      onPress: () => { },
     },
     {
       id: "12",
       label: "Main - Vehicle Pictures",
-      icon: <InspectionIcon color="#DC3729" />,
-      onPress: () => {},
+      icon: <MainIcon />,
+      onPress: () => router.push("/vehicle-pictures"),
     },
     {
       id: "13",
       label: "Comments",
-      icon: <InspectionIcon color="#DC3729" />,
-      onPress: () => {},
+      icon: <Comments />,
+      onPress: () => router.push("/comments"),
     },
   ];
 
