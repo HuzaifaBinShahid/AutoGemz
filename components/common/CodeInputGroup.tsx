@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     justifyContent: "center",
-    gap: 12,
+    gap: 6,
     marginBottom: 24,
   },
 });

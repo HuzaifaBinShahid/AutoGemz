@@ -4,15 +4,12 @@ import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
 import React, { ReactNode } from "react";
 import {
-  Dimensions,
   ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-
-const { width, height } = Dimensions.get("window");
 
 interface AuthLayoutProps {
   children: ReactNode;
@@ -63,9 +60,7 @@ const styles = StyleSheet.create({
     paddingTop: 36,
   },
   backgroundImage: {
-    position: "absolute",
-    width: width,
-    height: height,
+    ...StyleSheet.absoluteFillObject,
   },
   scrollView: {
     flex: 1,
@@ -78,7 +73,7 @@ const styles = StyleSheet.create({
   },
   backButton: {
     paddingTop: 40,
-    left: 24,
+    left: 12,
     zIndex: 2,
     flexDirection: "row",
     alignItems: "center",
@@ -86,7 +81,7 @@ const styles = StyleSheet.create({
   backText: {
     fontSize: 14,
     color: "#FFFFFF",
-    marginLeft: 8,
+    marginLeft: 2,
     fontFamily: "ChakraPetch_600SemiBold",
   },
 });

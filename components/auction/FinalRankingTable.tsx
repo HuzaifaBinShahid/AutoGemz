@@ -91,7 +91,7 @@ const outbidBids: FinalBidEntry[] = [
   },
 ];
 
-export function FinalRankingTable({ isWinner = true }: FinalRankingTableProps) {
+export function FinalRankingTable({ isWinner = false }: FinalRankingTableProps) {
   const colorScheme = useColorScheme();
   const isDark = colorScheme === "dark";
   const finalBids = isWinner ? winnerBids : outbidBids;
@@ -103,7 +103,7 @@ export function FinalRankingTable({ isWinner = true }: FinalRankingTableProps) {
       </Text>
       <View style={styles.tableContainer}>
         <View style={[styles.tableHeader, isDark && styles.tableHeaderDark]}>
-        <View style={styles.redDividerContainer}>
+          <View style={styles.redDividerContainer}>
             <View style={styles.redDivider} />
           </View>
           <View style={[styles.headerCell, styles.rankColumn]}>
@@ -133,16 +133,22 @@ export function FinalRankingTable({ isWinner = true }: FinalRankingTableProps) {
             key={bid.id}
             style={[
               styles.tableRow,
-              bid.isWinner && styles.bidRowWinner,
-              !bid.isWinner && isDark && styles.tableRowDark,
+              bid.isWinner && bid.isCurrentUser && styles.bidRowWinner,
+              !bid.isWinner && bid.isCurrentUser && !isWinner && styles.bidRowOutbid,
+              !bid.isWinner && !bid.isCurrentUser && isDark && styles.tableRowDark,
             ]}
           >
             <View style={[styles.tableCell, styles.rankColumn]}>
               <View style={styles.rankCellContent}>
                 <Image source={bid.avatar} style={styles.avatar} />
                 <View style={styles.rankTextContainer}>
-                  <Text 
-                    style={[styles.rankText, isDark && styles.rankTextDark]}
+                  <Text
+                    style={[
+                      styles.rankText,
+                      isDark && styles.rankTextDark,
+                      bid.isWinner && bid.isCurrentUser && styles.rankTextWinner,
+                      !bid.isWinner && bid.isCurrentUser && !isWinner && styles.rankTextOutbid,
+                    ]}
                     numberOfLines={1}
                     ellipsizeMode="tail"
                   >
@@ -150,14 +156,19 @@ export function FinalRankingTable({ isWinner = true }: FinalRankingTableProps) {
                     {bid.rank === 1
                       ? "st"
                       : bid.rank === 2
-                      ? "nd"
-                      : bid.rank === 3
-                      ? "rd"
-                      : "th"}{" "}
+                        ? "nd"
+                        : bid.rank === 3
+                          ? "rd"
+                          : "th"}{" "}
                     Place
                   </Text>
-                  <Text 
-                    style={[styles.nameText, isDark && styles.nameTextDark]}
+                  <Text
+                    style={[
+                      styles.nameText,
+                      isDark && styles.nameTextDark,
+                      bid.isWinner && bid.isCurrentUser && styles.nameTextWinner,
+                      !bid.isWinner && bid.isCurrentUser && !isWinner && styles.nameTextOutbid,
+                    ]}
                     numberOfLines={1}
                     ellipsizeMode="tail"
                   >
@@ -173,8 +184,13 @@ export function FinalRankingTable({ isWinner = true }: FinalRankingTableProps) {
               <View style={styles.grayDivider} />
             </View>
             <View style={[styles.tableCell, styles.bidColumn]}>
-              <Text 
-                style={[styles.bidAmount, isDark && styles.bidAmountDark]}
+              <Text
+                style={[
+                  styles.bidAmount,
+                  isDark && styles.bidAmountDark,
+                  bid.isWinner && bid.isCurrentUser && styles.bidAmountWinner,
+                  !bid.isWinner && bid.isCurrentUser && !isWinner && styles.bidAmountOutbid,
+                ]}
                 numberOfLines={1}
                 ellipsizeMode="tail"
               >
@@ -190,10 +206,11 @@ export function FinalRankingTable({ isWinner = true }: FinalRankingTableProps) {
                 <Text
                   style={[
                     styles.statusText,
-                    bid.isWinner && styles.statusTextWinner,
-                    !bid.isWinner && bid.status === "Outbid" && styles.statusTextOutbid,
-                    !bid.isWinner && bid.status === "Winner" && styles.statusTextWinnerGreen,
-                    !bid.isWinner && bid.status === "You were outbid" && styles.statusTextOutbid,
+                    bid.isWinner && bid.isCurrentUser && styles.statusTextWinner,
+                    bid.isWinner && !bid.isCurrentUser && styles.statusTextWinnerGreen,
+                    !bid.isWinner && bid.isCurrentUser && !isWinner && styles.statusTextOutbidWhite,
+                    !bid.isWinner && !bid.isCurrentUser && bid.status === "Outbid" && styles.statusTextOutbid,
+                    !bid.isWinner && !bid.isCurrentUser && bid.status === "You were outbid" && styles.statusTextOutbid,
                   ]}
                   numberOfLines={1}
                   ellipsizeMode="tail"
@@ -246,7 +263,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     borderWidth: 1,
     borderColor: "#ABABAB",
-    backgroundColor: "#F4F4F4",
+    backgroundColor: "black",
   },
   tableRowDark: {
     backgroundColor: "#111111",
@@ -301,6 +318,9 @@ const styles = StyleSheet.create({
   bidRowWinner: {
     backgroundColor: "#3EB549",
   },
+  bidRowOutbid: {
+    backgroundColor: "#DC3729",
+  },
   tableCell: {
     paddingVertical: 12,
     paddingLeft: 12,
@@ -334,12 +354,24 @@ const styles = StyleSheet.create({
   rankTextDark: {
     color: "#FFFFFF",
   },
+  rankTextWinner: {
+    color: "#FFFFFF",
+  },
+  rankTextOutbid: {
+    color: "#FFFFFF",
+  },
   nameText: {
     fontSize: 14,
     fontFamily: "Mulish_400Regular",
     color: "#494949",
   },
   nameTextDark: {
+    color: "#FFFFFF",
+  },
+  nameTextWinner: {
+    color: "#FFFFFF",
+  },
+  nameTextOutbid: {
     color: "#FFFFFF",
   },
   youText: {
@@ -351,6 +383,12 @@ const styles = StyleSheet.create({
     color: "#494949",
   },
   bidAmountDark: {
+    color: "#FFFFFF",
+  },
+  bidAmountWinner: {
+    color: "#FFFFFF",
+  },
+  bidAmountOutbid: {
     color: "#FFFFFF",
   },
   statusContainer: {
@@ -373,5 +411,8 @@ const styles = StyleSheet.create({
   },
   statusTextOutbid: {
     color: "#DC3729",
+  },
+  statusTextOutbidWhite: {
+    color: "#FFFFFF",
   },
 });

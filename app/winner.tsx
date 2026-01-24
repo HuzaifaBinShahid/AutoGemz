@@ -47,7 +47,9 @@ export default function WinnerScreen() {
   const router = useRouter();
   const colorScheme = useColorScheme();
   const isDark = colorScheme === "dark";
-  const isWinner = false;
+  const isAuctionClosed = true;
+  const userRank = 2;
+  const isWinner = userRank === 1;
 
   if (!fontsLoaded) {
     return null;
@@ -73,7 +75,8 @@ export default function WinnerScreen() {
         contentContainerStyle={styles.content}
         showsVerticalScrollIndicator={false}
       >
-        {isWinner ? <WinnerBanner /> : <OutbidBanner />}
+        {isAuctionClosed && !isWinner && <OutbidBanner />}
+        {isWinner && <WinnerBanner />}
         <AuctionImageCarousel images={carImages} />
         {isWinner && (
           <TouchableOpacity
@@ -90,7 +93,8 @@ export default function WinnerScreen() {
           location="Lohare"
         />
         <FinalRankingTable isWinner={isWinner} />
-        {isWinner ? <CongratulationsBox /> : <AuctionClosedBanner bidAmount="16,000" rank={2} />}
+        {isAuctionClosed && !isWinner && <AuctionClosedBanner bidAmount="16,000" rank={userRank} />}
+        {isWinner && <CongratulationsBox />}
         <AuctionResult />
       </ScrollView>
       <View style={[styles.bottomButtons, isDark && styles.bottomButtonsDark]}>
@@ -211,7 +215,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   viewUpcomingText: {
-    fontSize: 16,
+    fontSize: 12,
     fontFamily: "ChakraPetch_600SemiBold",
     color: "#FFFFFF",
     textTransform: "uppercase",
@@ -229,7 +233,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#000000",
   },
   setAlertsText: {
-    fontSize: 16,
+    fontSize: 12,
     fontFamily: "ChakraPetch_600SemiBold",
     color: "#DC3729",
     textTransform: "uppercase",

@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   itemLabel: {
-    fontSize: 10,
+    fontSize: 14,
     fontFamily: "Mulish_400Regular",
     color: "#494949",
     marginBottom: 8,
@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
     color: "white",
   },
   itemValue: {
-    fontSize: 8,
+    fontSize: 10,
     fontFamily: "Mulish_400Regular",
     color: "#0000008C",
     fontWeight: "bold",

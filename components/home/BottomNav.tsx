@@ -78,6 +78,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     position: "relative",
+    height: 80,
   },
   containerDark: {
     backgroundColor: "#3636364D",
@@ -89,7 +90,7 @@ const styles = StyleSheet.create({
   },
   navItem: {
     alignItems: "center",
-    gap: 8,
+    gap: 6,
     marginHorizontal: 10,
   },
   navText: {
@@ -109,9 +110,10 @@ const styles = StyleSheet.create({
   auctionButton: {
     alignItems: "center",
     position: "relative",
-    top: -45,
+    top: -15,
   },
   auctionText: {
+    top:-32,
     fontSize: 10,
     fontFamily: "Mulish_400Regular",
     color: "#475569",
