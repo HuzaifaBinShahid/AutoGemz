@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
   },
   backButton: {
     paddingTop: 40,
-    left: 24,
+    left: 12,
     zIndex: 2,
     flexDirection: "row",
     alignItems: "center",
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
   backText: {
     fontSize: 14,
     color: "#FFFFFF",
-    marginLeft: 8,
+    marginLeft: 2,
     fontFamily: "ChakraPetch_600SemiBold",
   },
 });
