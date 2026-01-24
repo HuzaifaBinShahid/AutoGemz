@@ -98,7 +98,11 @@ export function BidRankTable() {
                 <Image source={bid.avatar} style={styles.avatar} />
                 <View style={styles.rankTextContainer}>
                   <Text 
-                    style={[styles.rankText, isDark && styles.rankTextDark]}
+                    style={[
+                      styles.rankText, 
+                      isDark && styles.rankTextDark,
+                      bid.isSelected && styles.rankTextSelected,
+                    ]}
                     numberOfLines={1}
                     ellipsizeMode="tail"
                   >
@@ -113,7 +117,11 @@ export function BidRankTable() {
                     Place
                   </Text>
                   <Text 
-                    style={[styles.nameText, isDark && styles.nameTextDark]}
+                    style={[
+                      styles.nameText, 
+                      isDark && styles.nameTextDark,
+                      bid.isSelected && styles.nameTextSelected,
+                    ]}
                     numberOfLines={1}
                     ellipsizeMode="tail"
                   >
@@ -130,7 +138,11 @@ export function BidRankTable() {
             </View>
             <View style={[styles.tableCell, styles.bidColumn]}>
               <Text 
-                style={[styles.bidAmount, isDark && styles.bidAmountDark]}
+                style={[
+                  styles.bidAmount, 
+                  isDark && styles.bidAmountDark,
+                  bid.isSelected && styles.bidAmountSelected,
+                ]}
                 numberOfLines={1}
                 ellipsizeMode="tail"
               >
@@ -142,7 +154,11 @@ export function BidRankTable() {
             </View>
             <View style={[styles.tableCell, styles.timeColumn]}>
               <Text 
-                style={[styles.timeText, isDark && styles.timeTextDark]}
+                style={[
+                  styles.timeText, 
+                  isDark && styles.timeTextDark,
+                  bid.isSelected && styles.timeTextSelected,
+                ]}
                 numberOfLines={1}
                 ellipsizeMode="tail"
               >
@@ -212,6 +228,7 @@ const styles = StyleSheet.create({
     borderColor: "#ABABAB",
   },
   timerTextDark: {
+    backgroundColor: "#737779",
     color: "#FFFFFF",
   },
   tableContainer: {
@@ -309,6 +326,9 @@ const styles = StyleSheet.create({
   rankTextDark: {
     color: "#FFFFFF",
   },
+  rankTextSelected: {
+    color: "#000000",
+  },
   nameText: {
     fontSize: 14,
     fontFamily: "Mulish_400Regular",
@@ -316,6 +336,9 @@ const styles = StyleSheet.create({
   },
   nameTextDark: {
     color: "#FFFFFF",
+  },
+  nameTextSelected: {
+    color: "#000000",
   },
   youText: {
     color: "#DC3729",
@@ -328,6 +351,9 @@ const styles = StyleSheet.create({
   bidAmountDark: {
     color: "#FFFFFF",
   },
+  bidAmountSelected: {
+    color: "#000000",
+  },
   timeText: {
     fontSize: 12,
     fontFamily: "Mulish_400Regular",
@@ -335,6 +361,9 @@ const styles = StyleSheet.create({
   },
   timeTextDark: {
     color: "#FFFFFF",
+  },
+  timeTextSelected: {
+    color: "#000000",
   },
   footerText: {
     fontSize: 12,

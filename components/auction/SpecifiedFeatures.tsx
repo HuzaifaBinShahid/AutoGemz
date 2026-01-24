@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   featureItem: {
-    width: "23%",
+    width: "21%",
     alignItems: "center",
     marginBottom: 24,
   },
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   featureLabel: {
-    fontSize: 12,
+    fontSize: 10,
     fontFamily: "Mulish_400Regular",
     color: "#494949",
     textAlign: "center",
