@@ -13,12 +13,12 @@ import {
   View,
 } from "react-native";
 
-import { AuthLayout } from "@/components/auth/AuthLayout";
-import { CommonInput } from "@/components/common/CommonInput";
-import CardNumberIcon from "@/components/ui/svgs/CardNumberIcon";
-import ExpiryIcon from "@/components/ui/svgs/ExpiryIcon";
-import LockIcon from "@/components/ui/svgs/LockIcon";
-import VisaIcon from "@/components/ui/svgs/VisaIcon";
+import { AuthLayout } from "../components/auth/AuthLayout";
+import { CommonInput } from "../components/common/CommonInput";
+import CardNumberIcon from "../components/ui/svgs/CardNumberIcon";
+import ExpiryIcon from "../components/ui/svgs/ExpiryIcon";
+import LockIcon from "../components/ui/svgs/LockIcon";
+import VisaIcon from "../components/ui/svgs/VisaIcon";
 
 export default function DepositScreen() {
   const [fontsLoaded] = useFonts({

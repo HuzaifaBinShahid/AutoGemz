@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import OutbidIcon from "@/components/ui/svgs/OutbidIcon";
+import OutbidIcon from "../../components/ui/svgs/OutbidIcon";
 
 export function OutbidBanner() {
   return (

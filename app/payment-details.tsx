@@ -1,8 +1,8 @@
-import { BuyerInformationCard } from "@/components/payments/BuyerInformationCard";
-import { PaymentBreakdownCard } from "@/components/payments/PaymentBreakdownCard";
-import { PaymentDetailsCard } from "@/components/payments/PaymentDetailsCard";
-import BackArrow from "@/components/ui/svgs/BackArrow";
-import { useColorScheme } from "@/hooks/use-color-scheme";
+import { BuyerInformationCard } from "../components/payments/BuyerInformationCard";
+import { PaymentBreakdownCard } from "../components/payments/PaymentBreakdownCard";
+import { PaymentDetailsCard } from "../components/payments/PaymentDetailsCard";
+import BackArrow from "../components/ui/svgs/BackArrow";
+import { useColorScheme } from "../hooks/use-color-scheme";
 import {
     ChakraPetch_600SemiBold,
     useFonts,
@@ -55,7 +55,7 @@ export default function PaymentDetailsScreen() {
         showsVerticalScrollIndicator={false}
       >
         <PaymentDetailsCard
-          image={require("@/assets/images/AuthBg.png")}
+          image={require("../assets/images/AuthBg.png")}
           title="2023 FORD MUSTANG GT"
           transactionId="TXN-29384"
           date="02 Nov 2025"

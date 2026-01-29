@@ -1,20 +1,20 @@
-import { CommonInput } from "@/components/common/CommonInput";
-import { Dropdown } from "@/components/common/Dropdown";
-import { FilterSlider } from "@/components/common/FilterSlider";
-import FiltersDivider from "@/components/ui/FiltersDivider";
-import CC1300Icon from "@/components/ui/svgs/1300CCIcon";
-import BackArrow from "@/components/ui/svgs/BackArrow";
-import BodyTypesIcon from "@/components/ui/svgs/BodyTypesIcon";
-import DropdownIcon from "@/components/ui/svgs/DropdownIcon";
-import FamilyCarsIcon from "@/components/ui/svgs/FamilyCarsIcon";
-import ImportedCarsIcon from "@/components/ui/svgs/ImportedCarsIcon";
-import LocationIcon from "@/components/ui/svgs/LocationIcon";
-import MilageIcon from "@/components/ui/svgs/MilageIcon";
-import PriceIcon from "@/components/ui/svgs/PriceIcon";
-import SeaterIcon from "@/components/ui/svgs/SeaterIcon";
-import SmallCarsIcon from "@/components/ui/svgs/SmallCarsIcon";
-import YearsIcon from "@/components/ui/svgs/YearsIcon";
-import { useColorScheme } from "@/hooks/use-color-scheme";
+import { CommonInput } from "../components/common/CommonInput";
+import { Dropdown } from "../components/common/Dropdown";
+import { FilterSlider } from "../components/common/FilterSlider";
+import FiltersDivider from "../components/ui/FiltersDivider";
+import CC1300Icon from "../components/ui/svgs/1300CCIcon";
+import BackArrow from "../components/ui/svgs/BackArrow";
+import BodyTypesIcon from "../components/ui/svgs/BodyTypesIcon";
+import DropdownIcon from "../components/ui/svgs/DropdownIcon";
+import FamilyCarsIcon from "../components/ui/svgs/FamilyCarsIcon";
+import ImportedCarsIcon from "../components/ui/svgs/ImportedCarsIcon";
+import LocationIcon from "../components/ui/svgs/LocationIcon";
+import MilageIcon from "../components/ui/svgs/MilageIcon";
+import PriceIcon from "../components/ui/svgs/PriceIcon";
+import SeaterIcon from "../components/ui/svgs/SeaterIcon";
+import SmallCarsIcon from "../components/ui/svgs/SmallCarsIcon";
+import YearsIcon from "../components/ui/svgs/YearsIcon";
+import { useColorScheme } from "../hooks/use-color-scheme";
 import {
   ChakraPetch_600SemiBold,
   useFonts,

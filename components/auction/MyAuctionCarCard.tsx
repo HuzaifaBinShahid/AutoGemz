@@ -1,10 +1,10 @@
-import { useColorScheme } from "@/hooks/use-color-scheme";
+import { useColorScheme } from "../../hooks/use-color-scheme";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import ThemedCalendarIcon from "@/components/ui/svgs/ThemedCalendarIcon";
-import ThemedMeterIcon from "@/components/ui/svgs/ThemedMeterIcon";
+import ThemedCalendarIcon from "../../components/ui/svgs/ThemedCalendarIcon";
+import ThemedMeterIcon from "../../components/ui/svgs/ThemedMeterIcon";
 
 export type AuctionStatus = "ending_soon" | "won" | "scheduled" | "active";
 

@@ -1,5 +1,5 @@
-import DetailLocationIcon from "@/components/ui/svgs/DetailLocationIcon";
-import { useColorScheme } from "@/hooks/use-color-scheme";
+import DetailLocationIcon from "../../components/ui/svgs/DetailLocationIcon";
+import { useColorScheme } from "../../hooks/use-color-scheme";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 

@@ -1,8 +1,8 @@
-import { CarDetailsCard } from "@/components/offers/CarDetailsCard";
-import { NoOffersCard } from "@/components/offers/NoOffersCard";
-import { OfferCard } from "@/components/offers/OfferCard";
-import BackArrow from "@/components/ui/svgs/BackArrow";
-import { useColorScheme } from "@/hooks/use-color-scheme";
+import { CarDetailsCard } from "../components/offers/CarDetailsCard";
+import { NoOffersCard } from "../components/offers/NoOffersCard";
+import { OfferCard } from "../components/offers/OfferCard";
+import BackArrow from "../components/ui/svgs/BackArrow";
+import { useColorScheme } from "../hooks/use-color-scheme";
 import {
   ChakraPetch_600SemiBold,
   useFonts,
@@ -128,7 +128,7 @@ export default function InstantOffersScreen() {
         showsVerticalScrollIndicator={false}
       >
         <CarDetailsCard
-          image={require("@/assets/images/AuthBg.png")}
+          image={require("../assets/images/AuthBg.png")}
           title="2023 FORD MUSTANG GT"
           description="First owner, well-maintained, original paint, genuine parts, and regularly serviced."
           make="Toyota"

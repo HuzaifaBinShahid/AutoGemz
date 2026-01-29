@@ -1,7 +1,7 @@
-import { Dropdown } from "@/components/common/Dropdown";
-import BackArrow from "@/components/ui/svgs/BackArrow";
-import ThinkIcon from "@/components/ui/svgs/ThinkIcon";
-import { useColorScheme } from "@/hooks/use-color-scheme";
+import { Dropdown } from "../components/common/Dropdown";
+import BackArrow from "../components/ui/svgs/BackArrow";
+import ThinkIcon from "../components/ui/svgs/ThinkIcon";
+import { useColorScheme } from "../hooks/use-color-scheme";
 import {
   ChakraPetch_600SemiBold,
   useFonts,
@@ -34,9 +34,13 @@ export default function AddCarToAuctionScreen() {
   const [year, setYear] = useState("");
   const [transmission, setTransmission] = useState("");
   const [registrationCity, setRegistrationCity] = useState("");
+  const [state, setState] = useState("");
+  const [price, setPrice] = useState("");
+  const [vin, setVin] = useState("");
   const [mileage, setMileage] = useState("");
   const [description, setDescription] = useState("");
   const [charCount, setCharCount] = useState(1000);
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   const handleDescriptionChange = (text: string) => {
     if (text.length <= 1000) {
@@ -125,8 +129,9 @@ export default function AddCarToAuctionScreen() {
               placeholder="SELECT MAKE"
               options={["Toyota", "Honda", "Ford", "BMW", "Mercedes"]}
               value={make}
-              onSelect={setMake}
+              onSelect={(v) => { setMake(v); if (errors.make) setErrors((e) => ({ ...e, make: undefined })); }}
             />
+            {errors.make ? <Text style={styles.errorText}>{errors.make}</Text> : null}
           </View>
 
           <View style={styles.warningContainer}>
@@ -144,8 +149,9 @@ export default function AddCarToAuctionScreen() {
               placeholder="SELECT MODEL"
               options={["Camry", "Civic", "Mustang", "X5", "C-Class"]}
               value={model}
-              onSelect={setModel}
+              onSelect={(v) => { setModel(v); if (errors.model) setErrors((e) => ({ ...e, model: undefined })); }}
             />
+            {errors.model ? <Text style={styles.errorText}>{errors.model}</Text> : null}
           </View>
 
           <View style={styles.fieldContainer}>
@@ -154,10 +160,11 @@ export default function AddCarToAuctionScreen() {
             </Text>
             <Dropdown
               placeholder="YEAR"
-              options={["2024", "2023", "2022", "2021", "2020"]}
+              options={["2026", "2025", "2024", "2023", "2022", "2021", "2020"]}
               value={year}
-              onSelect={setYear}
+              onSelect={(v) => { setYear(v); if (errors.year) setErrors((e) => ({ ...e, year: undefined })); }}
             />
+            {errors.year ? <Text style={styles.errorText}>{errors.year}</Text> : null}
           </View>
 
           <View style={styles.fieldContainer}>
@@ -166,10 +173,42 @@ export default function AddCarToAuctionScreen() {
             </Text>
             <Dropdown
               placeholder="SELECT TRANSMISSION"
-              options={["Automatic", "Manual"]}
+              options={["automatic", "manual"]}
               value={transmission}
               onSelect={setTransmission}
             />
+            {errors.transmission ? <Text style={styles.errorText}>{errors.transmission}</Text> : null}
+          </View>
+
+          <View style={styles.fieldContainer}>
+            <Text style={[styles.label, isDark && styles.labelDark]}>
+              VIN <Text style={styles.asterisk}>*</Text>
+            </Text>
+            <TextInput
+              style={[styles.input, isDark && styles.inputDark]}
+              placeholder="VIN"
+              placeholderTextColor={isDark ? "#A5A5A5" : "#A5A5A5"}
+              value={vin}
+              onChangeText={(t) => { setVin(t); if (errors.vin) setErrors((e) => ({ ...e, vin: undefined })); }}
+              autoCapitalize="characters"
+              autoCorrect={false}
+            />
+            {errors.vin ? <Text style={styles.errorText}>{errors.vin}</Text> : null}
+          </View>
+
+          <View style={styles.fieldContainer}>
+            <Text style={[styles.label, isDark && styles.labelDark]}>
+              Mileage (km) <Text style={styles.asterisk}>*</Text>
+            </Text>
+            <TextInput
+              style={[styles.input, isDark && styles.inputDark]}
+              placeholder="MILEAGE"
+              placeholderTextColor={isDark ? "#A5A5A5" : "#A5A5A5"}
+              value={mileage}
+              onChangeText={(t) => { setMileage(t.replace(/\D/g, "")); if (errors.mileage) setErrors((e) => ({ ...e, mileage: undefined })); }}
+              keyboardType="number-pad"
+            />
+            {errors.mileage ? <Text style={styles.errorText}>{errors.mileage}</Text> : null}
           </View>
 
           <View style={styles.fieldContainer}>
@@ -180,20 +219,37 @@ export default function AddCarToAuctionScreen() {
               placeholder="REGISTRATION CITY"
               options={["Karachi", "Lahore", "Islamabad", "Rawalpindi"]}
               value={registrationCity}
-              onSelect={setRegistrationCity}
+              onSelect={(v) => { setRegistrationCity(v); if (errors.city) setErrors((e) => ({ ...e, city: undefined })); }}
             />
+            {errors.city ? <Text style={styles.errorText}>{errors.city}</Text> : null}
           </View>
 
           <View style={styles.fieldContainer}>
             <Text style={[styles.label, isDark && styles.labelDark]}>
-              Mileage (km) <Text style={styles.asterisk}>*</Text>
+              State <Text style={styles.asterisk}>*</Text>
             </Text>
             <Dropdown
-              placeholder="MILEAGE"
-              options={["0-10,000", "10,000-50,000", "50,000-100,000", "100,000+"]}
-              value={mileage}
-              onSelect={setMileage}
+              placeholder="STATE"
+              options={["Sindh", "Punjab", "Khyber Pakhtunkhwa", "Balochistan", "Islamabad"]}
+              value={state}
+              onSelect={(v) => { setState(v); if (errors.state) setErrors((e) => ({ ...e, state: undefined })); }}
             />
+            {errors.state ? <Text style={styles.errorText}>{errors.state}</Text> : null}
+          </View>
+
+          <View style={styles.fieldContainer}>
+            <Text style={[styles.label, isDark && styles.labelDark]}>
+              Price <Text style={styles.asterisk}>*</Text>
+            </Text>
+            <TextInput
+              style={[styles.input, isDark && styles.inputDark]}
+              placeholder="PRICE"
+              placeholderTextColor={isDark ? "#A5A5A5" : "#A5A5A5"}
+              value={price}
+              onChangeText={(t) => { setPrice(t.replace(/\D/g, "")); if (errors.price) setErrors((e) => ({ ...e, price: undefined })); }}
+              keyboardType="number-pad"
+            />
+            {errors.price ? <Text style={styles.errorText}>{errors.price}</Text> : null}
           </View>
 
           <View style={styles.fieldContainer}>
@@ -220,9 +276,10 @@ export default function AddCarToAuctionScreen() {
               multiline
               numberOfLines={6}
               value={description}
-              onChangeText={handleDescriptionChange}
+              onChangeText={(t) => { handleDescriptionChange(t); if (errors.description) setErrors((e) => ({ ...e, description: undefined })); }}
               textAlignVertical="top"
             />
+            {errors.description ? <Text style={styles.errorText}>{errors.description}</Text> : null}
           </View>
 
           <View style={styles.warningContainer}>
@@ -236,7 +293,37 @@ export default function AddCarToAuctionScreen() {
         <TouchableOpacity
           style={styles.nextButton}
           onPress={() => {
-            router.push("/upload-media");
+            const next: Record<string, string> = {};
+            if (!make.trim()) next.make = "Make is required";
+            if (!model.trim()) next.model = "Model is required";
+            if (!year) next.year = "Year is required";
+            if (!transmission) next.transmission = "Transmission is required";
+            if (!vin.trim()) next.vin = "VIN is required";
+            if (!mileage.trim()) next.mileage = "Mileage is required";
+            else if (isNaN(Number(mileage)) || Number(mileage) < 0) next.mileage = "Enter a valid mileage";
+            if (!registrationCity.trim()) next.city = "City is required";
+            if (!state.trim()) next.state = "State is required";
+            if (!price.trim()) next.price = "Price is required";
+            else if (isNaN(Number(price)) || Number(price) < 0) next.price = "Enter a valid price";
+            if (!description.trim()) next.description = "Description is required";
+            setErrors(next);
+            if (Object.keys(next).length > 0) return;
+            router.push({
+              pathname: "/upload-media",
+              params: {
+                type: "3step",
+                make: make.trim(),
+                model: model.trim(),
+                year,
+                transmission,
+                vin: vin.trim(),
+                mileage,
+                description: description.trim(),
+                city: registrationCity.trim(),
+                state: state.trim(),
+                price,
+              },
+            });
           }}
         >
           <Text style={styles.nextButtonText}>NEXT</Text>
@@ -409,6 +496,27 @@ const styles = StyleSheet.create({
   },
   labelDark: {
     color: "#FFFFFF99",
+  },
+  input: {
+    backgroundColor: "#FFFFFF",
+    borderWidth: 1,
+    borderColor: "#E5E5E5",
+    paddingHorizontal: 16,
+    paddingVertical: 16,
+    fontSize: 16,
+    fontFamily: "Mulish_400Regular",
+    color: "#494949",
+  },
+  inputDark: {
+    backgroundColor: "#111111",
+    borderColor: "#737779",
+    color: "#FFFFFF",
+  },
+  errorText: {
+    marginTop: 6,
+    fontSize: 12,
+    fontFamily: "Mulish_400Regular",
+    color: "#DC3729",
   },
   warningContainer: {
     flexDirection: "row",

@@ -1,4 +1,4 @@
-import BackArrow from "@/components/ui/svgs/BackArrow";
+import BackArrow from "../../components/ui/svgs/BackArrow";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
@@ -22,7 +22,7 @@ export function AuthLayout({ children, showBack = false }: AuthLayoutProps) {
   return (
     <SafeAreaView style={styles.container} edges={["top"]}>
       <Image
-        source={require("@/assets/images/AuthBg.png")}
+        source={require("../../assets/images/AuthBg.png")}
         style={styles.backgroundImage}
         contentFit="cover"
         blurRadius={2}

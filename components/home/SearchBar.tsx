@@ -1,9 +1,9 @@
 import React from "react";
 import { StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
-import { useColorScheme } from "@/hooks/use-color-scheme";
+import { useColorScheme } from "../../hooks/use-color-scheme";
 import { useRouter } from "expo-router";
-import ThemedSearchIcon from "@/components/ui/svgs/ThemedSearchIcon";
-import FiltersIcon from "@/components/ui/svgs/FiltersIcon";
+import ThemedSearchIcon from "../../components/ui/svgs/ThemedSearchIcon";
+import FiltersIcon from "../../components/ui/svgs/FiltersIcon";
 
 export function SearchBar() {
   const colorScheme = useColorScheme();

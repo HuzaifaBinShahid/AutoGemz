@@ -1,4 +1,4 @@
-import { useColorScheme } from "@/hooks/use-color-scheme";
+import { useColorScheme } from "../../hooks/use-color-scheme";
 import React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 
@@ -24,7 +24,7 @@ const winnerBids: FinalBidEntry[] = [
     name: "Ahmed Sabana",
     bidAmount: "12,00,00",
     status: "Winner",
-    avatar: require("@/assets/images/AuthBg.png"),
+    avatar: require("../../assets/images/AuthBg.png"),
     isWinner: true,
     isCurrentUser: true,
   },
@@ -34,7 +34,7 @@ const winnerBids: FinalBidEntry[] = [
     name: "Sara Chole",
     bidAmount: "11,00,00",
     status: "Outbid",
-    avatar: require("@/assets/images/AuthBg.png"),
+    avatar: require("../../assets/images/AuthBg.png"),
   },
   {
     id: "3",
@@ -42,7 +42,7 @@ const winnerBids: FinalBidEntry[] = [
     name: "Harry Lincons",
     bidAmount: "10,00,00",
     status: "Outbid",
-    avatar: require("@/assets/images/AuthBg.png"),
+    avatar: require("../../assets/images/AuthBg.png"),
   },
   {
     id: "4",
@@ -50,7 +50,7 @@ const winnerBids: FinalBidEntry[] = [
     name: "Mathew Jone",
     bidAmount: "9,00,00",
     status: "Outbid",
-    avatar: require("@/assets/images/AuthBg.png"),
+    avatar: require("../../assets/images/AuthBg.png"),
   },
 ];
 
@@ -61,7 +61,7 @@ const outbidBids: FinalBidEntry[] = [
     name: "Ahmed Sabana",
     bidAmount: "12,00,00",
     status: "Winner",
-    avatar: require("@/assets/images/AuthBg.png"),
+    avatar: require("../../assets/images/AuthBg.png"),
     isWinner: true,
   },
   {
@@ -70,7 +70,7 @@ const outbidBids: FinalBidEntry[] = [
     name: "Sara Chole",
     bidAmount: "11,00,00",
     status: "You were outbid",
-    avatar: require("@/assets/images/AuthBg.png"),
+    avatar: require("../../assets/images/AuthBg.png"),
     isCurrentUser: true,
   },
   {
@@ -79,7 +79,7 @@ const outbidBids: FinalBidEntry[] = [
     name: "Harry Lincons",
     bidAmount: "10,00,00",
     status: "Outbid",
-    avatar: require("@/assets/images/AuthBg.png"),
+    avatar: require("../../assets/images/AuthBg.png"),
   },
   {
     id: "4",
@@ -87,7 +87,7 @@ const outbidBids: FinalBidEntry[] = [
     name: "Mathew Jone",
     bidAmount: "9,00,00",
     status: "Outbid",
-    avatar: require("@/assets/images/AuthBg.png"),
+    avatar: require("../../assets/images/AuthBg.png"),
   },
 ];
 

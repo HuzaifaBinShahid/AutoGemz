@@ -1,9 +1,9 @@
-import { AuctionListedModal } from "@/components/modals/AuctionListedModal";
-import { AutoBidSettings } from "@/components/schedule/AutoBidSettings";
-import { ScheduleCarInfo } from "@/components/schedule/ScheduleCarInfo";
-import { ScheduleSummary } from "@/components/schedule/ScheduleSummary";
-import BackArrow from "@/components/ui/svgs/BackArrow";
-import { useColorScheme } from "@/hooks/use-color-scheme";
+import { AuctionListedModal } from "../components/modals/AuctionListedModal";
+import { AutoBidSettings } from "../components/schedule/AutoBidSettings";
+import { ScheduleCarInfo } from "../components/schedule/ScheduleCarInfo";
+import { ScheduleSummary } from "../components/schedule/ScheduleSummary";
+import BackArrow from "../components/ui/svgs/BackArrow";
+import { useColorScheme } from "../hooks/use-color-scheme";
 import {
     ChakraPetch_600SemiBold,
     useFonts,
@@ -105,7 +105,7 @@ export default function ScheduleBidScreen() {
         showsVerticalScrollIndicator={false}
       >
         <ScheduleCarInfo
-          image={require("@/assets/images/AuthBg.png")}
+          image={require("../assets/images/AuthBg.png")}
           title="2023 FORD MUSTANG GT"
           year="2017"
           mileage="15000 KM"

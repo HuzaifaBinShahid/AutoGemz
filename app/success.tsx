@@ -13,8 +13,8 @@ import {
   View,
 } from "react-native";
 
-import { AuthLayout } from "@/components/auth/AuthLayout";
-import AccountCreatedIcon from "@/components/ui/svgs/AccountCreatedIcon";
+import { AuthLayout } from "../components/auth/AuthLayout";
+import AccountCreatedIcon from "../components/ui/svgs/AccountCreatedIcon";
 
 export default function SuccessScreen() {
   const [fontsLoaded] = useFonts({

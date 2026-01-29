@@ -1,9 +1,9 @@
-import { BottomNav } from "@/components/home/BottomNav";
-import { AuctionBottomSheet } from "@/components/home/AuctionBottomSheet";
-import { SortByBottomSheet } from "@/components/modals/SortByBottomSheet";
-import FiltersIcon from "@/components/ui/svgs/FiltersIcon";
-import NotificationsListIcon from "@/components/ui/svgs/NotificationsListIcon";
-import { useColorScheme } from "@/hooks/use-color-scheme";
+import { BottomNav } from "../components/home/BottomNav";
+import { AuctionBottomSheet } from "../components/home/AuctionBottomSheet";
+import { SortByBottomSheet } from "../components/modals/SortByBottomSheet";
+import FiltersIcon from "../components/ui/svgs/FiltersIcon";
+import NotificationsListIcon from "../components/ui/svgs/NotificationsListIcon";
+import { useColorScheme } from "../hooks/use-color-scheme";
 import {
   ChakraPetch_600SemiBold,
   useFonts,

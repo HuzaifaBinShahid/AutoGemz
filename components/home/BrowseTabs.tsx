@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { useColorScheme } from "@/hooks/use-color-scheme";
-import FamilyCarsIcon from "@/components/ui/svgs/FamilyCarsIcon";
-import SeaterIcon from "@/components/ui/svgs/SeaterIcon";
-import ImportedCarsIcon from "@/components/ui/svgs/ImportedCarsIcon";
-import SmallCarsIcon from "@/components/ui/svgs/SmallCarsIcon";
-import Icon1300CC from "@/components/ui/svgs/1300CCIcon";
+import { useColorScheme } from "../../hooks/use-color-scheme";
+import FamilyCarsIcon from "../../components/ui/svgs/FamilyCarsIcon";
+import SeaterIcon from "../../components/ui/svgs/SeaterIcon";
+import ImportedCarsIcon from "../../components/ui/svgs/ImportedCarsIcon";
+import SmallCarsIcon from "../../components/ui/svgs/SmallCarsIcon";
+import Icon1300CC from "../../components/ui/svgs/1300CCIcon";
 
 const tabs = ["Body Type", "City", "Specifications", "Model"];
 

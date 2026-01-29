@@ -1,6 +1,6 @@
-import ThemedCalendarIcon from "@/components/ui/svgs/ThemedCalendarIcon";
-import ThemedEyeIcon from "@/components/ui/svgs/ThemedEyeIcon";
-import { useColorScheme } from "@/hooks/use-color-scheme";
+import ThemedCalendarIcon from "../../components/ui/svgs/ThemedCalendarIcon";
+import ThemedEyeIcon from "../../components/ui/svgs/ThemedEyeIcon";
+import { useColorScheme } from "../../hooks/use-color-scheme";
 import { Image } from "expo-image";
 import { useRouter } from "expo-router";
 import React from "react";

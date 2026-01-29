@@ -1,4 +1,4 @@
-import { useColorScheme } from "@/hooks/use-color-scheme";
+import { useColorScheme } from "../hooks/use-color-scheme";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import {
@@ -10,14 +10,14 @@ import {
 } from "react-native";
 import { Image } from "expo-image";
 import { SafeAreaView } from "react-native-safe-area-context";
-import MyAuctionCars from "@/components/ui/svgs/MyAuctionCars";
-import DealerOffers from "@/components/ui/svgs/DealerOffers";
-import PaymentReciepts from "@/components/ui/svgs/PaymentReciepts";
-import ScheduleBidIcon from "@/components/ui/svgs/ScheduleBidIcon";
-import HelpIcon from "@/components/ui/svgs/HelpIcon";
-import RightArrow from "@/components/ui/svgs/RightArrow";
-import { BottomNav } from "@/components/home/BottomNav";
-import { AuctionListedModal } from "@/components/modals/AuctionListedModal";
+import MyAuctionCars from "../components/ui/svgs/MyAuctionCars";
+import DealerOffers from "../components/ui/svgs/DealerOffers";
+import PaymentReciepts from "../components/ui/svgs/PaymentReciepts";
+import ScheduleBidIcon from "../components/ui/svgs/ScheduleBidIcon";
+import HelpIcon from "../components/ui/svgs/HelpIcon";
+import RightArrow from "../components/ui/svgs/RightArrow";
+import { BottomNav } from "../components/home/BottomNav";
+import { AuctionListedModal } from "../components/modals/AuctionListedModal";
 import { StatusBar } from "expo-status-bar";
 
 interface MenuItem {
@@ -40,6 +40,12 @@ export default function MoreScreen() {
       label: "My Auction Cars",
       icon: <MyAuctionCars />,
       onPress: () => router.push("/my-auction-cars"),
+    },
+    {
+      id: "1b",
+      label: "My Vehicle",
+      icon: <MyAuctionCars />,
+      onPress: () => router.push("/my-vehicles"),
     },
     {
       id: "2",
@@ -79,7 +85,7 @@ export default function MoreScreen() {
       >
         <View style={[styles.profileSection]}>
           <Image
-            source={require("@/assets/images/AuthBg.png")}
+            source={require("../assets/images/AuthBg.png")}
             style={styles.avatar}
           />
           <Text style={[styles.name, isDark && styles.nameDark]}>

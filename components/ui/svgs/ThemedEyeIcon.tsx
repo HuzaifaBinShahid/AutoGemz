@@ -1,6 +1,6 @@
 import React from "react";
 import Svg, { Path } from "react-native-svg";
-import { useColorScheme } from "@/hooks/use-color-scheme";
+import { useColorScheme } from "../../../hooks/use-color-scheme";
 
 const ThemedEyeIcon = () => {
   const colorScheme = useColorScheme();

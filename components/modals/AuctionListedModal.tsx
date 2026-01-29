@@ -1,5 +1,5 @@
-import AccountCreatedIcon from "@/components/ui/svgs/AccountCreatedIcon";
-import { useColorScheme } from "@/hooks/use-color-scheme";
+import AccountCreatedIcon from "../../components/ui/svgs/AccountCreatedIcon";
+import { useColorScheme } from "../../hooks/use-color-scheme";
 import {
   ChakraPetch_600SemiBold,
   useFonts,

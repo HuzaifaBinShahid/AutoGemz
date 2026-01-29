@@ -1,8 +1,8 @@
-import ClockIcon from "@/components/ui/svgs/ClockIcon";
-import ElectricIcon from "@/components/ui/svgs/ElectricIcon";
-import InfoIcon from "@/components/ui/svgs/InfoIcon";
-import LightbulbIcon from "@/components/ui/svgs/LightbulbIcon";
-import { useColorScheme } from "@/hooks/use-color-scheme";
+import ClockIcon from "../../components/ui/svgs/ClockIcon";
+import ElectricIcon from "../../components/ui/svgs/ElectricIcon";
+import InfoIcon from "../../components/ui/svgs/InfoIcon";
+import LightbulbIcon from "../../components/ui/svgs/LightbulbIcon";
+import { useColorScheme } from "../../hooks/use-color-scheme";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";

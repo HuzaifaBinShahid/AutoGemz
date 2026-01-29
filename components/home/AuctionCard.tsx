@@ -1,11 +1,11 @@
-import { useColorScheme } from "@/hooks/use-color-scheme";
+import { useColorScheme } from "../../hooks/use-color-scheme";
 import { Image } from "expo-image";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 
-import FireIcon from "@/components/ui/svgs/FireIcon";
-import ThemedCalendarIcon from "@/components/ui/svgs/ThemedCalendarIcon";
-import ThemedMeterIcon from "@/components/ui/svgs/ThemedMeterIcon";
+import FireIcon from "../../components/ui/svgs/FireIcon";
+import ThemedCalendarIcon from "../../components/ui/svgs/ThemedCalendarIcon";
+import ThemedMeterIcon from "../../components/ui/svgs/ThemedMeterIcon";
 
 interface AuctionCardProps {
   image: any;

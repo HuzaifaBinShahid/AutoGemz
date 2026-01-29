@@ -1,6 +1,6 @@
-import { AuctionStatus, MyAuctionCarCard } from "@/components/auction/MyAuctionCarCard";
-import BackArrow from "@/components/ui/svgs/BackArrow";
-import { useColorScheme } from "@/hooks/use-color-scheme";
+import { AuctionStatus, MyAuctionCarCard } from "../components/auction/MyAuctionCarCard";
+import BackArrow from "../components/ui/svgs/BackArrow";
+import { useColorScheme } from "../hooks/use-color-scheme";
 import {
     ChakraPetch_600SemiBold,
     useFonts,
@@ -36,7 +36,7 @@ interface AuctionCar {
 const dummyCars: AuctionCar[] = [
   {
     id: "1",
-    image: require("@/assets/images/AuthBg.png"),
+    image: require("../assets/images/AuthBg.png"),
     title: "2023 FORD MUSTANG GT",
     status: "ending_soon",
     timeRemaining: "0D 5H 0S",
@@ -48,7 +48,7 @@ const dummyCars: AuctionCar[] = [
   },
   {
     id: "2",
-    image: require("@/assets/images/AuthBg.png"),
+    image: require("../assets/images/AuthBg.png"),
     title: "2023 FORD MUSTANG GT",
     status: "won",
     bidders: 8,
@@ -59,7 +59,7 @@ const dummyCars: AuctionCar[] = [
   },
   {
     id: "3",
-    image: require("@/assets/images/AuthBg.png"),
+    image: require("../assets/images/AuthBg.png"),
     title: "2023 FORD MUSTANG GT",
     status: "scheduled",
     bidders: 5,

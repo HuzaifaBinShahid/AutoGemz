@@ -13,19 +13,19 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useColorScheme } from "@/hooks/use-color-scheme";
-import { SearchBar } from "@/components/home/SearchBar";
-import { BrowseTabs } from "@/components/home/BrowseTabs";
-import { AuctionCard } from "@/components/home/AuctionCard";
-import { NewsCard } from "@/components/home/NewsCard";
-import { BottomNav } from "@/components/home/BottomNav";
-import { AuctionBottomSheet } from "@/components/home/AuctionBottomSheet";
+import { useColorScheme } from "../../hooks/use-color-scheme";
+import { SearchBar } from "../../components/home/SearchBar";
+import { BrowseTabs } from "../../components/home/BrowseTabs";
+import { AuctionCard } from "../../components/home/AuctionCard";
+import { NewsCard } from "../../components/home/NewsCard";
+import { BottomNav } from "../../components/home/BottomNav";
+import { AuctionBottomSheet } from "../../components/home/AuctionBottomSheet";
 import { useRouter } from "expo-router";
 
 const auctions = [
   {
     id: 1,
-    image: require("@/assets/images/AuthBg.png"),
+    image: require("../../assets/images/AuthBg.png"),
     title: "2023 FORD MUSTANG GT",
     currentBid: "CURRENT BID RS: 12,00,00",
     timeRemaining: "1D 45H 3S",
@@ -35,7 +35,7 @@ const auctions = [
   },
   {
     id: 2,
-    image: require("@/assets/images/AuthBg.png"),
+    image: require("../../assets/images/AuthBg.png"),
     title: "2022 PORSCHE 911",
     currentBid: "CURRENT BID RS: 15,00,00",
     timeRemaining: "2D 12H 30S",
@@ -48,7 +48,7 @@ const auctions = [
 const news = [
   {
     id: 1,
-    image: require("@/assets/images/AuthBg.png"),
+    image: require("../../assets/images/AuthBg.png"),
     date: "JULY 14, 2024",
     author: "DREW ADAMS",
     title: "BENEFITS OF REGULAR OIL CHANGES...",
@@ -56,7 +56,7 @@ const news = [
   },
   {
     id: 2,
-    image: require("@/assets/images/AuthBg.png"),
+    image: require("../../assets/images/AuthBg.png"),
     date: "JULY 15, 2024",
     author: "JANE SMITH",
     title: "ELECTRIC VEHICLES: THE FUTURE...",
@@ -97,7 +97,7 @@ export default function HomeScreen() {
             onPress={() => router.push("/profile-settings")}
           >
             <Image
-              source={require("@/assets/images/icon.png")}
+              source={require("../../assets/images/icon.png")}
               style={styles.avatarImage}
               contentFit="cover"
             />

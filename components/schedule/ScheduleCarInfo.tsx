@@ -1,12 +1,12 @@
-import { useColorScheme } from "@/hooks/use-color-scheme";
+import { useColorScheme } from "../../hooks/use-color-scheme";
 import { Image } from "expo-image";
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import ThemedCalendarIcon from "@/components/ui/svgs/ThemedCalendarIcon";
-import ThemedMeterIcon from "@/components/ui/svgs/ThemedMeterIcon";
-import EditIcon from "@/components/ui/svgs/EditIcon";
-import DeleteIcon from "@/components/ui/svgs/DeleteIcon";
+import ThemedCalendarIcon from "../../components/ui/svgs/ThemedCalendarIcon";
+import ThemedMeterIcon from "../../components/ui/svgs/ThemedMeterIcon";
+import EditIcon from "../../components/ui/svgs/EditIcon";
+import DeleteIcon from "../../components/ui/svgs/DeleteIcon";
 
 interface ScheduleCarInfoProps {
   image: any;

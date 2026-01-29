@@ -1,12 +1,16 @@
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useState } from 'react';
 import * as SplashScreen from 'expo-splash-screen';
+import ToastManager from 'expo-react-native-toastify';
 import 'react-native-reanimated';
 
-import { useColorScheme } from '@/hooks/use-color-scheme';
-import { SplashScreenComponent } from '@/components/splash-screen';
+import { useColorScheme } from '../hooks/use-color-scheme';
+import { SplashScreenComponent } from '../components/splash-screen';
+
+const queryClient = new QueryClient();
 
 SplashScreen.preventAutoHideAsync();
 
@@ -43,6 +47,7 @@ export default function RootLayout() {
   }
 
   return (
+    <QueryClientProvider client={queryClient}>
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <Stack>
         <Stack.Screen name="index" options={{ headerShown: false }} />
@@ -69,6 +74,7 @@ export default function RootLayout() {
         <Stack.Screen name="winner" options={{ headerShown: false, animation: "fade" }} />
         <Stack.Screen name="more" options={{ headerShown: false, animation: "fade" }} />
         <Stack.Screen name="my-auction-cars" options={{ headerShown: false, animation: "fade" }} />
+        <Stack.Screen name="my-vehicles" options={{ headerShown: false, animation: "fade" }} />
         <Stack.Screen name="instant-offers" options={{ headerShown: false, animation: "fade" }} />
         <Stack.Screen name="payments-receipts" options={{ headerShown: false, animation: "fade" }} />
         <Stack.Screen name="payment-details" options={{ headerShown: false, animation: "fade" }} />
@@ -83,7 +89,9 @@ export default function RootLayout() {
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
       </Stack>
+      <ToastManager />
       <StatusBar style="auto" />
     </ThemeProvider>
+    </QueryClientProvider>
   );
 }
