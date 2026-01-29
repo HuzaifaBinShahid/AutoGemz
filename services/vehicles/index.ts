@@ -35,3 +35,57 @@ export const sellVehicleWithFormData = async (formData: FormData): Promise<SellV
   });
   return response.data;
 };
+
+export interface SellingVehicle {
+  make: string;
+  model: string;
+  year: number;
+  transmission: string;
+  vin: string;
+  mileage: number;
+  description: string;
+  additionalDetails: string | null;
+  images: string[];
+  city: string;
+  state?: string;
+  freeinspectionRequest: boolean;
+  mobileNumber: string;
+  secondaryNumber: string;
+  allowWhatpsAppContact: boolean;
+  userId: string;
+  isActive: boolean;
+  adStatus: string;
+  vehicleStatus: string;
+  inspectorId: string | null;
+  type: string;
+  price?: number;
+  id: string;
+}
+
+export interface SellingVehiclesResponse {
+  message?: string;
+  data?: {
+    results: SellingVehicle[];
+    page: number;
+    limit: number;
+    totalPages: number;
+    totalResults: number;
+  };
+}
+
+export interface GetSellingVehiclesParams {
+  page?: number;
+  limit?: number;
+  sortBy?: string;
+}
+
+export const getSellingVehicles = async (
+  params: GetSellingVehiclesParams = {}
+): Promise<SellingVehiclesResponse> => {
+  const { page = 1, limit = 10, sortBy = "createdAt:desc" } = params;
+  const response = await apiClient.get<SellingVehiclesResponse>(
+    VehicleUrls.SELLING_VEHICLES,
+    { params: { page, limit, sortBy } }
+  );
+  return response.data;
+};

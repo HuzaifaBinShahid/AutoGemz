@@ -42,6 +42,12 @@ export default function MoreScreen() {
       onPress: () => router.push("/my-auction-cars"),
     },
     {
+      id: "1b",
+      label: "My Vehicle",
+      icon: <MyAuctionCars />,
+      onPress: () => router.push("/my-vehicles"),
+    },
+    {
       id: "2",
       label: "Dealer Instant Offers",
       icon: <DealerOffers />,
