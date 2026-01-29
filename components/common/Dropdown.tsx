@@ -23,32 +23,29 @@ export function Dropdown({ placeholder, options = [], value, onSelect, customIco
 
   return (
     <View style={styles.container}>
-      <View style={styles.dropdownRow}>
-        <TouchableOpacity
-          style={[styles.dropdown, isDark && styles.dropdownDark]}
-          onPress={() => setIsOpen(true)}
+      <TouchableOpacity
+        style={[styles.dropdown, isDark && styles.dropdownDark]}
+        onPress={() => setIsOpen(true)}
+        activeOpacity={0.7}
+      >
+        <Text
+          style={[
+            styles.text,
+            isDark && styles.textDark,
+            !value && styles.placeholder,
+            !value && isDark && styles.placeholderDark,
+          ]}
         >
-          <Text
-            style={[
-              styles.text,
-              isDark && styles.textDark,
-              !value && styles.placeholder,
-              !value && isDark && styles.placeholderDark,
-            ]}
-          >
-            {value || placeholder}
-          </Text>
-        </TouchableOpacity>
-        {customIcon ? (
-          <TouchableOpacity style={styles.iconButton} onPress={() => setIsOpen(true)}>
-            {customIcon}
-          </TouchableOpacity>
-        ) : (
-          <TouchableOpacity style={styles.iconButton} onPress={() => setIsOpen(true)}>
+          {value || placeholder}
+        </Text>
+        <View style={styles.dropdownIconContainer}>
+          {customIcon ? (
+            customIcon
+          ) : (
             <DropdownArrow backgroundColor={value ? "#DC3729" : undefined} />
-          </TouchableOpacity>
-        )}
-      </View>
+          )}
+        </View>
+      </TouchableOpacity>
 
       <Modal
         visible={isOpen}
@@ -88,17 +85,16 @@ const styles = StyleSheet.create({
   container: {
     marginBottom: 16,
   },
-  dropdownRow: {
+  dropdown: {
+    position: "relative",
     flexDirection: "row",
     alignItems: "center",
-  },
-  dropdown: {
-    flex: 1,
-    backgroundColor: "#F4F4F4",
-    borderWidth: 0,
+    backgroundColor: "#FFFFFF",
+    borderWidth: 0.3,
+    borderColor: "#E5E5E5",
     paddingHorizontal: 16,
-    paddingVertical: 6,
-    justifyContent: "center",
+    paddingVertical: 16,
+    minHeight: 48,
   },
   dropdownDark: {
     backgroundColor: "#FFFFFF0D",
@@ -110,6 +106,15 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: "Mulish_400Regular",
     color: "#494949",
+    paddingRight: 40,
+  },
+  dropdownIconContainer: {
+    position: "absolute",
+    right: 16,
+    top: 0,
+    bottom: 0,
+    justifyContent: "center",
+    alignItems: "center",
   },
   textDark: {
     color: "#FFFFFF",

@@ -7,10 +7,12 @@ import {
   useFonts,
 } from "@expo-google-fonts/chakra-petch";
 import { Mulish_400Regular } from "@expo-google-fonts/mulish";
-import { useRouter } from "expo-router";
+import * as ImagePicker from "expo-image-picker";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
+  Image,
   ScrollView,
   StyleSheet,
   Text,
@@ -18,6 +20,11 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { clearAuctionImageUris, setAuctionImageUris } from "../services/vehicles/imageStore";
+
+function asString(p: string | string[] | undefined): string {
+  return Array.isArray(p) ? p[0] ?? "" : p ?? "";
+}
 
 export default function UploadMediaScreen() {
   const [fontsLoaded] = useFonts({
@@ -27,8 +34,52 @@ export default function UploadMediaScreen() {
   const router = useRouter();
   const colorScheme = useColorScheme();
   const isDark = colorScheme === "dark";
+  const params = useLocalSearchParams<{
+    type?: string;
+    make?: string;
+    model?: string;
+    year?: string;
+    transmission?: string;
+    vin?: string;
+    mileage?: string;
+    description?: string;
+    city?: string;
+    state?: string;
+    price?: string;
+  }>();
+  const [imageUris, setImageUris] = useState<string[]>([]);
+  const [errors, setErrors] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    if (fontsLoaded && asString(params.type) !== "3step") {
+      router.replace("/add-car-to-auction");
+    }
+  }, [fontsLoaded, params.type, router]);
+
+  const pickImages = async () => {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (status !== "granted") return;
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ["images"],
+      allowsMultipleSelection: true,
+      quality: 0.8,
+    });
+    if (!result.canceled && result.assets.length > 0) {
+      const uris = result.assets.map((a) => a.uri);
+      setImageUris((prev) => [...prev, ...uris].slice(0, 20));
+      if (errors.images) setErrors((e) => ({ ...e, images: undefined }));
+    }
+  };
+
+  const removeImage = (index: number) => {
+    setImageUris((prev) => prev.filter((_, i) => i !== index));
+  };
 
   if (!fontsLoaded) {
+    return null;
+  }
+
+  if (asString(params.type) !== "3step") {
     return null;
   }
 
@@ -92,12 +143,25 @@ export default function UploadMediaScreen() {
 
           <View style={[styles.uploadBox, isDark && styles.uploadBoxDark]}>
             <UploadMediaIcon />
-            <TouchableOpacity style={styles.addPhotosButton}>
+            <TouchableOpacity style={styles.addPhotosButton} onPress={pickImages}>
               <Text style={styles.addPhotosButtonText}>+ ADD PHOTOS</Text>
             </TouchableOpacity>
             <Text style={[styles.maxLimitText, isDark && styles.maxLimitTextDark]}>
               (Max limit 5 MB per image)
             </Text>
+            {imageUris.length > 0 && (
+              <View style={styles.previewRow}>
+                {imageUris.map((uri, index) => (
+                  <View key={index} style={styles.previewWrap}>
+                    <Image source={{ uri }} style={styles.previewImg} />
+                    <TouchableOpacity style={styles.removeBtn} onPress={() => removeImage(index)}>
+                      <Text style={styles.removeBtnText}>×</Text>
+                    </TouchableOpacity>
+                  </View>
+                ))}
+              </View>
+            )}
+            {errors.images ? <Text style={styles.errorText}>{errors.images}</Text> : null}
           </View>
 
           <View style={styles.instructionsContainer}>
@@ -131,7 +195,27 @@ export default function UploadMediaScreen() {
         <TouchableOpacity
           style={styles.nextButton}
           onPress={() => {
-            router.push("/auction-contact");
+            if (imageUris.length === 0) {
+              setErrors({ images: "Add at least one image" });
+              return;
+            }
+            setAuctionImageUris(imageUris);
+            router.push({
+              pathname: "/contact-info",
+              params: {
+                type: "3step",
+                make: asString(params.make),
+                model: asString(params.model),
+                year: asString(params.year),
+                transmission: asString(params.transmission),
+                vin: asString(params.vin),
+                mileage: asString(params.mileage),
+                description: asString(params.description),
+                city: asString(params.city),
+                state: asString(params.state),
+                price: asString(params.price),
+              },
+            });
           }}
         >
           <Text style={styles.nextButtonText}>NEXT</Text>
@@ -306,6 +390,44 @@ const styles = StyleSheet.create({
     fontFamily: "ChakraPetch_600SemiBold",
     color: "#FFFFFF",
     textTransform: "uppercase",
+  },
+  previewRow: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 8,
+    marginTop: 16,
+  },
+  previewWrap: {
+    width: 72,
+    height: 72,
+    position: "relative",
+  },
+  previewImg: {
+    width: 72,
+    height: 72,
+    borderRadius: 4,
+  },
+  removeBtn: {
+    position: "absolute",
+    top: -4,
+    right: -4,
+    width: 22,
+    height: 22,
+    borderRadius: 11,
+    backgroundColor: "#DC3729",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  removeBtnText: {
+    color: "#FFFFFF",
+    fontSize: 16,
+    lineHeight: 18,
+  },
+  errorText: {
+    marginTop: 8,
+    fontSize: 12,
+    fontFamily: "Mulish_400Regular",
+    color: "#DC3729",
   },
   maxLimitText: {
     fontSize: 12,

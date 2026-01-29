@@ -10,8 +10,10 @@ import { Mulish_400Regular } from "@expo-google-fonts/mulish";
 import { Image } from "expo-image";
 import { useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
+  ActivityIndicator,
+  Platform,
   ScrollView,
   StyleSheet,
   Text,
@@ -19,7 +21,10 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import DateTimePicker from "@react-native-community/datetimepicker";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Toast } from "expo-react-native-toastify";
+import { useProfile, useUpdateProfile } from "../services/auth/hooks";
 
 export default function ProfileSettingsScreen() {
   const [fontsLoaded] = useFonts({
@@ -29,18 +34,70 @@ export default function ProfileSettingsScreen() {
   const router = useRouter();
   const colorScheme = useColorScheme();
   const isDark = colorScheme === "dark";
+  const { data, isLoading } = useProfile();
+  const updateProfileMutation = useUpdateProfile();
 
   const [fullName, setFullName] = useState("");
   const [gender, setGender] = useState("");
   const [dateOfBirth, setDateOfBirth] = useState("");
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [datePickerDate, setDatePickerDate] = useState<Date>(() => new Date());
   const [country, setCountry] = useState("");
   const [city, setCity] = useState("");
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [mobileNumber, setMobileNumber] = useState("");
 
+  function formatDateForApi(date: Date): string {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${y}-${m}-${day}`;
+}
+
+function parseDateFromApi(value: string | null | undefined): Date | null {
+  if (!value) return null;
+  const d = new Date(value);
+  return isNaN(d.getTime()) ? null : d;
+}
+
+  useEffect(() => {
+    if (data?.data) {
+      const d = data.data;
+      setFullName(d.fullName ?? "");
+      setGender(d.gender ?? "");
+      const dobStr = d.dateOfBirth;
+      if (dobStr) {
+        const parsed = parseDateFromApi(dobStr);
+        if (parsed) {
+          setDateOfBirth(formatDateForApi(parsed));
+          setDatePickerDate(parsed);
+        } else {
+          setDateOfBirth("");
+        }
+      } else {
+        setDateOfBirth("");
+      }
+      setCountry(d.country ?? "");
+      setCity(d.city ?? "");
+      setEmail(d.email ?? "");
+      setUsername(d.username ?? "");
+      setMobileNumber(d.phone ?? "");
+    }
+  }, [data]);
+
   if (!fontsLoaded) {
     return null;
+  }
+
+  if (isLoading) {
+    return (
+      <SafeAreaView style={[styles.container, isDark && styles.containerDark]} edges={["top"]}>
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color="#DC3729" />
+        </View>
+      </SafeAreaView>
+    );
   }
 
   return (
@@ -112,22 +169,59 @@ export default function ProfileSettingsScreen() {
             <Text style={[styles.label, isDark && styles.labelDark]}>
               Date of Birth
             </Text>
-            <View style={styles.dateInputContainer}>
-              <TextInput
+            <TouchableOpacity
+              style={[
+                styles.dateInputContainer,
+                styles.dateTouchable,
+                isDark && styles.dateTouchableDark,
+              ]}
+              onPress={() => {
+                if (dateOfBirth) {
+                  const p = parseDateFromApi(dateOfBirth);
+                  if (p) setDatePickerDate(p);
+                }
+                setShowDatePicker(true);
+              }}
+              activeOpacity={0.7}
+            >
+              <Text
                 style={[
-                  styles.input,
                   styles.dateInput,
+                  styles.dateInputText,
                   isDark && styles.inputDark,
+                  !dateOfBirth && (isDark ? styles.datePlaceholderDark : styles.datePlaceholder),
                 ]}
-                placeholder="DATE OF BIRTH"
-                placeholderTextColor={isDark ? "#A5A5A5" : "#A5A5A5"}
-                value={dateOfBirth}
-                onChangeText={setDateOfBirth}
-              />
+              >
+                {dateOfBirth || "DATE OF BIRTH"}
+              </Text>
               <View style={styles.calendarIconContainer}>
                 <CalendarIcon />
               </View>
-            </View>
+            </TouchableOpacity>
+            {showDatePicker && (
+              <DateTimePicker
+                value={datePickerDate}
+                mode="date"
+                display={Platform.OS === "ios" ? "spinner" : "default"}
+                onChange={(_: unknown, selectedDate?: Date) => {
+                  if (Platform.OS === "android") setShowDatePicker(false);
+                  if (selectedDate) {
+                    setDatePickerDate(selectedDate);
+                    setDateOfBirth(formatDateForApi(selectedDate));
+                  }
+                }}
+              />
+            )}
+            {showDatePicker && Platform.OS === "ios" && (
+              <View style={styles.iosDatePickerActions}>
+                <TouchableOpacity
+                  style={styles.iosDatePickerButton}
+                  onPress={() => setShowDatePicker(false)}
+                >
+                  <Text style={styles.iosDatePickerButtonText}>Done</Text>
+                </TouchableOpacity>
+              </View>
+            )}
           </View>
 
           <View style={styles.fieldContainer}>
@@ -194,8 +288,41 @@ export default function ProfileSettingsScreen() {
           </View>
         </View>
 
-        <TouchableOpacity style={styles.saveButton}>
-          <Text style={styles.saveButtonText}>SAVE CHANGES</Text>
+        <TouchableOpacity
+          style={[styles.saveButton, updateProfileMutation.isPending && styles.saveButtonDisabled]}
+          onPress={() => {
+            updateProfileMutation.mutate(
+              {
+                fullName: fullName.trim(),
+                gender: gender || undefined,
+                dateOfBirth: dateOfBirth || undefined,
+                country: country || undefined,
+                city: city || undefined,
+                username: username.trim() || undefined,
+              },
+              {
+                onSuccess: () => {
+                  Toast.success("Profile updated successfully");
+                },
+                onError: (err) => {
+                  const msg =
+                    err && typeof err === "object" && "response" in err
+                      ? (err as { response?: { data?: { message?: string } } }).response?.data?.message
+                      : err instanceof Error
+                        ? err.message
+                        : "Something went wrong";
+                  Toast.error(msg ?? "Something went wrong");
+                },
+              }
+            );
+          }}
+          disabled={updateProfileMutation.isPending}
+        >
+          {updateProfileMutation.isPending ? (
+            <ActivityIndicator color="#FFFFFF" />
+          ) : (
+            <Text style={styles.saveButtonText}>SAVE CHANGES</Text>
+          )}
         </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
@@ -209,6 +336,11 @@ const styles = StyleSheet.create({
   },
   containerDark: {
     backgroundColor: "#000000",
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
   scrollView: {
     flex: 1,
@@ -305,18 +437,62 @@ const styles = StyleSheet.create({
   dateInputContainer: {
     position: "relative",
   },
+  dateTouchable: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#FFFFFF",
+    borderWidth: 0.3,
+    borderColor: "#E5E5E5",
+    paddingHorizontal: 16,
+    paddingVertical: 16,
+    minHeight: 48,
+  },
+  dateTouchableDark: {
+    backgroundColor: "#FFFFFF0D",
+    borderColor: "#FFFFFF2E",
+  },
   dateInput: {
     paddingRight: 50,
+  },
+  dateInputText: {
+    flex: 1,
+    fontSize: 12,
+    fontFamily: "Mulish_400Regular",
+    color: "#494949",
+    paddingRight: 34,
+  },
+  datePlaceholder: {
+    color: "#A5A5A5",
+  },
+  datePlaceholderDark: {
+    color: "#A5A5A5",
   },
   calendarIconContainer: {
     position: "absolute",
     right: 16,
     top: 16,
   },
+  iosDatePickerActions: {
+    marginTop: 8,
+    flexDirection: "row",
+    justifyContent: "flex-end",
+  },
+  iosDatePickerButton: {
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+  },
+  iosDatePickerButtonText: {
+    fontSize: 16,
+    fontFamily: "Mulish_400Regular",
+    color: "#DC3729",
+  },
   saveButton: {
     backgroundColor: "#DC3729",
     paddingVertical: 16,
     alignItems: "center",
+  },
+  saveButtonDisabled: {
+    opacity: 0.7,
   },
   saveButtonText: {
     fontSize: 16,

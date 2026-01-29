@@ -105,7 +105,7 @@ export default function LoginScreen() {
 
       <View style={styles.inputsContainer}>
         <CommonInput
-          placeholder="USERNAME"
+          placeholder="EMAIL OR USERNAME"
           icon={<Person />}
           value={emailOrUsername}
           onChangeText={(t) => {

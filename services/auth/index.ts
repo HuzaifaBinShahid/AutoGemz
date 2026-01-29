@@ -65,21 +65,48 @@ export const login = async (payload: LoginRequest): Promise<LoginResponse> => {
 export interface ProfileResponse {
   message?: string;
   data?: {
+    paymentCard?: {
+      cardType?: string | null;
+      cardNumber?: string | null;
+      expiry?: string | null;
+    };
     fullName?: string;
-    gender?: string;
-    dateOfBirth?: string;
-    country?: string;
-    city?: string;
+    gender?: string | null;
+    dateOfBirth?: string | null;
+    country?: string | null;
+    city?: string | null;
     email?: string;
     username?: string;
     phone?: string;
-    mobileNumber?: string;
-    [key: string]: any;
+    role?: string;
+    isEmailVerified?: boolean;
+    isPhoneVerified?: boolean;
+    avatar?: string | null;
+    isActive?: boolean;
+    isBlacklisted?: boolean;
+    lastLogin?: string;
+    metadata?: Record<string, unknown>;
+    createdByAdmin?: string | null;
+    id?: string;
   };
 }
 
 export const getProfile = async (): Promise<ProfileResponse> => {
   const response = await apiClient.get<ProfileResponse>(AuthUrls.PROFILE);
+  return response.data;
+};
+
+export interface UpdateProfileRequest {
+  fullName: string;
+  gender?: string;
+  dateOfBirth?: string;
+  country?: string;
+  city?: string;
+  username?: string;
+}
+
+export const updateProfile = async (payload: UpdateProfileRequest): Promise<ProfileResponse> => {
+  const response = await apiClient.patch<ProfileResponse>(AuthUrls.PROFILE, payload);
   return response.data;
 };
 

@@ -1,6 +1,6 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
-import { forgotPassword, ForgotPasswordRequest, ForgotPasswordResponse, getProfile, login, LoginRequest, LoginResponse, logout, LogoutRequest, LogoutResponse, ProfileResponse, register, RegisterRequest, RegisterResponse } from "./index";
+import { forgotPassword, ForgotPasswordRequest, ForgotPasswordResponse, getProfile, login, LoginRequest, LoginResponse, logout, LogoutRequest, LogoutResponse, ProfileResponse, register, RegisterRequest, RegisterResponse, updateProfile, UpdateProfileRequest } from "./index";
 
 export const useRegister = () => {
   return useMutation<RegisterResponse, Error, RegisterRequest>({
@@ -30,5 +30,15 @@ export const useProfile = () => {
   return useQuery<ProfileResponse, Error>({
     queryKey: ["profile"],
     queryFn: getProfile,
+  });
+};
+
+export const useUpdateProfile = () => {
+  const queryClient = useQueryClient();
+  return useMutation<ProfileResponse, Error, UpdateProfileRequest>({
+    mutationFn: updateProfile,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["profile"] });
+    },
   });
 };
