@@ -1,5 +1,5 @@
 import React from "react";
-import { Platform, StyleSheet, TextInput, TextInputProps, View } from "react-native";
+import { Platform, StyleSheet, Text, TextInput, TextInputProps, View } from "react-native";
 
 interface CommonInputProps extends TextInputProps {
   icon?: React.ReactNode;
@@ -7,12 +7,13 @@ interface CommonInputProps extends TextInputProps {
   email?: boolean;
   containerStyle?: any;
   inputContainerStyle?: any;
+  error?: string;
 }
 
-export function CommonInput({ icon, rightIcon, email = false, style, containerStyle, inputContainerStyle, ...props }: CommonInputProps) {
+export function CommonInput({ icon, rightIcon, email = false, error, style, containerStyle, inputContainerStyle, ...props }: CommonInputProps) {
   return (
     <View style={[styles.container, containerStyle]}>
-      <View style={[styles.inputContainer, inputContainerStyle]}>
+      <View style={[styles.inputContainer, error ? styles.inputContainerError : undefined, inputContainerStyle]}>
         {icon && <View style={styles.iconContainer}>{icon}</View>}
         <TextInput
           style={[styles.input, style]}
@@ -24,6 +25,7 @@ export function CommonInput({ icon, rightIcon, email = false, style, containerSt
         />
         {rightIcon && <View style={styles.rightIconContainer}>{rightIcon}</View>}
       </View>
+      {error ? <Text style={styles.errorText}>{error}</Text> : null}
     </View>
   );
 }
@@ -37,9 +39,18 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#FFFFFF1A",
     paddingHorizontal: 16,
-    paddingVertical: 1, 
+    paddingVertical: 1,
     borderWidth: 1,
     borderColor: "#FFFFFF2E",
+  },
+  inputContainerError: {
+    borderColor: "#DC3729",
+  },
+  errorText: {
+    marginTop: 6,
+    fontSize: 12,
+    color: "#DC3729",
+    fontFamily: "Mulish_400Regular",
   },
   iconContainer: {
     marginRight: 12,

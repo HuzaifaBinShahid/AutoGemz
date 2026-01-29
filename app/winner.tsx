@@ -1,13 +1,13 @@
-import { AuctionClosedBanner } from "@/components/auction/AuctionClosedBanner";
-import { AuctionDetails } from "@/components/auction/AuctionDetails";
-import { AuctionImageCarousel } from "@/components/auction/AuctionImageCarousel";
-import { AuctionResult } from "@/components/auction/AuctionResult";
-import { CongratulationsBox } from "@/components/auction/CongratulationsBox";
-import { FinalRankingTable } from "@/components/auction/FinalRankingTable";
-import { OutbidBanner } from "@/components/auction/OutbidBanner";
-import { WinnerBanner } from "@/components/auction/WinnerBanner";
-import BackArrow from "@/components/ui/svgs/BackArrow";
-import { useColorScheme } from "@/hooks/use-color-scheme";
+import { AuctionClosedBanner } from "../components/auction/AuctionClosedBanner";
+import { AuctionDetails } from "../components/auction/AuctionDetails";
+import { AuctionImageCarousel } from "../components/auction/AuctionImageCarousel";
+import { AuctionResult } from "../components/auction/AuctionResult";
+import { CongratulationsBox } from "../components/auction/CongratulationsBox";
+import { FinalRankingTable } from "../components/auction/FinalRankingTable";
+import { OutbidBanner } from "../components/auction/OutbidBanner";
+import { WinnerBanner } from "../components/auction/WinnerBanner";
+import BackArrow from "../components/ui/svgs/BackArrow";
+import { useColorScheme } from "../hooks/use-color-scheme";
 import {
   ChakraPetch_600SemiBold,
   useFonts,
@@ -26,17 +26,17 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const carImages = [
-  require("@/assets/images/AuthBg.png"),
-  require("@/assets/images/AuthBg.png"),
-  require("@/assets/images/AuthBg.png"),
-  require("@/assets/images/AuthBg.png"),
-  require("@/assets/images/AuthBg.png"),
-  require("@/assets/images/AuthBg.png"),
-  require("@/assets/images/AuthBg.png"),
-  require("@/assets/images/AuthBg.png"),
-  require("@/assets/images/AuthBg.png"),
-  require("@/assets/images/AuthBg.png"),
-  require("@/assets/images/AuthBg.png"),
+  require("../assets/images/AuthBg.png"),
+  require("../assets/images/AuthBg.png"),
+  require("../assets/images/AuthBg.png"),
+  require("../assets/images/AuthBg.png"),
+  require("../assets/images/AuthBg.png"),
+  require("../assets/images/AuthBg.png"),
+  require("../assets/images/AuthBg.png"),
+  require("../assets/images/AuthBg.png"),
+  require("../assets/images/AuthBg.png"),
+  require("../assets/images/AuthBg.png"),
+  require("../assets/images/AuthBg.png"),
 ];
 
 export default function WinnerScreen() {

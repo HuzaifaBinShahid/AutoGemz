@@ -1,7 +1,7 @@
-import { Dropdown } from "@/components/common/Dropdown";
-import BackArrow from "@/components/ui/svgs/BackArrow";
-import CalendarIcon from "@/components/ui/svgs/CalendarIcon";
-import { useColorScheme } from "@/hooks/use-color-scheme";
+import { Dropdown } from "../components/common/Dropdown";
+import BackArrow from "../components/ui/svgs/BackArrow";
+import CalendarIcon from "../components/ui/svgs/CalendarIcon";
+import { useColorScheme } from "../hooks/use-color-scheme";
 import {
   ChakraPetch_600SemiBold,
   useFonts,
@@ -65,7 +65,7 @@ export default function ProfileSettingsScreen() {
         <View style={[styles.profileBox, isDark && styles.profileBoxDark]}>
           <View style={styles.profileImageContainer}>
             <Image
-              source={require("@/assets/images/icon.png")}
+              source={require("../assets/images/icon.png")}
               style={styles.profileImage}
               contentFit="cover"
             />

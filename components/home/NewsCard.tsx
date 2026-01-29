@@ -1,6 +1,6 @@
 import React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
-import { useColorScheme } from "@/hooks/use-color-scheme";
+import { useColorScheme } from "../../hooks/use-color-scheme";
 
 interface NewsCardProps {
   image: any;

@@ -3,10 +3,11 @@ import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useState } from 'react';
 import * as SplashScreen from 'expo-splash-screen';
+import ToastManager from 'expo-react-native-toastify';
 import 'react-native-reanimated';
 
-import { useColorScheme } from '@/hooks/use-color-scheme';
-import { SplashScreenComponent } from '@/components/splash-screen';
+import { useColorScheme } from '../hooks/use-color-scheme';
+import { SplashScreenComponent } from '../components/splash-screen';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -83,6 +84,7 @@ export default function RootLayout() {
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
       </Stack>
+      <ToastManager />
       <StatusBar style="auto" />
     </ThemeProvider>
   );

@@ -1,9 +1,9 @@
-import { Dropdown } from "@/components/common/Dropdown";
-import BackArrow from "@/components/ui/svgs/BackArrow";
-import MobileIcon from "@/components/ui/svgs/MobileIcon";
-import { Checkbox } from "@/components/common/Checkbox";
-import { AuctionListedModal } from "@/components/modals/AuctionListedModal";
-import { useColorScheme } from "@/hooks/use-color-scheme";
+import { Dropdown } from "../components/common/Dropdown";
+import BackArrow from "../components/ui/svgs/BackArrow";
+import MobileIcon from "../components/ui/svgs/MobileIcon";
+import { Checkbox } from "../components/common/Checkbox";
+import { AuctionListedModal } from "../components/modals/AuctionListedModal";
+import { useColorScheme } from "../hooks/use-color-scheme";
 import {
   ChakraPetch_600SemiBold,
   useFonts,

@@ -1,8 +1,8 @@
-import { useColorScheme } from "@/hooks/use-color-scheme";
+import { useColorScheme } from "../../hooks/use-color-scheme";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import InfoIcon from "@/components/ui/svgs/InfoIcon";
-import LightbulbIcon from "@/components/ui/svgs/LightbulbIcon";
+import InfoIcon from "../../components/ui/svgs/InfoIcon";
+import LightbulbIcon from "../../components/ui/svgs/LightbulbIcon";
 import { BidInputControl } from "./BidInputControl";
 
 interface AutoBidSettingsProps {

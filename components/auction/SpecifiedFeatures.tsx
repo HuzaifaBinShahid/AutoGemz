@@ -1,11 +1,11 @@
-import BluetoothIcon from "@/components/ui/svgs/BluetoothIcon";
-import CruiseControl from "@/components/ui/svgs/CruiseControl";
-import DigitalDisplay from "@/components/ui/svgs/DigitalDisplay";
-import NavigationIcon from "@/components/ui/svgs/NavigationIcon";
-import ParkingSensors from "@/components/ui/svgs/ParkingSensors";
-import Petrolcon from "@/components/ui/svgs/Petrolcon";
-import ReversingCameraIcon from "@/components/ui/svgs/ReversingCameraIcon";
-import { useColorScheme } from "@/hooks/use-color-scheme";
+import BluetoothIcon from "../../components/ui/svgs/BluetoothIcon";
+import CruiseControl from "../../components/ui/svgs/CruiseControl";
+import DigitalDisplay from "../../components/ui/svgs/DigitalDisplay";
+import NavigationIcon from "../../components/ui/svgs/NavigationIcon";
+import ParkingSensors from "../../components/ui/svgs/ParkingSensors";
+import Petrolcon from "../../components/ui/svgs/Petrolcon";
+import ReversingCameraIcon from "../../components/ui/svgs/ReversingCameraIcon";
+import { useColorScheme } from "../../hooks/use-color-scheme";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 

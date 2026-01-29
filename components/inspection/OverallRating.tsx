@@ -1,4 +1,4 @@
-import { useColorScheme } from "@/hooks/use-color-scheme";
+import { useColorScheme } from "../../hooks/use-color-scheme";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import Svg, { Circle, G } from "react-native-svg";

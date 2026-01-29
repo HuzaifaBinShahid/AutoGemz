@@ -1,7 +1,7 @@
-import { AccountSummaryCard } from "@/components/payments/AccountSummaryCard";
-import { TransactionCard, TransactionStatus } from "@/components/payments/TransactionCard";
-import BackArrow from "@/components/ui/svgs/BackArrow";
-import { useColorScheme } from "@/hooks/use-color-scheme";
+import { AccountSummaryCard } from "../components/payments/AccountSummaryCard";
+import { TransactionCard, TransactionStatus } from "../components/payments/TransactionCard";
+import BackArrow from "../components/ui/svgs/BackArrow";
+import { useColorScheme } from "../hooks/use-color-scheme";
 import {
     ChakraPetch_600SemiBold,
     useFonts,
@@ -34,7 +34,7 @@ interface Transaction {
 const dummyTransactions: Transaction[] = [
   {
     id: "1",
-    image: require("@/assets/images/AuthBg.png"),
+    image: require("../assets/images/AuthBg.png"),
     title: "2023 FORD MUSTANG GT",
     transactionId: "TXN-29384",
     date: "02 Nov 2025",
@@ -43,7 +43,7 @@ const dummyTransactions: Transaction[] = [
   },
   {
     id: "2",
-    image: require("@/assets/images/AuthBg.png"),
+    image: require("../assets/images/AuthBg.png"),
     title: "2023 FORD MUSTANG GT",
     transactionId: "TXN-29385",
     date: "01 Nov 2025",
@@ -52,7 +52,7 @@ const dummyTransactions: Transaction[] = [
   },
   {
     id: "3",
-    image: require("@/assets/images/AuthBg.png"),
+    image: require("../assets/images/AuthBg.png"),
     title: "2023 FORD MUSTANG GT",
     transactionId: "TXN-29386",
     date: "30 Oct 2025",

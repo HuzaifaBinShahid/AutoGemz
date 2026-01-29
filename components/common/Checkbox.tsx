@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
-import { useColorScheme } from "@/hooks/use-color-scheme";
+import { useColorScheme } from "../../hooks/use-color-scheme";
 
 interface CheckboxProps {
   checked: boolean;

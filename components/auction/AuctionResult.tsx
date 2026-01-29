@@ -1,5 +1,5 @@
-import InfoIcon from "@/components/ui/svgs/InfoIcon";
-import { useColorScheme } from "@/hooks/use-color-scheme";
+import InfoIcon from "../../components/ui/svgs/InfoIcon";
+import { useColorScheme } from "../../hooks/use-color-scheme";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 

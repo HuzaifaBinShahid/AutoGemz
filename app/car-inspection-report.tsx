@@ -1,21 +1,21 @@
-import { InfoSection } from "@/components/auction/InfoSection";
-import { MenuList } from "@/components/inspection/MenuList";
-import { OverallRating } from "@/components/inspection/OverallRating";
-import BackArrow from "@/components/ui/svgs/BackArrow";
-import Breaks from "@/components/ui/svgs/Breaks";
-import Comments from "@/components/ui/svgs/Comments";
-import Electronic from "@/components/ui/svgs/Electronical";
-import EngineTransmissions from "@/components/ui/svgs/EngineTransmissions";
-import ExteriorBody from "@/components/ui/svgs/ExteriorBody";
-import ExteriorConditions from "@/components/ui/svgs/ExteriorConditions";
-import Heater from "@/components/ui/svgs/Heater";
-import Interior from "@/components/ui/svgs/Interior";
-import MainIcon from "@/components/ui/svgs/MainIcon";
-import ShareIcon from "@/components/ui/svgs/ShareIcon";
-import SuspensionIcon from "@/components/ui/svgs/SuspensionIcon";
-import TestDriveIcon from "@/components/ui/svgs/TestDriveIcon";
-import TyresIcon from "@/components/ui/svgs/TyresIcon";
-import { useColorScheme } from "@/hooks/use-color-scheme";
+import { InfoSection } from "../components/auction/InfoSection";
+import { MenuList } from "../components/inspection/MenuList";
+import { OverallRating } from "../components/inspection/OverallRating";
+import BackArrow from "../components/ui/svgs/BackArrow";
+import Breaks from "../components/ui/svgs/Breaks";
+import Comments from "../components/ui/svgs/Comments";
+import Electronic from "../components/ui/svgs/Electronical";
+import EngineTransmissions from "../components/ui/svgs/EngineTransmissions";
+import ExteriorBody from "../components/ui/svgs/ExteriorBody";
+import ExteriorConditions from "../components/ui/svgs/ExteriorConditions";
+import Heater from "../components/ui/svgs/Heater";
+import Interior from "../components/ui/svgs/Interior";
+import MainIcon from "../components/ui/svgs/MainIcon";
+import ShareIcon from "../components/ui/svgs/ShareIcon";
+import SuspensionIcon from "../components/ui/svgs/SuspensionIcon";
+import TestDriveIcon from "../components/ui/svgs/TestDriveIcon";
+import TyresIcon from "../components/ui/svgs/TyresIcon";
+import { useColorScheme } from "../hooks/use-color-scheme";
 import {
   ChakraPetch_600SemiBold,
   useFonts,
@@ -165,7 +165,7 @@ export default function CarInspectionReportScreen() {
       >
         <View style={styles.imageContainer}>
           <Image
-            source={require("@/assets/images/AuthBg.png")}
+            source={require("../assets/images/AuthBg.png")}
             style={styles.image}
             contentFit="cover"
           />

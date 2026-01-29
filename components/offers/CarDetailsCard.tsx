@@ -1,6 +1,6 @@
-import DeleteIcon from "@/components/ui/svgs/DeleteIcon";
-import EditIcon from "@/components/ui/svgs/EditIcon";
-import { useColorScheme } from "@/hooks/use-color-scheme";
+import DeleteIcon from "../../components/ui/svgs/DeleteIcon";
+import EditIcon from "../../components/ui/svgs/EditIcon";
+import { useColorScheme } from "../../hooks/use-color-scheme";
 import { Image } from "expo-image";
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";

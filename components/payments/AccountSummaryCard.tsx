@@ -1,9 +1,9 @@
-import { useColorScheme } from "@/hooks/use-color-scheme";
+import { useColorScheme } from "../../hooks/use-color-scheme";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import TotalAmount from "@/components/ui/svgs/TotalAmount";
-import RemainingAmountIcon from "@/components/ui/svgs/RemainingAmountIcon";
-import ReturnsIcon from "@/components/ui/svgs/ReturnsIcon";
+import TotalAmount from "../../components/ui/svgs/TotalAmount";
+import RemainingAmountIcon from "../../components/ui/svgs/RemainingAmountIcon";
+import ReturnsIcon from "../../components/ui/svgs/ReturnsIcon";
 
 interface AccountSummaryCardProps {
   label: string;

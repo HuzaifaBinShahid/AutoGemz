@@ -1,7 +1,7 @@
-import { Dropdown } from "@/components/common/Dropdown";
-import BackArrow from "@/components/ui/svgs/BackArrow";
-import ThinkIcon from "@/components/ui/svgs/ThinkIcon";
-import { useColorScheme } from "@/hooks/use-color-scheme";
+import { Dropdown } from "../components/common/Dropdown";
+import BackArrow from "../components/ui/svgs/BackArrow";
+import ThinkIcon from "../components/ui/svgs/ThinkIcon";
+import { useColorScheme } from "../hooks/use-color-scheme";
 import {
   ChakraPetch_600SemiBold,
   useFonts,

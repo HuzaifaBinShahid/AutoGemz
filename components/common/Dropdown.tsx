@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Modal, Platform, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { useColorScheme } from "@/hooks/use-color-scheme";
-import DropdownArrow from "@/components/ui/svgs/DropdownArrow";
+import { useColorScheme } from "../../hooks/use-color-scheme";
+import DropdownArrow from "../../components/ui/svgs/DropdownArrow";
 
 interface DropdownProps {
   placeholder: string;

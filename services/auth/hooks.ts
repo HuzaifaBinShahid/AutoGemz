@@ -1,4 +1,5 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from '@tanstack/react-query';
+
 import { forgotPassword, ForgotPasswordRequest, ForgotPasswordResponse, getProfile, login, LoginRequest, LoginResponse, logout, LogoutRequest, LogoutResponse, ProfileResponse, register, RegisterRequest, RegisterResponse } from "./index";
 
 export const useRegister = () => {

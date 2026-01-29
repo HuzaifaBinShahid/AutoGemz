@@ -15,11 +15,11 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useColorScheme } from "@/hooks/use-color-scheme";
-import BackArrow from "@/components/ui/svgs/BackArrow";
-import MobileIcon from "@/components/ui/svgs/MobileIcon";
-import { Checkbox } from "@/components/common/Checkbox";
-import { AuctionListedModal } from "@/components/modals/AuctionListedModal";
+import { useColorScheme } from "../hooks/use-color-scheme";
+import BackArrow from "../components/ui/svgs/BackArrow";
+import MobileIcon from "../components/ui/svgs/MobileIcon";
+import { Checkbox } from "../components/common/Checkbox";
+import { AuctionListedModal } from "../components/modals/AuctionListedModal";
 
 export default function ContactInfoScreen() {
   const [fontsLoaded] = useFonts({

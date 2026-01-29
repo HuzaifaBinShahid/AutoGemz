@@ -1,7 +1,7 @@
-import BackArrow from "@/components/ui/svgs/BackArrow";
-import TickIcon from "@/components/ui/svgs/TickIcon";
-import UploadMediaIcon from "@/components/ui/svgs/UploadMediaIcon";
-import { useColorScheme } from "@/hooks/use-color-scheme";
+import BackArrow from "../components/ui/svgs/BackArrow";
+import TickIcon from "../components/ui/svgs/TickIcon";
+import UploadMediaIcon from "../components/ui/svgs/UploadMediaIcon";
+import { useColorScheme } from "../hooks/use-color-scheme";
 import {
   ChakraPetch_600SemiBold,
   useFonts,

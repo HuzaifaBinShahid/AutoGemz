@@ -4,7 +4,7 @@ import { Dimensions, StyleSheet, View } from "react-native";
 import Svg, { Circle, Defs, RadialGradient, Stop } from "react-native-svg";
 
 
-import { useColorScheme } from "@/hooks/use-color-scheme";
+import { useColorScheme } from "../hooks/use-color-scheme";
 
 const ACCENT_COLOR = "#DC3729";
 const CORNER_SIZE = 8;
@@ -21,8 +21,8 @@ export function SplashScreenComponent() {
 
   const logoSource =
     colorScheme === "dark"
-      ? require("@/assets/images/SplashLogoDark.png")
-      : require("@/assets/images/SplashLogoLight.png");
+      ? require("../assets/images/SplashLogoDark.png")
+      : require("../assets/images/SplashLogoLight.png");
 
   return (
     <View

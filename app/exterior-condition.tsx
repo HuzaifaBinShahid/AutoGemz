@@ -1,6 +1,6 @@
-import BackArrow from "@/components/ui/svgs/BackArrow";
-import ExteriorDesign from "@/components/ui/svgs/ExteriorDesign";
-import { useColorScheme } from "@/hooks/use-color-scheme";
+import BackArrow from "../components/ui/svgs/BackArrow";
+import ExteriorDesign from "../components/ui/svgs/ExteriorDesign";
+import { useColorScheme } from "../hooks/use-color-scheme";
 import {
     ChakraPetch_600SemiBold,
     useFonts,
@@ -91,7 +91,7 @@ export default function ExteriorConditionScreen() {
 
           <View style={styles.imageContainer}>
             <Image
-              source={require("@/assets/images/AuthBg.png")}
+              source={require("../assets/images/AuthBg.png")}
               style={styles.image}
               contentFit="cover"
             />

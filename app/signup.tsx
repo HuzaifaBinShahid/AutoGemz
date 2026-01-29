@@ -5,7 +5,7 @@ import {
 import { Mulish_400Regular } from "@expo-google-fonts/mulish";
 import { useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import React from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -13,14 +13,16 @@ import {
   View,
 } from "react-native";
 
-import { AuthLayout } from "@/components/auth/AuthLayout";
-import { CommonInput } from "@/components/common/CommonInput";
-import { CommonPhoneNumber } from "@/components/common/CommonPhoneNumber";
-import AppleIcon from "@/components/ui/svgs/AppleIcon";
-import EmailIcon from "@/components/ui/svgs/EmailIcon";
-import GoogleIcon from "@/components/ui/svgs/GoogleIcon";
-import Person from "@/components/ui/svgs/Person";
-import PhoneIcon from "@/components/ui/svgs/PhoneIcon";
+import { AuthLayout } from "../components/auth/AuthLayout";
+import { CommonInput } from "../components/common/CommonInput";
+import { CommonPhoneNumber } from "../components/common/CommonPhoneNumber";
+import AppleIcon from "../components/ui/svgs/AppleIcon";
+import EmailIcon from "../components/ui/svgs/EmailIcon";
+import GoogleIcon from "../components/ui/svgs/GoogleIcon";
+import Person from "../components/ui/svgs/Person";
+import PhoneIcon from "../components/ui/svgs/PhoneIcon";
+
+const isEmail = (s: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s.trim());
 
 export default function SignupScreen() {
   const [fontsLoaded] = useFonts({
@@ -28,6 +30,28 @@ export default function SignupScreen() {
     Mulish_400Regular,
   });
   const router = useRouter();
+  const [fullName, setFullName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [errors, setErrors] = useState<{ fullName?: string; phone?: string; email?: string }>({});
+
+  const validate = (): boolean => {
+    const next: typeof errors = {};
+    if (!fullName.trim()) next.fullName = "Full name is required";
+    if (!phone.trim()) next.phone = "Phone number is required";
+    if (!email.trim()) next.email = "Email is required";
+    else if (!isEmail(email)) next.email = "Enter a valid email";
+    setErrors(next);
+    return Object.keys(next).length === 0;
+  };
+
+  const handleNext = () => {
+    if (!validate()) return;
+    router.push({
+      pathname: "/secure-account",
+      params: { fullName: fullName.trim(), phone: phone.trim(), email: email.trim() },
+    });
+  };
 
   if (!fontsLoaded) {
     return null;
@@ -47,15 +71,31 @@ export default function SignupScreen() {
         </Text>
 
         <View style={styles.inputsContainer}>
-          <CommonInput placeholder="FULL NAME" icon={<Person />} />
-          <CommonPhoneNumber placeholder="PHONE NUMBER" icon={<PhoneIcon />} />
-          <CommonInput placeholder="EMAIL" icon={<EmailIcon />} email />
+          <CommonInput
+            placeholder="FULL NAME"
+            icon={<Person />}
+            value={fullName}
+            onChangeText={(t) => { setFullName(t); if (errors.fullName) setErrors((e) => ({ ...e, fullName: undefined })); }}
+            error={errors.fullName}
+          />
+          <CommonPhoneNumber
+            placeholder="PHONE NUMBER"
+            icon={<PhoneIcon />}
+            value={phone}
+            onChangeText={(t) => { setPhone(t); if (errors.phone) setErrors((e) => ({ ...e, phone: undefined })); }}
+          />
+          {errors.phone ? <Text style={styles.errorText}>{errors.phone}</Text> : null}
+          <CommonInput
+            placeholder="EMAIL"
+            icon={<EmailIcon />}
+            email
+            value={email}
+            onChangeText={(t) => { setEmail(t); if (errors.email) setErrors((e) => ({ ...e, email: undefined })); }}
+            error={errors.email}
+          />
         </View>
 
-        <TouchableOpacity
-          style={styles.nextButton}
-          onPress={() => router.push("/secure-account")}
-        >
+        <TouchableOpacity style={styles.nextButton} onPress={handleNext}>
           <Text style={styles.nextButtonText}>NEXT</Text>
         </TouchableOpacity>
 
@@ -122,6 +162,13 @@ const styles = StyleSheet.create({
   },
   inputsContainer: {
     marginBottom: 24,
+  },
+  errorText: {
+    marginTop: -8,
+    marginBottom: 12,
+    fontSize: 12,
+    color: "#DC3729",
+    fontFamily: "Mulish_400Regular",
   },
   nextButton: {
     backgroundColor: "#DC3729",

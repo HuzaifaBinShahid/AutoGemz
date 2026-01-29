@@ -1,3 +1,13 @@
+import { AuthLayout } from "../components/auth/AuthLayout";
+import { Checkbox } from "../components/common/Checkbox";
+import { CommonInput } from "../components/common/CommonInput";
+import AppleIcon from "../components/ui/svgs/AppleIcon";
+import GoogleIcon from "../components/ui/svgs/GoogleIcon";
+import LockIcon from "../components/ui/svgs/LockIcon";
+import Person from "../components/ui/svgs/Person";
+import ShowPasswordIcon from "../components/ui/svgs/ShowPasswordIcon";
+import { login } from "../services/auth";
+import { saveRefreshToken, saveToken } from "../services/token";
 import {
   ChakraPetch_600SemiBold,
   useFonts,
@@ -7,20 +17,15 @@ import { useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
 import {
+  ActivityIndicator,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
+import { Toast } from "expo-react-native-toastify";
 
-import { AuthLayout } from "@/components/auth/AuthLayout";
-import { Checkbox } from "@/components/common/Checkbox";
-import { CommonInput } from "@/components/common/CommonInput";
-import AppleIcon from "@/components/ui/svgs/AppleIcon";
-import GoogleIcon from "@/components/ui/svgs/GoogleIcon";
-import LockIcon from "@/components/ui/svgs/LockIcon";
-import Person from "@/components/ui/svgs/Person";
-import ShowPasswordIcon from "@/components/ui/svgs/ShowPasswordIcon";
+const DEFAULT_ROLE = "user";
 
 export default function LoginScreen() {
   const [fontsLoaded] = useFonts({
@@ -30,6 +35,55 @@ export default function LoginScreen() {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
+  const [emailOrUsername, setEmailOrUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [errors, setErrors] = useState<{ emailOrUsername?: string; password?: string }>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const validate = (): boolean => {
+    const next: typeof errors = {};
+    const trimmedEmail = emailOrUsername.trim();
+    if (!trimmedEmail) {
+      next.emailOrUsername = "Username or email is required";
+    }
+    if (!password) {
+      next.password = "Password is required";
+    } else if (password.length < 6) {
+      next.password = "Password must be at least 6 characters";
+    }
+    setErrors(next);
+    return Object.keys(next).length === 0;
+  };
+
+  const handleLogin = async () => {
+    if (!validate()) return;
+    setIsSubmitting(true);
+    setErrors({});
+    try {
+      const res = await login({
+        email: emailOrUsername.trim(),
+        password,
+        role: DEFAULT_ROLE,
+      });
+      const access = res.token?.access?.token;
+      const refresh = res.token?.refresh?.token;
+      if (access) await saveToken(access);
+      if (refresh) await saveRefreshToken(refresh);
+      Toast.success("Login successful");
+      router.replace("/(tabs)");
+    } catch (err: unknown) {
+      let message = "Login failed. Please try again.";
+      if (err && typeof err === "object" && "response" in err) {
+        const ax = err as { response?: { data?: { message?: string } } };
+        if (ax.response?.data?.message) message = ax.response.data.message;
+      } else if (err instanceof Error) {
+        message = err.message;
+      }
+      Toast.error(message);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   if (!fontsLoaded) {
     return null;
@@ -50,13 +104,32 @@ export default function LoginScreen() {
       </Text>
 
       <View style={styles.inputsContainer}>
-        <CommonInput placeholder="USERNAME" icon={<Person />} />
+        <CommonInput
+          placeholder="USERNAME"
+          icon={<Person />}
+          value={emailOrUsername}
+          onChangeText={(t) => {
+            setEmailOrUsername(t);
+            if (errors.emailOrUsername) setErrors((e) => ({ ...e, emailOrUsername: undefined }));
+          }}
+          autoCapitalize="none"
+          autoCorrect={false}
+          error={errors.emailOrUsername}
+          editable={!isSubmitting}
+        />
         <CommonInput
           placeholder="PASSWORD"
           icon={<LockIcon />}
           secureTextEntry={!showPassword}
+          value={password}
+          onChangeText={(t) => {
+            setPassword(t);
+            if (errors.password) setErrors((e) => ({ ...e, password: undefined }));
+          }}
+          error={errors.password}
+          editable={!isSubmitting}
           rightIcon={
-            <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+            <TouchableOpacity onPress={() => setShowPassword(!showPassword)} disabled={isSubmitting}>
               <ShowPasswordIcon />
             </TouchableOpacity>
           }
@@ -68,16 +141,21 @@ export default function LoginScreen() {
           <Checkbox checked={rememberMe} onToggle={() => setRememberMe(!rememberMe)} />
           <Text style={styles.rememberMeText}>Remember Me</Text>
         </View>
-        <TouchableOpacity onPress={() => router.push("/forgot-password")}>
+        <TouchableOpacity onPress={() => router.push("/forgot-password")} disabled={isSubmitting}>
           <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
         </TouchableOpacity>
       </View>
 
       <TouchableOpacity
-        style={styles.loginButton}
-        onPress={() => router.push("/(tabs)")}
+        style={[styles.loginButton, isSubmitting && styles.loginButtonDisabled]}
+        onPress={handleLogin}
+        disabled={isSubmitting}
       >
-        <Text style={styles.loginButtonText}>LOGIN</Text>
+        {isSubmitting ? (
+          <ActivityIndicator color="#FFFFFF" />
+        ) : (
+          <Text style={styles.loginButtonText}>LOGIN</Text>
+        )}
       </TouchableOpacity>
 
       <View style={styles.signupPrompt}>
@@ -171,6 +249,9 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
     alignItems: "center",
     marginBottom: 24,
+  },
+  loginButtonDisabled: {
+    opacity: 0.7,
   },
   loginButtonText: {
     fontSize: 16,

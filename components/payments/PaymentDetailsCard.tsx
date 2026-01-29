@@ -1,6 +1,6 @@
-import ThemedCalendarIcon from "@/components/ui/svgs/ThemedCalendarIcon";
-import ThemedEyeIcon from "@/components/ui/svgs/ThemedEyeIcon";
-import { useColorScheme } from "@/hooks/use-color-scheme";
+import ThemedCalendarIcon from "../../components/ui/svgs/ThemedCalendarIcon";
+import ThemedEyeIcon from "../../components/ui/svgs/ThemedEyeIcon";
+import { useColorScheme } from "../../hooks/use-color-scheme";
 import { Image } from "expo-image";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";

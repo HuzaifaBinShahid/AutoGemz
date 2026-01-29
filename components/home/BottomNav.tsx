@@ -1,9 +1,9 @@
-import AuctionNowIcon from "@/components/ui/svgs/AuctionNowIcon";
-import ThemedHomeIcon from "@/components/ui/svgs/ThemedHomeIcon";
-import ThemedMoreIcon from "@/components/ui/svgs/ThemedMoreIcon";
-import ThemedNotificationIcon from "@/components/ui/svgs/ThemedNotificationIcon";
-import ThemedSearchIconNav from "@/components/ui/svgs/ThemedSearchIconNav";
-import { useColorScheme } from "@/hooks/use-color-scheme";
+import AuctionNowIcon from "../../components/ui/svgs/AuctionNowIcon";
+import ThemedHomeIcon from "../../components/ui/svgs/ThemedHomeIcon";
+import ThemedMoreIcon from "../../components/ui/svgs/ThemedMoreIcon";
+import ThemedNotificationIcon from "../../components/ui/svgs/ThemedNotificationIcon";
+import ThemedSearchIconNav from "../../components/ui/svgs/ThemedSearchIconNav";
+import { useColorScheme } from "../../hooks/use-color-scheme";
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
 import React from "react";

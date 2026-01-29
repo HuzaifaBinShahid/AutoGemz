@@ -2,9 +2,9 @@ import { Image } from "expo-image";
 import React, { useState } from "react";
 import { Dimensions, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { BlurView } from "expo-blur";
-import LikeIcon from "@/components/ui/svgs/LikeIcon";
-import ShareIcon from "@/components/ui/svgs/ShareIcon";
-import GalleryIcon from "@/components/ui/svgs/GalleryIcon";
+import LikeIcon from "../../components/ui/svgs/LikeIcon";
+import ShareIcon from "../../components/ui/svgs/ShareIcon";
+import GalleryIcon from "../../components/ui/svgs/GalleryIcon";
 
 interface AuctionImageCarouselProps {
   images: any[];

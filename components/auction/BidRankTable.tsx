@@ -1,4 +1,4 @@
-import { useColorScheme } from "@/hooks/use-color-scheme";
+import { useColorScheme } from "../../hooks/use-color-scheme";
 import React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 
@@ -20,7 +20,7 @@ const dummyBids: BidEntry[] = [
     name: "Ahmed Saleem",
     bidAmount: "12,00,00",
     timeAgo: "39 minutes ago",
-    avatar: require("@/assets/images/AuthBg.png"),
+    avatar: require("../../assets/images/AuthBg.png"),
     isSelected: true,
   },
   {
@@ -29,7 +29,7 @@ const dummyBids: BidEntry[] = [
     name: "Sara Charle",
     bidAmount: "11,00,00",
     timeAgo: "02 minutes ago",
-    avatar: require("@/assets/images/AuthBg.png"),
+    avatar: require("../../assets/images/AuthBg.png"),
   },
   {
     id: "3",
@@ -37,7 +37,7 @@ const dummyBids: BidEntry[] = [
     name: "Harry Lincons",
     bidAmount: "10,00,00",
     timeAgo: "09 minutes ago",
-    avatar: require("@/assets/images/AuthBg.png"),
+    avatar: require("../../assets/images/AuthBg.png"),
   },
   {
     id: "4",
@@ -45,7 +45,7 @@ const dummyBids: BidEntry[] = [
     name: "Mehew Jame",
     bidAmount: "9,00,00",
     timeAgo: "30 minutes ago",
-    avatar: require("@/assets/images/AuthBg.png"),
+    avatar: require("../../assets/images/AuthBg.png"),
     isCurrentUser: true,
   },
 ];

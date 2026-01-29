@@ -1,7 +1,7 @@
-import { useColorScheme } from "@/hooks/use-color-scheme";
+import { useColorScheme } from "../../hooks/use-color-scheme";
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import RightArrow from "@/components/ui/svgs/RightArrow";
+import RightArrow from "../../components/ui/svgs/RightArrow";
 
 interface MenuItem {
   id: string;

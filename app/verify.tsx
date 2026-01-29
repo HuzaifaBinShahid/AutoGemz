@@ -13,8 +13,8 @@ import {
   View,
 } from "react-native";
 
-import { AuthLayout } from "@/components/auth/AuthLayout";
-import { CodeInputGroup } from "@/components/common/CodeInputGroup";
+import { AuthLayout } from "../components/auth/AuthLayout";
+import { CodeInputGroup } from "../components/common/CodeInputGroup";
 
 export default function VerifyScreen() {
   const [fontsLoaded] = useFonts({

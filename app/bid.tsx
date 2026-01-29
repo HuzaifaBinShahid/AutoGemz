@@ -1,10 +1,10 @@
-import { AuctionDetails } from "@/components/auction/AuctionDetails";
-import { AuctionImageCarousel } from "@/components/auction/AuctionImageCarousel";
-import { BidCountdownBanner } from "@/components/auction/BidCountdownBanner";
-import { BidRankTable } from "@/components/auction/BidRankTable";
-import { YourBidSection } from "@/components/auction/YourBidSection";
-import BackArrow from "@/components/ui/svgs/BackArrow";
-import { useColorScheme } from "@/hooks/use-color-scheme";
+import { AuctionDetails } from "../components/auction/AuctionDetails";
+import { AuctionImageCarousel } from "../components/auction/AuctionImageCarousel";
+import { BidCountdownBanner } from "../components/auction/BidCountdownBanner";
+import { BidRankTable } from "../components/auction/BidRankTable";
+import { YourBidSection } from "../components/auction/YourBidSection";
+import BackArrow from "../components/ui/svgs/BackArrow";
+import { useColorScheme } from "../hooks/use-color-scheme";
 import {
     ChakraPetch_600SemiBold,
     useFonts,
@@ -23,17 +23,17 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const carImages = [
-  require("@/assets/images/AuthBg.png"),
-  require("@/assets/images/AuthBg.png"),
-  require("@/assets/images/AuthBg.png"),
-  require("@/assets/images/AuthBg.png"),
-  require("@/assets/images/AuthBg.png"),
-  require("@/assets/images/AuthBg.png"),
-  require("@/assets/images/AuthBg.png"),
-  require("@/assets/images/AuthBg.png"),
-  require("@/assets/images/AuthBg.png"),
-  require("@/assets/images/AuthBg.png"),
-  require("@/assets/images/AuthBg.png"),
+  require("../assets/images/AuthBg.png"),
+  require("../assets/images/AuthBg.png"),
+  require("../assets/images/AuthBg.png"),
+  require("../assets/images/AuthBg.png"),
+  require("../assets/images/AuthBg.png"),
+  require("../assets/images/AuthBg.png"),
+  require("../assets/images/AuthBg.png"),
+  require("../assets/images/AuthBg.png"),
+  require("../assets/images/AuthBg.png"),
+  require("../assets/images/AuthBg.png"),
+  require("../assets/images/AuthBg.png"),
 ];
 
 export default function BidScreen() {

@@ -1,8 +1,8 @@
-import { AuctionCard } from "@/components/home/AuctionCard";
-import BackArrow from "@/components/ui/svgs/BackArrow";
-import FiltersIcon from "@/components/ui/svgs/FiltersIcon";
-import ThemedSearchIcon from "@/components/ui/svgs/ThemedSearchIcon";
-import { useColorScheme } from "@/hooks/use-color-scheme";
+import { AuctionCard } from "../components/home/AuctionCard";
+import BackArrow from "../components/ui/svgs/BackArrow";
+import FiltersIcon from "../components/ui/svgs/FiltersIcon";
+import ThemedSearchIcon from "../components/ui/svgs/ThemedSearchIcon";
+import { useColorScheme } from "../hooks/use-color-scheme";
 import {
     ChakraPetch_600SemiBold,
     useFonts,
@@ -24,7 +24,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 const dummyAuctions = [
   {
     id: 1,
-    image: require("@/assets/images/AuthBg.png"),
+    image: require("../assets/images/AuthBg.png"),
     title: "2023 FORD MUSTANG GT",
     currentBid: "CURRENT BID RS: 12,00,00",
     timeRemaining: "1D 45H 3S",
@@ -34,7 +34,7 @@ const dummyAuctions = [
   },
   {
     id: 2,
-    image: require("@/assets/images/AuthBg.png"),
+    image: require("../assets/images/AuthBg.png"),
     title: "2022 PORSCHE 911",
     currentBid: "CURRENT BID RS: 15,00,00",
     timeRemaining: "2D 12H 30S",
@@ -44,7 +44,7 @@ const dummyAuctions = [
   },
   {
     id: 3,
-    image: require("@/assets/images/AuthBg.png"),
+    image: require("../assets/images/AuthBg.png"),
     title: "2021 BMW M3",
     currentBid: "CURRENT BID RS: 18,00,00",
     timeRemaining: "3D 20H 15S",
@@ -54,7 +54,7 @@ const dummyAuctions = [
   },
   {
     id: 4,
-    image: require("@/assets/images/AuthBg.png"),
+    image: require("../assets/images/AuthBg.png"),
     title: "2020 AUDI A4",
     currentBid: "CURRENT BID RS: 10,00,00",
     timeRemaining: "5D 10H 45S",
@@ -64,7 +64,7 @@ const dummyAuctions = [
   },
   {
     id: 5,
-    image: require("@/assets/images/AuthBg.png"),
+    image: require("../assets/images/AuthBg.png"),
     title: "2022 MERCEDES C-CLASS",
     currentBid: "CURRENT BID RS: 14,00,00",
     timeRemaining: "1D 30H 20S",

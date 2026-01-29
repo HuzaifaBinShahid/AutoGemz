@@ -13,10 +13,10 @@ import {
   View,
 } from "react-native";
 
-import { AuthLayout } from "@/components/auth/AuthLayout";
-import { CommonInput } from "@/components/common/CommonInput";
-import LockIcon from "@/components/ui/svgs/LockIcon";
-import ShowPasswordIcon from "@/components/ui/svgs/ShowPasswordIcon";
+import { AuthLayout } from "../components/auth/AuthLayout";
+import { CommonInput } from "../components/common/CommonInput";
+import LockIcon from "../components/ui/svgs/LockIcon";
+import ShowPasswordIcon from "../components/ui/svgs/ShowPasswordIcon";
 
 export default function CreatePasswordScreen() {
   const [fontsLoaded] = useFonts({

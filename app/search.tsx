@@ -14,13 +14,13 @@ import {
   View,
 } from "react-native";
 
-import { BottomNav } from "@/components/home/BottomNav";
-import { useColorScheme } from "@/hooks/use-color-scheme";
-import FiltersIcon from "@/components/ui/svgs/FiltersIcon";
+import { BottomNav } from "../components/home/BottomNav";
+import { useColorScheme } from "../hooks/use-color-scheme";
+import FiltersIcon from "../components/ui/svgs/FiltersIcon";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Mulish_400Regular } from "@expo-google-fonts/mulish";
-import ThemedSearchIcon from "@/components/ui/svgs/ThemedSearchIcon";
-import { AuctionBottomSheet } from "@/components/home/AuctionBottomSheet";
+import ThemedSearchIcon from "../components/ui/svgs/ThemedSearchIcon";
+import { AuctionBottomSheet } from "../components/home/AuctionBottomSheet";
 import { useRouter } from "expo-router";
 
 const popularSearches = [

@@ -1,13 +1,13 @@
-import { AuctionDetails } from "@/components/auction/AuctionDetails";
-import { AuctionImageCarousel } from "@/components/auction/AuctionImageCarousel";
-import { BidCountdownBanner } from "@/components/auction/BidCountdownBanner";
-import { CarDetailsTable } from "@/components/auction/CarDetailsTable";
-import { CarInspection } from "@/components/auction/CarInspection";
-import { InfoSection } from "@/components/auction/InfoSection";
-import { SpecifiedFeatures } from "@/components/auction/SpecifiedFeatures";
-import { BidNowButton } from "@/components/auction/BidNowButton";
-import BackArrow from "@/components/ui/svgs/BackArrow";
-import { useColorScheme } from "@/hooks/use-color-scheme";
+import { AuctionDetails } from "../components/auction/AuctionDetails";
+import { AuctionImageCarousel } from "../components/auction/AuctionImageCarousel";
+import { BidCountdownBanner } from "../components/auction/BidCountdownBanner";
+import { CarDetailsTable } from "../components/auction/CarDetailsTable";
+import { CarInspection } from "../components/auction/CarInspection";
+import { InfoSection } from "../components/auction/InfoSection";
+import { SpecifiedFeatures } from "../components/auction/SpecifiedFeatures";
+import { BidNowButton } from "../components/auction/BidNowButton";
+import BackArrow from "../components/ui/svgs/BackArrow";
+import { useColorScheme } from "../hooks/use-color-scheme";
 import {
   ChakraPetch_600SemiBold,
   useFonts,
@@ -26,17 +26,17 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const carImages = [
-  require("@/assets/images/AuthBg.png"),
-  require("@/assets/images/AuthBg.png"),
-  require("@/assets/images/AuthBg.png"),
-  require("@/assets/images/AuthBg.png"),
-  require("@/assets/images/AuthBg.png"),
-  require("@/assets/images/AuthBg.png"),
-  require("@/assets/images/AuthBg.png"),
-  require("@/assets/images/AuthBg.png"),
-  require("@/assets/images/AuthBg.png"),
-  require("@/assets/images/AuthBg.png"),
-  require("@/assets/images/AuthBg.png"),
+  require("../assets/images/AuthBg.png"),
+  require("../assets/images/AuthBg.png"),
+  require("../assets/images/AuthBg.png"),
+  require("../assets/images/AuthBg.png"),
+  require("../assets/images/AuthBg.png"),
+  require("../assets/images/AuthBg.png"),
+  require("../assets/images/AuthBg.png"),
+  require("../assets/images/AuthBg.png"),
+  require("../assets/images/AuthBg.png"),
+  require("../assets/images/AuthBg.png"),
+  require("../assets/images/AuthBg.png"),
 ];
 
 export default function DetailScreen() {
