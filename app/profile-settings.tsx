@@ -7,6 +7,7 @@ import {
   useFonts,
 } from "@expo-google-fonts/chakra-petch";
 import { Mulish_400Regular } from "@expo-google-fonts/mulish";
+import * as ImagePicker from "expo-image-picker";
 import { Image } from "expo-image";
 import { useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
@@ -24,7 +25,7 @@ import {
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Toast } from "expo-react-native-toastify";
-import { useProfile, useUpdateProfile } from "../services/auth/hooks";
+import { useProfile, useUpdateProfile, useUpdateProfileAvatar } from "../services/auth/hooks";
 
 export default function ProfileSettingsScreen() {
   const [fontsLoaded] = useFonts({
@@ -36,6 +37,7 @@ export default function ProfileSettingsScreen() {
   const isDark = colorScheme === "dark";
   const { data, isLoading } = useProfile();
   const updateProfileMutation = useUpdateProfile();
+  const updateAvatarMutation = useUpdateProfileAvatar();
 
   const [fullName, setFullName] = useState("");
   const [gender, setGender] = useState("");
@@ -122,22 +124,74 @@ function parseDateFromApi(value: string | null | undefined): Date | null {
         <View style={[styles.profileBox, isDark && styles.profileBoxDark]}>
           <View style={styles.profileImageContainer}>
             <Image
-              source={require("../assets/images/icon.png")}
+              source={
+                data?.data?.avatar
+                  ? { uri: data.data.avatar }
+                  : require("../assets/images/icon.png")
+              }
               style={styles.profileImage}
               contentFit="cover"
             />
           </View>
           <TouchableOpacity
-            style={[styles.uploadButton, isDark && styles.uploadButtonDark]}
+            style={[
+              styles.uploadButton,
+              isDark && styles.uploadButtonDark,
+              updateAvatarMutation.isPending && styles.uploadButtonDisabled,
+            ]}
+            onPress={async () => {
+              const { status } =
+                await ImagePicker.requestMediaLibraryPermissionsAsync();
+              if (status !== "granted") {
+                Toast.error("Permission to access photos is required");
+                return;
+              }
+              const result = await ImagePicker.launchImageLibraryAsync({
+                mediaTypes: ["images"],
+                allowsEditing: true,
+                aspect: [1, 1],
+                quality: 0.8,
+                base64: true,
+              });
+              if (result.canceled || !result.assets[0]) return;
+              const asset = result.assets[0];
+              const mime = asset.mimeType ?? "image/jpeg";
+              const base64 = asset.base64;
+              if (!base64) {
+                Toast.error("Could not get image data");
+                return;
+              }
+              const dataUrl = `data:${mime};base64,${base64}`;
+              updateAvatarMutation.mutate(dataUrl, {
+                onSuccess: () => {
+                  Toast.success("Profile picture updated successfully");
+                },
+                onError: (err) => {
+                  const msg =
+                    err && typeof err === "object" && "response" in err
+                      ? (err as { response?: { data?: { message?: string } } })
+                          .response?.data?.message
+                      : err instanceof Error
+                        ? err.message
+                        : "Something went wrong";
+                  Toast.error(msg ?? "Something went wrong");
+                },
+              });
+            }}
+            disabled={updateAvatarMutation.isPending}
           >
-            <Text
-              style={[
-                styles.uploadButtonText,
-                isDark && styles.uploadButtonTextDark,
-              ]}
-            >
-              Upload Profile Picture
-            </Text>
+            {updateAvatarMutation.isPending ? (
+              <ActivityIndicator color={isDark ? "#FFFFFF" : "#494949"} />
+            ) : (
+              <Text
+                style={[
+                  styles.uploadButtonText,
+                  isDark && styles.uploadButtonTextDark,
+                ]}
+              >
+                Upload Profile Picture
+              </Text>
+            )}
           </TouchableOpacity>
 
           <View style={styles.fieldContainer}>
@@ -398,6 +452,9 @@ const styles = StyleSheet.create({
   uploadButtonDark: {
     backgroundColor: "#111111",
     borderColor: "#FFFFFF",
+  },
+  uploadButtonDisabled: {
+    opacity: 0.7,
   },
   uploadButtonText: {
     fontSize: 14,

@@ -110,6 +110,11 @@ export const updateProfile = async (payload: UpdateProfileRequest): Promise<Prof
   return response.data;
 };
 
+export const updateProfileAvatar = async (avatar: string): Promise<ProfileResponse> => {
+  const response = await apiClient.patch<ProfileResponse>(AuthUrls.PROFILE, { avatar });
+  return response.data;
+};
+
 export interface LogoutRequest {
   refreshToken: string;
 }
