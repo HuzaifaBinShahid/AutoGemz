@@ -84,7 +84,7 @@ export default function MyVehiclesScreen() {
             <View style={styles.cardWrapper}>
               <MyVehicleCard
                 vehicle={item}
-                onPress={() => router.push("/detail")}
+                onPress={() => router.push({ pathname: "/detail", params: { id: item.id } })}
               />
             </View>
           )}

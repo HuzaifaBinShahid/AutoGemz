@@ -5,24 +5,60 @@ import LightbulbIcon from "../../components/ui/svgs/LightbulbIcon";
 import { useColorScheme } from "../../hooks/use-color-scheme";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { usePlaceBid } from "../../services/bids/hooks";
+import { Toast } from "expo-react-native-toastify";
 
-export function YourBidSection() {
+interface YourBidSectionProps {
+  auctionId: string;
+  vehicleId: string;
+  minBid: number;
+  increment: number;
+}
+
+export function YourBidSection({ auctionId, vehicleId, minBid, increment }: YourBidSectionProps) {
   const colorScheme = useColorScheme();
   const isDark = colorScheme === "dark";
   const router = useRouter();
-  const [bidAmount, setBidAmount] = useState(300000);
+  const [bidAmount, setBidAmount] = useState(minBid || 0);
+  const placeBidMutation = usePlaceBid(auctionId);
+
+  // Sync bidAmount with minBid when it arrives from the API
+  React.useEffect(() => {
+    if (minBid > 0 && bidAmount === 0) {
+      setBidAmount(minBid);
+    }
+  }, [minBid]);
 
   const formatBidAmount = (amount: number) => {
     return amount.toLocaleString("en-IN");
   };
 
   const handleDecrease = () => {
-    setBidAmount((prev) => Math.max(100000, prev - 10000));
+    setBidAmount((prev) => Math.max(minBid, prev - increment));
   };
 
   const handleIncrease = () => {
-    setBidAmount((prev) => prev + 10000);
+    setBidAmount((prev) => prev + increment);
+  };
+
+  const handleSetBid = () => {
+    if (!vehicleId) {
+      Toast.error("Vehicle ID is missing");
+      return;
+    }
+    placeBidMutation.mutate({
+      vehicleId,
+      bidAmount,
+    }, {
+      onSuccess: () => {
+        Toast.success("Your bid has been placed!");
+      },
+      onError: (error: any) => {
+        const message = error?.response?.data?.message || "Failed to place bid";
+        Toast.error(message);
+      }
+    });
   };
 
   return (
@@ -36,8 +72,9 @@ export function YourBidSection() {
       </View>
       <View style={styles.bidInputRow}>
         <TouchableOpacity
-          style={styles.controlButton}
+          style={[styles.controlButton, bidAmount <= minBid && styles.controlButtonDisabled]}
           onPress={handleDecrease}
+          disabled={bidAmount <= minBid}
         >
           <Text style={styles.controlButtonText}>-</Text>
         </TouchableOpacity>
@@ -57,16 +94,21 @@ export function YourBidSection() {
             styles.setBidButton,
             isDark && styles.setBidButtonDark,
           ]}
-          onPress={() => router.push("/winner")}
+          onPress={handleSetBid}
+          disabled={placeBidMutation.isPending}
         >
-          <Text
-            style={[
-              styles.setBidText,
-              isDark && styles.setBidTextDark,
-            ]}
-          >
-            SET BID
-          </Text>
+          {placeBidMutation.isPending ? (
+            <ActivityIndicator size="small" color="#DC3729" />
+          ) : (
+            <Text
+              style={[
+                styles.setBidText,
+                isDark && styles.setBidTextDark,
+              ]}
+            >
+              SET BID
+            </Text>
+          )}
         </TouchableOpacity>
       </View>
       <View style={styles.bidTypeLabels}>
@@ -155,6 +197,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#DC3729",
     justifyContent: "center",
     alignItems: "center",
+  },
+  controlButtonDisabled: {
+    opacity: 0.5,
   },
   controlButtonText: {
     fontSize: 20,

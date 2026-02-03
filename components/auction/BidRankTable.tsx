@@ -2,55 +2,34 @@ import { useColorScheme } from "../../hooks/use-color-scheme";
 import React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 
-interface BidEntry {
-  id: string;
-  rank: number;
-  name: string;
-  bidAmount: string;
-  timeAgo: string;
-  avatar: any;
-  isSelected?: boolean;
-  isCurrentUser?: boolean;
+interface BidRankTableProps {
+  bids?: any[];
 }
 
-const dummyBids: BidEntry[] = [
-  {
-    id: "1",
-    rank: 61,
-    name: "Ahmed Saleem",
-    bidAmount: "12,00,00",
-    timeAgo: "39 minutes ago",
-    avatar: require("../../assets/images/AuthBg.png"),
-    isSelected: true,
-  },
-  {
-    id: "2",
-    rank: 62,
-    name: "Sara Charle",
-    bidAmount: "11,00,00",
-    timeAgo: "02 minutes ago",
-    avatar: require("../../assets/images/AuthBg.png"),
-  },
-  {
-    id: "3",
-    rank: 63,
-    name: "Harry Lincons",
-    bidAmount: "10,00,00",
-    timeAgo: "09 minutes ago",
-    avatar: require("../../assets/images/AuthBg.png"),
-  },
-  {
-    id: "4",
-    rank: 64,
-    name: "Mehew Jame",
-    bidAmount: "9,00,00",
-    timeAgo: "30 minutes ago",
-    avatar: require("../../assets/images/AuthBg.png"),
-    isCurrentUser: true,
-  },
-];
+// Dummy data removed
 
-export function BidRankTable() {
+export function BidRankTable({ bids = [] }: BidRankTableProps) {
+  const formatTimeAgo = (dateStr: string) => {
+    const date = new Date(dateStr);
+    const now = new Date();
+    const diff = now.getTime() - date.getTime();
+    const minutes = Math.floor(diff / 60000);
+    if (minutes < 60) return `${minutes} minutes ago`;
+    const hours = Math.floor(minutes / 60);
+    if (hours < 24) return `${hours} hours ago`;
+    return date.toLocaleDateString();
+  };
+
+  const tableBids = bids.map((b, index) => ({
+    id: b._id || b.id,
+    rank: index + 1,
+    name: b.bidderId?.fullName || "Anonymous",
+    bidAmount: b.bidAmount.toLocaleString(),
+    timeAgo: formatTimeAgo(b.createdAt),
+    avatar: require("../../assets/images/AuthBg.png"), // Fallback for now
+    isSelected: index === 0,
+    isCurrentUser: false, // Could be determined if we have user info
+  }));
   const colorScheme = useColorScheme();
   const isDark = colorScheme === "dark";
 
@@ -80,11 +59,11 @@ export function BidRankTable() {
           </View>
           <View style={[styles.headerCell, styles.timeColumn]}>
           <Text style={[styles.timerText, isDark && styles.timerTextDark]}>
-            {formatTime(1, 45, 3)}
+            AUCTION HISTORY
           </Text>
           </View>
         </View>
-        {dummyBids.map((bid, index) => (
+        {tableBids.map((bid) => (
           <View
             key={bid.id}
             style={[

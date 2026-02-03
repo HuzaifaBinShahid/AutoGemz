@@ -39,3 +39,10 @@ export const getAuctions = async (params: GetAuctionsParams): Promise<AuctionsRe
   });
   return response.data;
 };
+
+export const getMyBids = async (params: Partial<GetAuctionsParams> = {}): Promise<AuctionsResponse> => {
+  const response = await apiClient.get<AuctionsResponse>(AuctionUrls.GET_MY_BIDS, {
+    params,
+  });
+  return response.data;
+};

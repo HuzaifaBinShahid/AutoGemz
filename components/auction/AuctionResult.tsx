@@ -3,9 +3,18 @@ import { useColorScheme } from "../../hooks/use-color-scheme";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 
-export function AuctionResult() {
+interface AuctionResultProps {
+  auction: any;
+  bids: any[];
+}
+
+export function AuctionResult({ auction, bids }: AuctionResultProps) {
   const colorScheme = useColorScheme();
   const isDark = colorScheme === "dark";
+
+  const winningBid = bids[0]?.bidAmount || auction?.currentBid || 0;
+  const biddersCount = auction?.biddersCount || new Set(bids.map(b => b.bidderId?._id || b.bidderId?.id || b.bidderId)).size;
+  const timeClosed = auction?.endDate || auction?.endTime ? new Date(auction.endDate || auction.endTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : "—";
 
   return (
     <View style={[styles.container, isDark && styles.containerDark]}>
@@ -17,7 +26,7 @@ export function AuctionResult() {
           Winning bid:
         </Text>
         <Text style={[styles.resultValue, isDark && styles.resultValueDark]}>
-          RS 34,000
+          RS {winningBid.toLocaleString()}
         </Text>
       </View>
       <View style={styles.resultItem}>
@@ -25,7 +34,7 @@ export function AuctionResult() {
           Number of bidders:
         </Text>
         <Text style={[styles.resultValue, isDark && styles.resultValueDark]}>
-          12
+          {biddersCount}
         </Text>
       </View>
       <View style={styles.dashedLine} />
@@ -34,7 +43,7 @@ export function AuctionResult() {
           Time closed:
         </Text>
         <Text style={[styles.resultValue, isDark && styles.resultValueDark]}>
-          2:00 PM (GMT)
+          {timeClosed}
         </Text>
       </View>
       <View style={styles.warningRow}>

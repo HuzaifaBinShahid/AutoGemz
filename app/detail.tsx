@@ -13,10 +13,11 @@ import {
   useFonts,
 } from "@expo-google-fonts/chakra-petch";
 import { Mulish_400Regular } from "@expo-google-fonts/mulish";
-import { useRouter } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import React from "react";
 import {
+  ActivityIndicator,
   ScrollView,
   StyleSheet,
   Text,
@@ -24,22 +25,13 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-
-const carImages = [
-  require("../assets/images/AuthBg.png"),
-  require("../assets/images/AuthBg.png"),
-  require("../assets/images/AuthBg.png"),
-  require("../assets/images/AuthBg.png"),
-  require("../assets/images/AuthBg.png"),
-  require("../assets/images/AuthBg.png"),
-  require("../assets/images/AuthBg.png"),
-  require("../assets/images/AuthBg.png"),
-  require("../assets/images/AuthBg.png"),
-  require("../assets/images/AuthBg.png"),
-  require("../assets/images/AuthBg.png"),
-];
+import { useSellingVehicle } from "../services/vehicles/hooks";
 
 export default function DetailScreen() {
+  const { id, auctionId } = useLocalSearchParams<{ id: string; auctionId: string }>();
+  const { data, isLoading, isError } = useSellingVehicle(id as string);
+  const vehicle = data?.data;
+
   const [fontsLoaded] = useFonts({
     ChakraPetch_600SemiBold,
     Mulish_400Regular,
@@ -48,9 +40,37 @@ export default function DetailScreen() {
   const colorScheme = useColorScheme();
   const isDark = colorScheme === "dark";
 
-  if (!fontsLoaded) {
-    return null;
+  if (!fontsLoaded || isLoading) {
+    return (
+      <View style={[styles.loadingContainer, isDark && styles.containerDark]}>
+        <ActivityIndicator size="large" color="#DC3729" />
+      </View>
+    );
   }
+
+  if (isError || !vehicle) {
+    return (
+      <SafeAreaView style={[styles.container, isDark && styles.containerDark]}>
+        <View style={styles.header}>
+          <TouchableOpacity onPress={() => router.back()}>
+            <BackArrow />
+          </TouchableOpacity>
+          <Text style={[styles.headerText, isDark && styles.headerTextDark]}>
+            Error
+          </Text>
+        </View>
+        <View style={styles.emptyContainer}>
+          <Text style={[styles.emptyText, isDark && styles.emptyTextDark]}>
+            Failed to load vehicle details.
+          </Text>
+        </View>
+      </SafeAreaView>
+    );
+  }
+
+  const carImages = vehicle.images?.length > 0 
+    ? vehicle.images 
+    : [require("../assets/images/AuthBg.png")];
 
   return (
     <SafeAreaView
@@ -75,10 +95,10 @@ export default function DetailScreen() {
         <BidCountdownBanner hours={1} minutes={59} seconds={39} />
         <AuctionImageCarousel images={carImages} />
         <AuctionDetails
-          title="2023 FORD MUSTANG GT"
-          startPrice="12,0000"
+          title={`${vehicle.year} ${vehicle.make} ${vehicle.model}`.toUpperCase()}
+          startPrice={vehicle.price ? vehicle.price.toString() : "N/A"}
           finalPrice="Open for Bidding"
-          location="Lohare"
+          location={vehicle.city || "Dubai"}
         />
         <CarInspection />
         <CarDetailsTable />
@@ -94,26 +114,31 @@ export default function DetailScreen() {
         <InfoSection
           title="CAR SPECIFICATION"
           items={[
-            { label: "Registered In", value: "Un-Registered" },
-            { label: "Assembly", value: "Imported" },
-            { label: "Engine Capacity", value: "660 cc" },
-            { label: "Last Updated", value: "Oct 13, 2025" },
-            { label: "Color", value: "Gold" },
-            { label: "Transmission Type", value: "Yes In Agency" },
-            { label: "Ad Ref #", value: "10571601" },
-            { label: "Body Type", value: "Hatchback", highlight: true },
+            { label: "Make", value: vehicle.make },
+            { label: "Model", value: vehicle.model },
+            { label: "Year", value: vehicle.year.toString() },
+            { label: "Transmission", value: vehicle.transmission },
+            { label: "Mileage", value: `${vehicle.mileage?.toLocaleString()} km` },
+            { label: "VIN", value: vehicle.vin },
+            { label: "City", value: vehicle.city },
+            { label: "Category", value: vehicle.type, highlight: true },
           ]}
         />
         <InfoSection
           title="OWNERSHIP INFORMATION"
           items={[
-            { label: "Currently financed?", value: "Yes" },
-            { label: "No Of Keys", value: "02" },
-            { label: "Car Registration City", value: "Texas" },
+            { label: "Mobile", value: vehicle.mobileNumber },
+            { label: "Whatsapp Contact", value: vehicle.allowWhatpsAppContact ? "Yes" : "No" },
+            { label: "Free Inspection", value: vehicle.freeinspectionRequest ? "Yes" : "No" },
           ]}
         />
         <SpecifiedFeatures />
-        <BidNowButton />
+        <BidNowButton 
+          onPress={() => router.push({
+            pathname: "/bid",
+            params: { vId: id, auctionId }
+          })}
+        />
       </ScrollView>
     </SafeAreaView>
   );
@@ -150,6 +175,26 @@ const styles = StyleSheet.create({
   },
   content: {
     paddingBottom: 24,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: 24,
+  },
+  emptyText: {
+    fontSize: 16,
+    fontFamily: "Mulish_400Regular",
+    color: "#494949",
+    textAlign: "center",
+  },
+  emptyTextDark: {
+    color: "#FFFFFF",
   },
   loadMoreButton: {
     alignSelf: "center",

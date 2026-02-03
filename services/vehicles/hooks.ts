@@ -1,5 +1,10 @@
-import { useInfiniteQuery } from "@tanstack/react-query";
-import { getSellingVehicles, SellingVehiclesResponse } from "./index";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import {
+  getSellingVehicleById,
+  getSellingVehicles,
+  SellingVehicleResponse,
+  SellingVehiclesResponse,
+} from "./index";
 
 const LIMIT = 10;
 const SORT_BY = "createdAt:desc";
@@ -13,8 +18,17 @@ export const useSellingVehicles = () => {
     getNextPageParam: (lastPage) => {
       const data = lastPage?.data;
       if (!data) return undefined;
-      const { page, totalPages } = data;
+      const page = data.page as number;
+      const totalPages = data.totalPages as number;
       return page < totalPages ? page + 1 : undefined;
     },
+  });
+};
+
+export const useSellingVehicle = (id: string) => {
+  return useQuery<SellingVehicleResponse, Error>({
+    queryKey: ["selling-vehicle", id],
+    queryFn: () => getSellingVehicleById(id),
+    enabled: !!id,
   });
 };

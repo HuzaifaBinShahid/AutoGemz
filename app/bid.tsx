@@ -10,9 +10,12 @@ import {
     useFonts,
 } from "@expo-google-fonts/chakra-petch";
 import { Mulish_400Regular } from "@expo-google-fonts/mulish";
-import { useRouter } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import React from "react";
+import { useAuctions } from "../services/auctions/hooks";
+import { useBids } from "../services/bids/hooks";
+import { ActivityIndicator } from "react-native";
 import {
     ScrollView,
     StyleSheet,
@@ -42,11 +45,30 @@ export default function BidScreen() {
     Mulish_400Regular,
   });
   const router = useRouter();
+  const { id, vId, auctionId } = useLocalSearchParams<{ id: string; vId: string; auctionId: string }>();
+  const resolvedVehicleId = vId || id;
   const colorScheme = useColorScheme();
   const isDark = colorScheme === "dark";
 
-  if (!fontsLoaded) {
-    return null;
+  const { data: auctionData, isLoading: isAuctionLoading } = useAuctions({ 
+    isActive: true 
+  }); 
+  // Finding the specific auction and vehicle details
+  const auction = auctionData?.data?.results?.find((a: any) => (a.id === auctionId || a._id === auctionId));
+  const vehicle = auction?.vehicles?.find((v: any) => {
+    const vid = v.vehicleId?._id || v.vehicleId?.id || v.vehicleId;
+    return vid === resolvedVehicleId;
+  });
+  const vehicleData = typeof vehicle?.vehicleId === "object" ? vehicle.vehicleId : null;
+
+  const { data: bidsData } = useBids(auctionId as string, { vehicleId: resolvedVehicleId as string });
+
+  if (!fontsLoaded || isAuctionLoading) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: isDark ? 'black' : 'white' }}>
+        <ActivityIndicator color="#DC3729" size="large" />
+      </View>
+    );
   }
 
   return (
@@ -69,16 +91,21 @@ export default function BidScreen() {
         contentContainerStyle={styles.content}
         showsVerticalScrollIndicator={false}
       >
-        <BidCountdownBanner hours={1} minutes={59} seconds={59} />
-        <AuctionImageCarousel images={carImages} />
+        <BidCountdownBanner endDate={auction?.endDate || auction?.endTime} />
+        <AuctionImageCarousel images={vehicleData?.images?.length ? vehicleData.images : carImages} />
         <AuctionDetails
-          title="2023 FORD MUSTANG GT"
-          startPrice="12,0000"
-          finalPrice="Open for Bidding"
-          location="Lohare"
+          title={auction?.title || `${vehicleData?.year} ${vehicleData?.make} ${vehicleData?.model}`.toUpperCase()}
+          startPrice={(vehicle?.minimumBidAmount || vehicleData?.price || 0).toLocaleString()}
+          finalPrice={bidsData?.data?.results?.[0]?.bidAmount ? `RS ${bidsData.data.results[0].bidAmount.toLocaleString()}` : "Open for Bidding"}
+          location={vehicleData?.city || "Dubai"}
         />
-        <BidRankTable />
-        <YourBidSection />
+        <BidRankTable bids={bidsData?.data?.results || []} />
+        <YourBidSection 
+          auctionId={auctionId} 
+          vehicleId={resolvedVehicleId} 
+          minBid={vehicle?.minimumBidAmount || vehicleData?.price || 0} 
+          increment={vehicle?.bidIncrement || 1000} 
+        />
       </ScrollView>
     </SafeAreaView>
   );
