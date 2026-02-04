@@ -21,29 +21,10 @@ import { NewsCard } from "../../components/home/NewsCard";
 import { BottomNav } from "../../components/home/BottomNav";
 import { AuctionBottomSheet } from "../../components/home/AuctionBottomSheet";
 import { useRouter } from "expo-router";
+import { useAuctions } from "../../services/auctions/hooks";
+import { ActivityIndicator } from "react-native";
 
-const auctions = [
-  {
-    id: 1,
-    image: require("../../assets/images/AuthBg.png"),
-    title: "2023 FORD MUSTANG GT",
-    currentBid: "CURRENT BID RS: 12,00,00",
-    timeRemaining: "1D 45H 3S",
-    year: "2017",
-    mileage: "152,000 km",
-    isActive: true,
-  },
-  {
-    id: 2,
-    image: require("../../assets/images/AuthBg.png"),
-    title: "2022 PORSCHE 911",
-    currentBid: "CURRENT BID RS: 15,00,00",
-    timeRemaining: "2D 12H 30S",
-    year: "2020",
-    mileage: "98,000 km",
-    isActive: true,
-  },
-];
+// Hardcoded auctions removed
 
 const news = [
   {
@@ -73,6 +54,24 @@ export default function HomeScreen() {
   const isDark = colorScheme === "dark";
   const [showAuctionSheet, setShowAuctionSheet] = useState(false);
   const router = useRouter();
+
+  const { data: auctionsData, isLoading: isAuctionsLoading } = useAuctions({
+    isActive: true,
+  });
+
+  const auctions = auctionsData?.data?.results || [];
+
+  const formatTimeRemaining = (endDate: string) => {
+    if (!endDate) return "—";
+    const end = new Date(endDate);
+    const now = new Date();
+    const diff = end.getTime() - now.getTime();
+    if (diff <= 0) return "Ended";
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    return `${days}D ${hours}H ${minutes}M`;
+  };
 
   if (!fontsLoaded) {
     return null;
@@ -112,18 +111,53 @@ export default function HomeScreen() {
           CURRENT AUCTIONS
         </Text>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.auctionsContainer}>
-          {auctions.map((auction) => (
-            <AuctionCard
-              key={auction.id}
-              image={auction.image}
-              title={auction.title}
-              currentBid={auction.currentBid}
-              timeRemaining={auction.timeRemaining}
-              year={auction.year}
-              mileage={auction.mileage}
-              isActive={auction.isActive}
-            />
-          ))}
+          {isAuctionsLoading ? (
+            <View style={{ width: 290, height: 150, justifyContent: 'center', alignItems: 'center' }}>
+              <ActivityIndicator color="#DC3729" />
+            </View>
+          ) : auctions.length === 0 ? (
+            <View style={{ width: 290, height: 150, justifyContent: 'center', alignItems: 'center' }}>
+              <Text style={{ color: isDark ? '#F4F4F4' : '#494949', fontFamily: 'Mulish_400Regular' }}>No active auctions</Text>
+            </View>
+          ) : (
+            auctions.map((auction) => {
+              const vehicle = auction.vehicles?.[0]?.vehicleId;
+              const vehicleData = typeof vehicle === 'object' ? vehicle : null;
+              const actualVehicleId = vehicleData?._id || vehicleData?.id || vehicle;
+              
+              const now = new Date();
+              const start = new Date(auction.startDate || auction.startTime);
+              const end = new Date(auction.endDate || auction.endTime);
+              
+              let status = "ACTIVE";
+              if (now > end) status = "ENDED";
+              else if (now < start) status = "SCHEDULED";
+
+              return (
+                <TouchableOpacity
+                  key={auction.id}
+                  onPress={() => router.push({
+                    pathname: "/bid",
+                    params: { 
+                      vId: actualVehicleId, 
+                      auctionId: auction.id || auction._id 
+                    }
+                  })}
+                >
+                  <AuctionCard
+                    image={vehicleData?.images?.[0] || require("../../assets/images/AuthBg.png")}
+                    title={auction.title || "Auction"}
+                    currentBid={`CURRENT BID RS: ${(auction.currentBid || vehicleData?.price || 0).toLocaleString()}`}
+                    timeRemaining={formatTimeRemaining(auction.endDate || auction.endTime)}
+                    year={vehicleData?.year?.toString() || "—"}
+                    mileage={`${(vehicleData?.mileage || 0).toLocaleString()} km`}
+                    isActive={auction.isActive}
+                    status={status}
+                  />
+                </TouchableOpacity>
+              );
+            })
+          )}
         </ScrollView>
 
         <Text style={[styles.sectionTitle, isDark && styles.sectionTitleDark, styles.newsTitle]}>

@@ -2,7 +2,7 @@ import { apiClient } from "../client";
 import { AuctionUrls } from "./url";
 
 export interface GetAuctionsParams {
-  isActive: boolean;
+  isActive?: boolean;
   page?: number;
   limit?: number;
   sortBy?: string;
@@ -35,6 +35,13 @@ export interface AuctionsResponse {
 
 export const getAuctions = async (params: GetAuctionsParams): Promise<AuctionsResponse> => {
   const response = await apiClient.get<AuctionsResponse>(AuctionUrls.GET_AUCTIONS, {
+    params,
+  });
+  return response.data;
+};
+
+export const getMyBids = async (params: Partial<GetAuctionsParams> = {}): Promise<AuctionsResponse> => {
+  const response = await apiClient.get<AuctionsResponse>(AuctionUrls.GET_MY_BIDS, {
     params,
   });
   return response.data;

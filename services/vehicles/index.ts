@@ -89,3 +89,17 @@ export const getSellingVehicles = async (
   );
   return response.data;
 };
+
+export interface SellingVehicleResponse {
+  message?: string;
+  data?: SellingVehicle;
+}
+
+export const getSellingVehicleById = async (
+  id: string
+): Promise<SellingVehicleResponse> => {
+  const response = await apiClient.get<SellingVehicleResponse>(
+    `${VehicleUrls.GET_VEHICLE}/${id}`
+  );
+  return response.data;
+};

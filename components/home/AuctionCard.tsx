@@ -15,6 +15,7 @@ interface AuctionCardProps {
   year: string;
   mileage: string;
   isActive?: boolean;
+  status?: string;
   width?: number;
   darkBorderColor?: string;
 }
@@ -27,11 +28,14 @@ export function AuctionCard({
   year,
   mileage,
   isActive = false,
+  status,
   width = 290,
   darkBorderColor = "#737779",
 }: AuctionCardProps) {
   const colorScheme = useColorScheme();
   const isDark = colorScheme === "dark";
+
+  const displayStatus = status || (isActive ? "ACTIVE" : null);
 
   return (
     <View
@@ -45,9 +49,9 @@ export function AuctionCard({
         <View style={styles.leftSection}>
           <View style={styles.imageContainer}>
             <Image source={image} style={styles.image} contentFit="cover" />
-            {isActive && (
-              <View style={styles.activeBadge}>
-                <Text style={[styles.activeText, isDark && styles.activeTextDark]}>ACTIVE</Text>
+            {displayStatus && (
+              <View style={[styles.activeBadge, displayStatus === "SCHEDULED" && { backgroundColor: "#F59E0B" }]}>
+                <Text style={[styles.activeText, isDark && styles.activeTextDark]}>{displayStatus}</Text>
               </View>
             )}
           </View>

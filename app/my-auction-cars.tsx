@@ -10,12 +10,15 @@ import { useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
 import {
+    ActivityIndicator,
     FlatList,
     StyleSheet,
     Text,
     TouchableOpacity,
     View,
 } from "react-native";
+import { useMyBids } from "../services/auctions/hooks";
+import { useProfile } from "../services/auth/hooks";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 type TabType = "all" | "won" | "lost";
@@ -33,42 +36,7 @@ interface AuctionCar {
   startingPrice: string;
 }
 
-const dummyCars: AuctionCar[] = [
-  {
-    id: "1",
-    image: require("../assets/images/AuthBg.png"),
-    title: "2023 FORD MUSTANG GT",
-    status: "ending_soon",
-    timeRemaining: "0D 5H 0S",
-    bidders: 12,
-    year: "2017",
-    mileage: "15000 KM",
-    currentBid: "12,00,00",
-    startingPrice: "12,00,00",
-  },
-  {
-    id: "2",
-    image: require("../assets/images/AuthBg.png"),
-    title: "2023 FORD MUSTANG GT",
-    status: "won",
-    bidders: 8,
-    year: "2019",
-    mileage: "25000 KM",
-    currentBid: "15,00,00",
-    startingPrice: "10,00,00",
-  },
-  {
-    id: "3",
-    image: require("../assets/images/AuthBg.png"),
-    title: "2023 FORD MUSTANG GT",
-    status: "scheduled",
-    bidders: 5,
-    year: "2020",
-    mileage: "30000 KM",
-    currentBid: "18,00,00",
-    startingPrice: "15,00,00",
-  },
-];
+// Dummy data removed
 
 export default function MyAuctionCarsScreen() {
   const [fontsLoaded] = useFonts({
@@ -78,16 +46,40 @@ export default function MyAuctionCarsScreen() {
   const router = useRouter();
   const colorScheme = useColorScheme();
   const isDark = colorScheme === "dark";
+  const { data, isLoading } = useMyBids();
+  
+  // Debug Log
+  console.log("My Bids API Response:", JSON.stringify(data, null, 2));
+
+  const { data: profileData } = useProfile();
+  const currentUserId = profileData?.data?.id || "";
+  console.log("Current User ID:", currentUserId);
   const [activeTab, setActiveTab] = useState<TabType>("all");
 
   if (!fontsLoaded) {
     return null;
   }
 
-  const filteredCars = dummyCars.filter((car) => {
+  const auctions = data?.data?.results || [];
+
+  const formatTimeRemaining = (endDate: string) => {
+    if (!endDate) return "—";
+    const end = new Date(endDate);
+    const now = new Date();
+    const diff = end.getTime() - now.getTime();
+    if (diff <= 0) return "Ended";
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    return `${days}D ${hours}H ${minutes}M`;
+  };
+
+  const filteredCars = auctions.filter((auction) => {
+    const isWinner = (auction.winnerId?._id === currentUserId || auction.winnerId === currentUserId);
+    
     if (activeTab === "all") return true;
-    if (activeTab === "won") return car.status === "won";
-    if (activeTab === "lost") return car.status !== "won" && car.status !== "scheduled";
+    if (activeTab === "won") return isWinner || auction.status === "won";
+    if (activeTab === "lost") return !isWinner && (auction.status === "lost" || auction.status === "outbid");
     return true;
   });
 
@@ -137,28 +129,50 @@ export default function MyAuctionCarsScreen() {
         ))}
       </View>
 
-      <FlatList
-        data={filteredCars}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <View style={styles.cardWrapper}>
-            <MyAuctionCarCard
-              image={item.image}
-              title={item.title}
-              status={item.status}
-              timeRemaining={item.timeRemaining}
-              bidders={item.bidders}
-              year={item.year}
-              mileage={item.mileage}
-              currentBid={item.currentBid}
-              startingPrice={item.startingPrice}
-              onPress={() => router.push("/detail")}
-            />
-          </View>
-        )}
-        contentContainerStyle={styles.listContent}
-        showsVerticalScrollIndicator={false}
-      />
+      {isLoading ? (
+        <View style={styles.centerContainer}>
+          <ActivityIndicator color="#DC3729" size="large" />
+        </View>
+      ) : filteredCars.length === 0 ? (
+        <View style={styles.centerContainer}>
+          <Text style={[styles.emptyText, isDark && styles.emptyTextDark]}>
+            No auctions found
+          </Text>
+        </View>
+      ) : (
+        <FlatList
+          data={filteredCars}
+          keyExtractor={(item) => item.id || item._id}
+          renderItem={({ item }) => {
+            const vehicle = item.vehicles?.[0]?.vehicleId;
+            const vehicleData = typeof vehicle === 'object' ? vehicle : null;
+            const actualVehicleId = vehicleData?._id || vehicleData?.id || vehicle;
+            const isWinner = (item.winnerId?._id === currentUserId || item.winnerId === currentUserId);
+
+            return (
+              <View style={styles.cardWrapper}>
+                <MyAuctionCarCard
+                  image={vehicleData?.images?.[0] || require("../assets/images/AuthBg.png")}
+                  title={item.title || "AUCTION"}
+                  status={isWinner ? "won" : (item.status as AuctionStatus || (item.isActive ? "active" : "ending_soon"))}
+                  timeRemaining={formatTimeRemaining(item.endDate || item.endTime)}
+                  bidders={item.biddersCount || 0}
+                  year={vehicleData?.year?.toString() || "—"}
+                  mileage={`${(vehicleData?.mileage || 0).toLocaleString()} KM`}
+                  currentBid={(item.currentBid || vehicleData?.price || 0).toLocaleString()}
+                  startingPrice={(item.startingPrice || 0).toLocaleString()}
+                  onPress={() => router.push({
+                    pathname: "/winner",
+                    params: { vId: actualVehicleId, auctionId: item.id || item._id }
+                  })}
+                />
+              </View>
+            );
+          }}
+          contentContainerStyle={styles.listContent}
+          showsVerticalScrollIndicator={false}
+        />
+      )}
     </SafeAreaView>
   );
 }
@@ -227,5 +241,18 @@ const styles = StyleSheet.create({
   },
   cardWrapper: {
     marginBottom: 16,
+  },
+  centerContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  emptyText: {
+    fontSize: 16,
+    fontFamily: "Mulish_400Regular",
+    color: "#494949",
+  },
+  emptyTextDark: {
+    color: "#A5A5A5",
   },
 });

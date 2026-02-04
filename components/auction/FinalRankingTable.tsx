@@ -15,86 +15,24 @@ interface FinalBidEntry {
 
 interface FinalRankingTableProps {
   isWinner?: boolean;
+  bids?: any[];
+  currentUserId?: string;
 }
 
-const winnerBids: FinalBidEntry[] = [
-  {
-    id: "1",
-    rank: 1,
-    name: "Ahmed Sabana",
-    bidAmount: "12,00,00",
-    status: "Winner",
-    avatar: require("../../assets/images/AuthBg.png"),
-    isWinner: true,
-    isCurrentUser: true,
-  },
-  {
-    id: "2",
-    rank: 2,
-    name: "Sara Chole",
-    bidAmount: "11,00,00",
-    status: "Outbid",
-    avatar: require("../../assets/images/AuthBg.png"),
-  },
-  {
-    id: "3",
-    rank: 3,
-    name: "Harry Lincons",
-    bidAmount: "10,00,00",
-    status: "Outbid",
-    avatar: require("../../assets/images/AuthBg.png"),
-  },
-  {
-    id: "4",
-    rank: 4,
-    name: "Mathew Jone",
-    bidAmount: "9,00,00",
-    status: "Outbid",
-    avatar: require("../../assets/images/AuthBg.png"),
-  },
-];
-
-const outbidBids: FinalBidEntry[] = [
-  {
-    id: "1",
-    rank: 1,
-    name: "Ahmed Sabana",
-    bidAmount: "12,00,00",
-    status: "Winner",
-    avatar: require("../../assets/images/AuthBg.png"),
-    isWinner: true,
-  },
-  {
-    id: "2",
-    rank: 2,
-    name: "Sara Chole",
-    bidAmount: "11,00,00",
-    status: "You were outbid",
-    avatar: require("../../assets/images/AuthBg.png"),
-    isCurrentUser: true,
-  },
-  {
-    id: "3",
-    rank: 3,
-    name: "Harry Lincons",
-    bidAmount: "10,00,00",
-    status: "Outbid",
-    avatar: require("../../assets/images/AuthBg.png"),
-  },
-  {
-    id: "4",
-    rank: 4,
-    name: "Mathew Jone",
-    bidAmount: "9,00,00",
-    status: "Outbid",
-    avatar: require("../../assets/images/AuthBg.png"),
-  },
-];
-
-export function FinalRankingTable({ isWinner = false }: FinalRankingTableProps) {
+export function FinalRankingTable({ isWinner = false, bids = [], currentUserId }: FinalRankingTableProps) {
   const colorScheme = useColorScheme();
   const isDark = colorScheme === "dark";
-  const finalBids = isWinner ? winnerBids : outbidBids;
+  
+  const finalBids = bids.map((bid, index) => ({
+    id: bid._id || bid.id || index.toString(),
+    rank: index + 1,
+    name: bid.bidderId?.fullName || "Bidder",
+    bidAmount: bid.bidAmount.toLocaleString(),
+    status: (index + 1) === 1 ? "Winner" : (bid.bidderId?._id === currentUserId || bid.bidderId?.id === currentUserId || bid.bidderId === currentUserId) ? "You were outbid" : "Outbid",
+    avatar: require("../../assets/images/AuthBg.png"),
+    isWinner: (index + 1) === 1,
+    isCurrentUser: bid.bidderId?._id === currentUserId || bid.bidderId?.id === currentUserId || bid.bidderId === currentUserId,
+  }));
 
   return (
     <View style={[styles.container, isDark && styles.containerDark]}>

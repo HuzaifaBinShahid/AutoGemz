@@ -5,6 +5,7 @@ interface BidCountdownBannerProps {
   hours?: number;
   minutes?: number;
   seconds?: number;
+  endDate?: string;
   format?: "default" | "compact";
 }
 
@@ -12,11 +13,31 @@ export function BidCountdownBanner({
   hours = 1,
   minutes = 59,
   seconds = 59,
+  endDate,
   format = "default",
 }: BidCountdownBannerProps) {
   const [time, setTime] = useState({ hours, minutes, seconds });
 
   useEffect(() => {
+    if (endDate) {
+      const updateFromEndDate = () => {
+        const end = new Date(endDate);
+        const now = new Date();
+        const diff = end.getTime() - now.getTime();
+        if (diff <= 0) {
+          setTime({ hours: 0, minutes: 0, seconds: 0 });
+          return;
+        }
+        const h = Math.floor(diff / (1000 * 60 * 60));
+        const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const s = Math.floor((diff % (1000 * 60)) / 1000);
+        setTime({ hours: h, minutes: m, seconds: s });
+      };
+      updateFromEndDate();
+      const interval = setInterval(updateFromEndDate, 1000);
+      return () => clearInterval(interval);
+    }
+
     const timer = setInterval(() => {
       setTime((prev) => {
         let newSeconds = prev.seconds - 1;

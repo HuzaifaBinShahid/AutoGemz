@@ -13,17 +13,21 @@ import {
   useFonts,
 } from "@expo-google-fonts/chakra-petch";
 import { Mulish_400Regular } from "@expo-google-fonts/mulish";
-import { useRouter } from "expo-router";
-import { StatusBar } from "expo-status-bar";
-import React from "react";
 import {
+  ActivityIndicator,
   ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
+import { useLocalSearchParams, useRouter } from "expo-router";
+import { useAuctions } from "../services/auctions/hooks";
+import { useBids } from "../services/bids/hooks";
+import { useProfile } from "../services/auth/hooks";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { StatusBar } from "expo-status-bar";
+import React from "react";
 
 const carImages = [
   require("../assets/images/AuthBg.png"),
@@ -40,6 +44,7 @@ const carImages = [
 ];
 
 export default function WinnerScreen() {
+  const { vId, auctionId } = useLocalSearchParams<{ vId: string; auctionId: string }>();
   const [fontsLoaded] = useFonts({
     ChakraPetch_600SemiBold,
     Mulish_400Regular,
@@ -47,13 +52,35 @@ export default function WinnerScreen() {
   const router = useRouter();
   const colorScheme = useColorScheme();
   const isDark = colorScheme === "dark";
-  const isAuctionClosed = true;
-  const userRank = 2;
-  const isWinner = userRank === 1;
 
-  if (!fontsLoaded) {
-    return null;
+  const { data: auctionData, isLoading: isAuctionLoading } = useAuctions({
+    limit: 100,
+  });
+  const { data: bidsData, isLoading: isBidsLoading } = useBids(auctionId);
+  const { data: profileData, isLoading: isProfileLoading } = useProfile();
+
+  const auction = auctionData?.data?.results?.find((a: any) => a.id === auctionId || a._id === auctionId);
+  const bids = bidsData?.data?.results || [];
+  
+  const currentUserId = profileData?.data?.id || "";
+
+  const userRank = bids.findIndex((b: any) => b.bidderId?._id === currentUserId || b.bidderId?.id === currentUserId || b.bidderId === currentUserId) + 1;
+  const isAuctionClosed = auction?.status === "closed" || new Date(auction?.endDate || auction?.endTime) < new Date();
+  
+  const isWinner = (auction?.winnerId?._id === currentUserId || auction?.winnerId === currentUserId);
+
+  if (!fontsLoaded || isAuctionLoading || isBidsLoading || isProfileLoading) {
+    return (
+      <View style={[styles.container, isDark && styles.containerDark, { justifyContent: 'center', alignItems: 'center' }]}>
+        <ActivityIndicator color="#DC3729" size="large" />
+      </View>
+    );
   }
+
+  const vehicle = auction?.vehicles?.find((v: any) => v.vehicleId?._id === vId || v.vehicleId?.id === vId || v.vehicleId === vId)?.vehicleId;
+  const vehicleData = typeof vehicle === 'object' ? vehicle : null;
+
+  const images = vehicleData?.images || carImages;
 
   return (
     <SafeAreaView
@@ -77,25 +104,28 @@ export default function WinnerScreen() {
       >
         {isAuctionClosed && !isWinner && <OutbidBanner />}
         {isWinner && <WinnerBanner />}
-        <AuctionImageCarousel images={carImages} />
+        <AuctionImageCarousel images={images} />
         {isWinner && (
           <TouchableOpacity
-            onPress={() => router.push("/detail")}
+            onPress={() => router.push({
+              pathname: "/detail",
+              params: { id: vId }
+            })}
             style={styles.viewDetailsLink}
           >
             <Text style={styles.viewDetailsText}>VIEW CAR DETAILS</Text>
           </TouchableOpacity>
         )}
         <AuctionDetails
-          title="2023 FORD MUSTANG GT"
-          startPrice="12,0000"
-          finalPrice="12,0000"
-          location="Lohare"
+          title={auction?.title || vehicleData?.name || "AUCTION CAR"}
+          startPrice={(auction?.startingPrice || 0).toLocaleString()}
+          finalPrice={(auction?.currentBid || 0).toLocaleString()}
+          location={vehicleData?.location || "Unknown"}
         />
-        <FinalRankingTable isWinner={isWinner} />
-        {isAuctionClosed && !isWinner && <AuctionClosedBanner bidAmount="16,000" rank={userRank} />}
+        <FinalRankingTable isWinner={isWinner} bids={bids} currentUserId={currentUserId} />
+        {isAuctionClosed && !isWinner && <AuctionClosedBanner bidAmount={bids.find((b: any) => b.bidderId?._id === currentUserId || b.bidderId?.id === currentUserId || b.bidderId === currentUserId)?.bidAmount?.toLocaleString() || "0"} rank={userRank} />}
         {isWinner && <CongratulationsBox />}
-        <AuctionResult />
+        <AuctionResult auction={auction} bids={bids} />
       </ScrollView>
       <View style={[styles.bottomButtons, isDark && styles.bottomButtonsDark]}>
         {isWinner ? (
