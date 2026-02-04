@@ -55,7 +55,6 @@ export default function WinnerScreen() {
 
   const { data: auctionData, isLoading: isAuctionLoading } = useAuctions({
     limit: 100,
-    isActive: true,
   });
   const { data: bidsData, isLoading: isBidsLoading } = useBids(auctionId);
   const { data: profileData, isLoading: isProfileLoading } = useProfile();
@@ -67,7 +66,8 @@ export default function WinnerScreen() {
 
   const userRank = bids.findIndex((b: any) => b.bidderId?._id === currentUserId || b.bidderId?.id === currentUserId || b.bidderId === currentUserId) + 1;
   const isAuctionClosed = auction?.status === "closed" || new Date(auction?.endDate || auction?.endTime) < new Date();
-  const isWinner = userRank === 1;
+  
+  const isWinner = (auction?.winnerId?._id === currentUserId || auction?.winnerId === currentUserId);
 
   if (!fontsLoaded || isAuctionLoading || isBidsLoading || isProfileLoading) {
     return (

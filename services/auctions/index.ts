@@ -2,7 +2,7 @@ import { apiClient } from "../client";
 import { AuctionUrls } from "./url";
 
 export interface GetAuctionsParams {
-  isActive: boolean;
+  isActive?: boolean;
   page?: number;
   limit?: number;
   sortBy?: string;

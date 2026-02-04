@@ -138,11 +138,11 @@ export function YourBidSection({ auctionId, vehicleId, minBid, increment }: Your
           Summary
         </Text>
         <Text style={[styles.summaryText, isDark && styles.summaryTextDark]}>
-          Minimum entry bid: RS 10,000
+          Minimum entry bid: AED {formatBidAmount(minBid)}
         </Text>
         <View style={styles.dashedLine} />
         <Text style={[styles.summaryText, isDark && styles.summaryTextDark]}>
-          Total: RS 10,000
+          Total: AED {formatBidAmount(bidAmount)}
         </Text>
       </View>
     </View>

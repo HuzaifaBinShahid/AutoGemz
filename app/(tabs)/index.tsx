@@ -125,6 +125,14 @@ export default function HomeScreen() {
               const vehicleData = typeof vehicle === 'object' ? vehicle : null;
               const actualVehicleId = vehicleData?._id || vehicleData?.id || vehicle;
               
+              const now = new Date();
+              const start = new Date(auction.startDate || auction.startTime);
+              const end = new Date(auction.endDate || auction.endTime);
+              
+              let status = "ACTIVE";
+              if (now > end) status = "ENDED";
+              else if (now < start) status = "SCHEDULED";
+
               return (
                 <TouchableOpacity
                   key={auction.id}
@@ -144,6 +152,7 @@ export default function HomeScreen() {
                     year={vehicleData?.year?.toString() || "—"}
                     mileage={`${(vehicleData?.mileage || 0).toLocaleString()} km`}
                     isActive={auction.isActive}
+                    status={status}
                   />
                 </TouchableOpacity>
               );

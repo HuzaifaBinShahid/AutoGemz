@@ -18,6 +18,7 @@ import {
     View,
 } from "react-native";
 import { useMyBids } from "../services/auctions/hooks";
+import { useProfile } from "../services/auth/hooks";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 type TabType = "all" | "won" | "lost";
@@ -46,6 +47,13 @@ export default function MyAuctionCarsScreen() {
   const colorScheme = useColorScheme();
   const isDark = colorScheme === "dark";
   const { data, isLoading } = useMyBids();
+  
+  // Debug Log
+  console.log("My Bids API Response:", JSON.stringify(data, null, 2));
+
+  const { data: profileData } = useProfile();
+  const currentUserId = profileData?.data?.id || "";
+  console.log("Current User ID:", currentUserId);
   const [activeTab, setActiveTab] = useState<TabType>("all");
 
   if (!fontsLoaded) {
@@ -67,10 +75,11 @@ export default function MyAuctionCarsScreen() {
   };
 
   const filteredCars = auctions.filter((auction) => {
+    const isWinner = (auction.winnerId?._id === currentUserId || auction.winnerId === currentUserId);
+    
     if (activeTab === "all") return true;
-    // Map status properly based on API response
-    if (activeTab === "won") return auction.status === "won";
-    if (activeTab === "lost") return auction.status === "lost";
+    if (activeTab === "won") return isWinner || auction.status === "won";
+    if (activeTab === "lost") return !isWinner && (auction.status === "lost" || auction.status === "outbid");
     return true;
   });
 
@@ -138,13 +147,14 @@ export default function MyAuctionCarsScreen() {
             const vehicle = item.vehicles?.[0]?.vehicleId;
             const vehicleData = typeof vehicle === 'object' ? vehicle : null;
             const actualVehicleId = vehicleData?._id || vehicleData?.id || vehicle;
+            const isWinner = (item.winnerId?._id === currentUserId || item.winnerId === currentUserId);
 
             return (
               <View style={styles.cardWrapper}>
                 <MyAuctionCarCard
                   image={vehicleData?.images?.[0] || require("../assets/images/AuthBg.png")}
                   title={item.title || "AUCTION"}
-                  status={item.status as AuctionStatus || (item.isActive ? "active" : "ending_soon")}
+                  status={isWinner ? "won" : (item.status as AuctionStatus || (item.isActive ? "active" : "ending_soon"))}
                   timeRemaining={formatTimeRemaining(item.endDate || item.endTime)}
                   bidders={item.biddersCount || 0}
                   year={vehicleData?.year?.toString() || "—"}
