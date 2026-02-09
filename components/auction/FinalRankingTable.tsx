@@ -17,22 +17,52 @@ interface FinalRankingTableProps {
   isWinner?: boolean;
   bids?: any[];
   currentUserId?: string;
+  participants?: any[];
 }
 
-export function FinalRankingTable({ isWinner = false, bids = [], currentUserId }: FinalRankingTableProps) {
+export function FinalRankingTable({
+  isWinner = false,
+  bids = [],
+  currentUserId,
+  participants = [],
+}: FinalRankingTableProps) {
   const colorScheme = useColorScheme();
   const isDark = colorScheme === "dark";
-  
+
   const finalBids = bids.map((bid, index) => ({
     id: bid._id || bid.id || index.toString(),
     rank: index + 1,
     name: bid.bidderId?.fullName || "Bidder",
     bidAmount: bid.bidAmount.toLocaleString(),
-    status: (index + 1) === 1 ? "Winner" : (bid.bidderId?._id === currentUserId || bid.bidderId?.id === currentUserId || bid.bidderId === currentUserId) ? "You were outbid" : "Outbid",
+    status:
+      index + 1 === 1
+        ? "Winner"
+        : bid.bidderId?._id === currentUserId ||
+            bid.bidderId?.id === currentUserId ||
+            bid.bidderId === currentUserId
+          ? "You were outbid"
+          : "Outbid",
     avatar: require("../../assets/images/AuthBg.png"),
-    isWinner: (index + 1) === 1,
-    isCurrentUser: bid.bidderId?._id === currentUserId || bid.bidderId?.id === currentUserId || bid.bidderId === currentUserId,
+    isWinner: index + 1 === 1,
+    isCurrentUser:
+      bid.bidderId?._id === currentUserId ||
+      bid.bidderId?.id === currentUserId ||
+      bid.bidderId === currentUserId,
   }));
+
+  const displayBids =
+    finalBids.length > 0
+      ? finalBids
+      : participants.map((p, index) => ({
+          id: p._id || p.id || index.toString(),
+          rank: index + 1,
+          name: p.fullName || "Participant",
+          bidAmount: "—",
+          status: "Joined",
+          avatar: require("../../assets/images/AuthBg.png"),
+          isWinner: false,
+          isCurrentUser: p._id === currentUserId || p.id === currentUserId,
+        }));
 
   return (
     <View style={[styles.container, isDark && styles.containerDark]}>
@@ -45,7 +75,9 @@ export function FinalRankingTable({ isWinner = false, bids = [], currentUserId }
             <View style={styles.redDivider} />
           </View>
           <View style={[styles.headerCell, styles.rankColumn]}>
-            <Text style={[styles.headerLabel, isDark && styles.headerLabelDark]}>
+            <Text
+              style={[styles.headerLabel, isDark && styles.headerLabelDark]}
+            >
               RANK
             </Text>
           </View>
@@ -53,7 +85,9 @@ export function FinalRankingTable({ isWinner = false, bids = [], currentUserId }
             <View style={styles.redDivider} />
           </View>
           <View style={[styles.headerCell, styles.bidColumn]}>
-            <Text style={[styles.headerLabel, isDark && styles.headerLabelDark]}>
+            <Text
+              style={[styles.headerLabel, isDark && styles.headerLabelDark]}
+            >
               BID
             </Text>
           </View>
@@ -61,19 +95,27 @@ export function FinalRankingTable({ isWinner = false, bids = [], currentUserId }
             <View style={styles.redDivider} />
           </View>
           <View style={[styles.headerCell, styles.statusColumn]}>
-            <Text style={[styles.headerLabel, isDark && styles.headerLabelDark]}>
+            <Text
+              style={[styles.headerLabel, isDark && styles.headerLabelDark]}
+            >
               STATUS
             </Text>
           </View>
         </View>
-        {finalBids.map((bid, index) => (
+        {displayBids.map((bid, index) => (
           <View
             key={bid.id}
             style={[
               styles.tableRow,
               bid.isWinner && bid.isCurrentUser && styles.bidRowWinner,
-              !bid.isWinner && bid.isCurrentUser && !isWinner && styles.bidRowOutbid,
-              !bid.isWinner && !bid.isCurrentUser && isDark && styles.tableRowDark,
+              !bid.isWinner &&
+                bid.isCurrentUser &&
+                !isWinner &&
+                styles.bidRowOutbid,
+              !bid.isWinner &&
+                !bid.isCurrentUser &&
+                isDark &&
+                styles.tableRowDark,
             ]}
           >
             <View style={[styles.tableCell, styles.rankColumn]}>
@@ -84,8 +126,13 @@ export function FinalRankingTable({ isWinner = false, bids = [], currentUserId }
                     style={[
                       styles.rankText,
                       isDark && styles.rankTextDark,
-                      bid.isWinner && bid.isCurrentUser && styles.rankTextWinner,
-                      !bid.isWinner && bid.isCurrentUser && !isWinner && styles.rankTextOutbid,
+                      bid.isWinner &&
+                        bid.isCurrentUser &&
+                        styles.rankTextWinner,
+                      !bid.isWinner &&
+                        bid.isCurrentUser &&
+                        !isWinner &&
+                        styles.rankTextOutbid,
                     ]}
                     numberOfLines={1}
                     ellipsizeMode="tail"
@@ -104,8 +151,13 @@ export function FinalRankingTable({ isWinner = false, bids = [], currentUserId }
                     style={[
                       styles.nameText,
                       isDark && styles.nameTextDark,
-                      bid.isWinner && bid.isCurrentUser && styles.nameTextWinner,
-                      !bid.isWinner && bid.isCurrentUser && !isWinner && styles.nameTextOutbid,
+                      bid.isWinner &&
+                        bid.isCurrentUser &&
+                        styles.nameTextWinner,
+                      !bid.isWinner &&
+                        bid.isCurrentUser &&
+                        !isWinner &&
+                        styles.nameTextOutbid,
                     ]}
                     numberOfLines={1}
                     ellipsizeMode="tail"
@@ -127,7 +179,10 @@ export function FinalRankingTable({ isWinner = false, bids = [], currentUserId }
                   styles.bidAmount,
                   isDark && styles.bidAmountDark,
                   bid.isWinner && bid.isCurrentUser && styles.bidAmountWinner,
-                  !bid.isWinner && bid.isCurrentUser && !isWinner && styles.bidAmountOutbid,
+                  !bid.isWinner &&
+                    bid.isCurrentUser &&
+                    !isWinner &&
+                    styles.bidAmountOutbid,
                 ]}
                 numberOfLines={1}
                 ellipsizeMode="tail"
@@ -144,11 +199,24 @@ export function FinalRankingTable({ isWinner = false, bids = [], currentUserId }
                 <Text
                   style={[
                     styles.statusText,
-                    bid.isWinner && bid.isCurrentUser && styles.statusTextWinner,
-                    bid.isWinner && !bid.isCurrentUser && styles.statusTextWinnerGreen,
-                    !bid.isWinner && bid.isCurrentUser && !isWinner && styles.statusTextOutbidWhite,
-                    !bid.isWinner && !bid.isCurrentUser && bid.status === "Outbid" && styles.statusTextOutbid,
-                    !bid.isWinner && !bid.isCurrentUser && bid.status === "You were outbid" && styles.statusTextOutbid,
+                    bid.isWinner &&
+                      bid.isCurrentUser &&
+                      styles.statusTextWinner,
+                    bid.isWinner &&
+                      !bid.isCurrentUser &&
+                      styles.statusTextWinnerGreen,
+                    !bid.isWinner &&
+                      bid.isCurrentUser &&
+                      !isWinner &&
+                      styles.statusTextOutbidWhite,
+                    !bid.isWinner &&
+                      !bid.isCurrentUser &&
+                      bid.status === "Outbid" &&
+                      styles.statusTextOutbid,
+                    !bid.isWinner &&
+                      !bid.isCurrentUser &&
+                      bid.status === "You were outbid" &&
+                      styles.statusTextOutbid,
                   ]}
                   numberOfLines={1}
                   ellipsizeMode="tail"

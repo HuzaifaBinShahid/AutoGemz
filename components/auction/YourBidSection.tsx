@@ -5,7 +5,15 @@ import LightbulbIcon from "../../components/ui/svgs/LightbulbIcon";
 import { useColorScheme } from "../../hooks/use-color-scheme";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
-import { ActivityIndicator, Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  ActivityIndicator,
+  Alert,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { useParticipateInAuction } from "../../services/auctions/hooks";
 import { usePlaceBid } from "../../services/bids/hooks";
 import { Toast } from "expo-react-native-toastify";
 
@@ -14,13 +22,21 @@ interface YourBidSectionProps {
   vehicleId: string;
   minBid: number;
   increment: number;
+  isParticipant?: boolean;
 }
 
-export function YourBidSection({ auctionId, vehicleId, minBid, increment }: YourBidSectionProps) {
+export function YourBidSection({
+  auctionId,
+  vehicleId,
+  minBid,
+  increment,
+  isParticipant = false,
+}: YourBidSectionProps) {
   const colorScheme = useColorScheme();
   const isDark = colorScheme === "dark";
   const router = useRouter();
   const [bidAmount, setBidAmount] = useState(minBid || 0);
+  const participateMutation = useParticipateInAuction(auctionId);
   const placeBidMutation = usePlaceBid(auctionId);
 
   // Sync bidAmount with minBid when it arrives from the API
@@ -43,22 +59,33 @@ export function YourBidSection({ auctionId, vehicleId, minBid, increment }: Your
   };
 
   const handleSetBid = () => {
-    if (!vehicleId) {
-      Toast.error("Vehicle ID is missing");
-      return;
+    if (isParticipant) {
+      placeBidMutation.mutate(
+        { vehicleId, bidAmount },
+        {
+          onSuccess: () => {
+            Toast.success("Bid placed successfully!");
+          },
+          onError: (error: any) => {
+            const message =
+              error?.response?.data?.message || "Failed to place bid";
+            Toast.error(message);
+          },
+        },
+      );
+    } else {
+      participateMutation.mutate(undefined, {
+        onSuccess: () => {
+          Toast.success("Participation request submitted successfully!");
+        },
+        onError: (error: any) => {
+          const message =
+            error?.response?.data?.message ||
+            "Failed to submit participation request";
+          Toast.error(message);
+        },
+      });
     }
-    placeBidMutation.mutate({
-      vehicleId,
-      bidAmount,
-    }, {
-      onSuccess: () => {
-        Toast.success("Your bid has been placed!");
-      },
-      onError: (error: any) => {
-        const message = error?.response?.data?.message || "Failed to place bid";
-        Toast.error(message);
-      }
-    });
   };
 
   return (
@@ -66,73 +93,110 @@ export function YourBidSection({ auctionId, vehicleId, minBid, increment }: Your
       <Text style={[styles.title, isDark && styles.titleDark]}>YOUR BID</Text>
       <View style={styles.instructionRow}>
         <LightbulbIcon />
-        <Text style={[styles.instructionText, isDark && styles.instructionTextDark]}>
+        <Text
+          style={[styles.instructionText, isDark && styles.instructionTextDark]}
+        >
           Bid $34,000 or higher to take 1st place.
         </Text>
       </View>
-      <View style={styles.bidInputRow}>
-        <TouchableOpacity
-          style={[styles.controlButton, bidAmount <= minBid && styles.controlButtonDisabled]}
-          onPress={handleDecrease}
-          disabled={bidAmount <= minBid}
-        >
-          <Text style={styles.controlButtonText}>-</Text>
-        </TouchableOpacity>
-        <View style={[styles.bidInput, isDark && styles.bidInputDark]}>
-          <Text style={[styles.bidInputText, isDark && styles.bidInputTextDark]}>
-            {formatBidAmount(bidAmount)}
-          </Text>
-        </View>
-        <TouchableOpacity
-          style={styles.controlButton}
-          onPress={handleIncrease}
-        >
-          <Text style={styles.controlButtonText}>+</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[
-            styles.setBidButton,
-            isDark && styles.setBidButtonDark,
-          ]}
-          onPress={handleSetBid}
-          disabled={placeBidMutation.isPending}
-        >
-          {placeBidMutation.isPending ? (
-            <ActivityIndicator size="small" color="#DC3729" />
-          ) : (
+      {isParticipant ? (
+        <>
+          <View style={styles.bidInputRow}>
+            <TouchableOpacity
+              style={[
+                styles.controlButton,
+                bidAmount <= minBid && styles.controlButtonDisabled,
+              ]}
+              onPress={handleDecrease}
+              disabled={bidAmount <= minBid}
+            >
+              <Text style={styles.controlButtonText}>-</Text>
+            </TouchableOpacity>
+            <View style={[styles.bidInput, isDark && styles.bidInputDark]}>
+              <Text
+                style={[styles.bidInputText, isDark && styles.bidInputTextDark]}
+              >
+                {formatBidAmount(bidAmount)}
+              </Text>
+            </View>
+            <TouchableOpacity
+              style={styles.controlButton}
+              onPress={handleIncrease}
+            >
+              <Text style={styles.controlButtonText}>+</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.setBidButton, isDark && styles.setBidButtonDark]}
+              onPress={handleSetBid}
+              disabled={placeBidMutation.isPending}
+            >
+              {placeBidMutation.isPending ? (
+                <ActivityIndicator size="small" color="#DC3729" />
+              ) : (
+                <Text
+                  style={[styles.setBidText, isDark && styles.setBidTextDark]}
+                >
+                  SET BID
+                </Text>
+              )}
+            </TouchableOpacity>
+          </View>
+          <View style={styles.bidTypeLabels}>
+            <Text
+              style={[styles.bidTypeLabel, isDark && styles.bidTypeLabelDark]}
+            >
+              INSTANT BID
+            </Text>
+            <Text
+              style={[styles.bidTypeLabel, isDark && styles.bidTypeLabelDark]}
+            >
+              SCHEDULE BID
+            </Text>
+          </View>
+          <View style={styles.bidTypeButtons}>
+            <TouchableOpacity style={styles.instantBidButton}>
+              <ElectricIcon />
+              <Text style={styles.instantBidText}>10K+ BID</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.scheduleBidButton}>
+              <ClockIcon />
+              <Text style={styles.scheduleBidText}>SCHEDULE BID</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.infoRow}>
+            <InfoIcon />
+            <Text style={styles.infoText}>
+              &quot;SET BID&quot; TO CONFIRM YOUR OFFER.
+            </Text>
+          </View>
+        </>
+      ) : (
+        <View style={styles.requestSection}>
+          <View style={styles.instructionRow}>
+            <InfoIcon />
             <Text
               style={[
-                styles.setBidText,
-                isDark && styles.setBidTextDark,
+                styles.instructionText,
+                isDark && styles.instructionTextDark,
               ]}
             >
-              SET BID
+              Send request to admin in order to participate in the auction
             </Text>
-          )}
-        </TouchableOpacity>
-      </View>
-      <View style={styles.bidTypeLabels}>
-        <Text style={[styles.bidTypeLabel, isDark && styles.bidTypeLabelDark]}>
-          INSTANT BID
-        </Text>
-        <Text style={[styles.bidTypeLabel, isDark && styles.bidTypeLabelDark]}>
-          SCHEDULE BID
-        </Text>
-      </View>
-      <View style={styles.bidTypeButtons}>
-        <TouchableOpacity style={styles.instantBidButton}>
-          <ElectricIcon />
-          <Text style={styles.instantBidText}>10K+ BID</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.scheduleBidButton}>
-          <ClockIcon />
-          <Text style={styles.scheduleBidText}>SCHEDULE BID</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.infoRow}>
-        <InfoIcon />
-        <Text style={styles.infoText}>&quot;SET BID&quot; TO CONFIRM YOUR OFFER.</Text>
-      </View>
+          </View>
+
+          <TouchableOpacity
+            style={[styles.sendRequestButton]}
+            onPress={handleSetBid}
+            disabled={participateMutation.isPending}
+          >
+            {participateMutation.isPending ? (
+              <ActivityIndicator size="small" color="#FFFFFF" />
+            ) : (
+              <Text style={styles.sendRequestText}>SEND REQUEST</Text>
+            )}
+          </TouchableOpacity>
+        </View>
+      )}
       <View style={styles.summarySection}>
         <Text style={[styles.summaryTitle, isDark && styles.summaryTitleDark]}>
           Summary
@@ -334,5 +398,21 @@ const styles = StyleSheet.create({
     borderBottomColor: "#E5E5E5",
     borderStyle: "dashed",
     marginVertical: 12,
+  },
+  requestSection: {
+    marginTop: 8,
+  },
+  sendRequestButton: {
+    backgroundColor: "#DC3729",
+    paddingVertical: 12,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 16,
+  },
+  sendRequestText: {
+    color: "white",
+    fontFamily: "ChakraPetch_600SemiBold",
+    fontSize: 16,
+    textTransform: "uppercase",
   },
 });

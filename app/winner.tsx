@@ -22,7 +22,7 @@ import {
   View,
 } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { useAuctions } from "../services/auctions/hooks";
+import { useAuctions, useAuction } from "../services/auctions/hooks";
 import { useBids } from "../services/bids/hooks";
 import { useProfile } from "../services/auth/hooks";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -44,7 +44,10 @@ const carImages = [
 ];
 
 export default function WinnerScreen() {
-  const { vId, auctionId } = useLocalSearchParams<{ vId: string; auctionId: string }>();
+  const { vId, auctionId } = useLocalSearchParams<{
+    vId: string;
+    auctionId: string;
+  }>();
   const [fontsLoaded] = useFonts({
     ChakraPetch_600SemiBold,
     Mulish_400Regular,
@@ -53,32 +56,73 @@ export default function WinnerScreen() {
   const colorScheme = useColorScheme();
   const isDark = colorScheme === "dark";
 
-  const { data: auctionData, isLoading: isAuctionLoading } = useAuctions({
-    limit: 100,
+  const { data: auctionResult, isLoading: isAuctionLoading } =
+    useAuction(auctionId);
+  const { data: bidsData, isLoading: isBidsLoading } = useBids(auctionId, {
+    vehicleId: vId,
   });
-  const { data: bidsData, isLoading: isBidsLoading } = useBids(auctionId);
   const { data: profileData, isLoading: isProfileLoading } = useProfile();
 
-  const auction = auctionData?.data?.results?.find((a: any) => a.id === auctionId || a._id === auctionId);
+  const auction = auctionResult?.data;
   const bids = bidsData?.data?.results || [];
-  
+
   const currentUserId = profileData?.data?.id || "";
 
-  const userRank = bids.findIndex((b: any) => b.bidderId?._id === currentUserId || b.bidderId?.id === currentUserId || b.bidderId === currentUserId) + 1;
-  const isAuctionClosed = auction?.status === "closed" || new Date(auction?.endDate || auction?.endTime) < new Date();
-  
-  const isWinner = (auction?.winnerId?._id === currentUserId || auction?.winnerId === currentUserId);
+  const userRank =
+    bids.findIndex(
+      (b: any) =>
+        b.bidderId?._id === currentUserId ||
+        b.bidderId?.id === currentUserId ||
+        b.bidderId === currentUserId,
+    ) + 1;
+  const isAuctionClosed =
+    auction?.status === "closed" ||
+    new Date(auction?.endDate || auction?.endTime) < new Date();
+
+  const isWinner =
+    auction?.winnerId?._id === currentUserId ||
+    auction?.winnerId === currentUserId;
+
+  // Debug Logs
+  React.useEffect(() => {
+    if (auctionResult) {
+      console.log(
+        "Mobile (Winner) - My Auction Details Response:",
+        JSON.stringify(auctionResult, null, 2),
+      );
+    }
+  }, [auctionResult]);
+
+  React.useEffect(() => {
+    if (bidsData) {
+      console.log(
+        "Mobile (Winner) - Bids History Response:",
+        JSON.stringify(bidsData, null, 2),
+      );
+    }
+  }, [bidsData]);
 
   if (!fontsLoaded || isAuctionLoading || isBidsLoading || isProfileLoading) {
     return (
-      <View style={[styles.container, isDark && styles.containerDark, { justifyContent: 'center', alignItems: 'center' }]}>
+      <View
+        style={[
+          styles.container,
+          isDark && styles.containerDark,
+          { justifyContent: "center", alignItems: "center" },
+        ]}
+      >
         <ActivityIndicator color="#DC3729" size="large" />
       </View>
     );
   }
 
-  const vehicle = auction?.vehicles?.find((v: any) => v.vehicleId?._id === vId || v.vehicleId?.id === vId || v.vehicleId === vId)?.vehicleId;
-  const vehicleData = typeof vehicle === 'object' ? vehicle : null;
+  const vehicle = auction?.vehicles?.find(
+    (v: any) =>
+      v.vehicleId?._id === vId ||
+      v.vehicleId?.id === vId ||
+      v.vehicleId === vId,
+  )?.vehicleId;
+  const vehicleData = typeof vehicle === "object" ? vehicle : null;
 
   const images = vehicleData?.images || carImages;
 
@@ -89,7 +133,7 @@ export default function WinnerScreen() {
     >
       <StatusBar style={isDark ? "light" : "dark"} />
       <View style={styles.header}>
-          <BackArrow />
+        <BackArrow />
         <TouchableOpacity onPress={() => router.back()}>
           <Text style={[styles.backText, isDark && styles.backTextDark]}>
             BACK
@@ -107,10 +151,12 @@ export default function WinnerScreen() {
         <AuctionImageCarousel images={images} />
         {isWinner && (
           <TouchableOpacity
-            onPress={() => router.push({
-              pathname: "/detail",
-              params: { id: vId }
-            })}
+            onPress={() =>
+              router.push({
+                pathname: "/detail",
+                params: { id: vId },
+              })
+            }
             style={styles.viewDetailsLink}
           >
             <Text style={styles.viewDetailsText}>VIEW CAR DETAILS</Text>
@@ -121,9 +167,29 @@ export default function WinnerScreen() {
           startPrice={(auction?.startingPrice || 0).toLocaleString()}
           finalPrice={(auction?.currentBid || 0).toLocaleString()}
           location={vehicleData?.location || "Unknown"}
+          biddersCount={auction?.participants?.length || 0}
         />
-        <FinalRankingTable isWinner={isWinner} bids={bids} currentUserId={currentUserId} />
-        {isAuctionClosed && !isWinner && <AuctionClosedBanner bidAmount={bids.find((b: any) => b.bidderId?._id === currentUserId || b.bidderId?.id === currentUserId || b.bidderId === currentUserId)?.bidAmount?.toLocaleString() || "0"} rank={userRank} />}
+        <FinalRankingTable
+          isWinner={isWinner}
+          bids={bids}
+          currentUserId={currentUserId}
+          participants={auction?.participants || []}
+        />
+        {isAuctionClosed && !isWinner && (
+          <AuctionClosedBanner
+            bidAmount={
+              bids
+                .find(
+                  (b: any) =>
+                    b.bidderId?._id === currentUserId ||
+                    b.bidderId?.id === currentUserId ||
+                    b.bidderId === currentUserId,
+                )
+                ?.bidAmount?.toLocaleString() || "0"
+            }
+            rank={userRank}
+          />
+        )}
         {isWinner && <CongratulationsBox />}
         <AuctionResult auction={auction} bids={bids} />
       </ScrollView>
@@ -146,7 +212,10 @@ export default function WinnerScreen() {
               <Text style={styles.viewUpcomingText}>VIEW UPCOMING CARS</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={[styles.setAlertsButton, isDark && styles.setAlertsButtonDark]}
+              style={[
+                styles.setAlertsButton,
+                isDark && styles.setAlertsButtonDark,
+              ]}
             >
               <Text style={styles.setAlertsText}>SET ALERTS</Text>
             </TouchableOpacity>

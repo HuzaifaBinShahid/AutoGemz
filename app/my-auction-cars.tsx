@@ -1,21 +1,24 @@
-import { AuctionStatus, MyAuctionCarCard } from "../components/auction/MyAuctionCarCard";
+import {
+  AuctionStatus,
+  MyAuctionCarCard,
+} from "../components/auction/MyAuctionCarCard";
 import BackArrow from "../components/ui/svgs/BackArrow";
 import { useColorScheme } from "../hooks/use-color-scheme";
 import {
-    ChakraPetch_600SemiBold,
-    useFonts,
+  ChakraPetch_600SemiBold,
+  useFonts,
 } from "@expo-google-fonts/chakra-petch";
 import { Mulish_400Regular } from "@expo-google-fonts/mulish";
 import { useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
 import {
-    ActivityIndicator,
-    FlatList,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  ActivityIndicator,
+  FlatList,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
 import { useMyBids } from "../services/auctions/hooks";
 import { useProfile } from "../services/auth/hooks";
@@ -47,13 +50,25 @@ export default function MyAuctionCarsScreen() {
   const colorScheme = useColorScheme();
   const isDark = colorScheme === "dark";
   const { data, isLoading } = useMyBids();
-  
-  // Debug Log
-  console.log("My Bids API Response:", JSON.stringify(data, null, 2));
 
   const { data: profileData } = useProfile();
   const currentUserId = profileData?.data?.id || "";
-  console.log("Current User ID:", currentUserId);
+
+  // Debug Logs
+  React.useEffect(() => {
+    if (data) {
+      console.log(
+        "Mobile - My Bids API Response:",
+        JSON.stringify(data, null, 2),
+      );
+    }
+  }, [data]);
+
+  React.useEffect(() => {
+    if (currentUserId) {
+      console.log("Mobile - Current User ID:", currentUserId);
+    }
+  }, [currentUserId]);
   const [activeTab, setActiveTab] = useState<TabType>("all");
 
   if (!fontsLoaded) {
@@ -75,11 +90,16 @@ export default function MyAuctionCarsScreen() {
   };
 
   const filteredCars = auctions.filter((auction) => {
-    const isWinner = (auction.winnerId?._id === currentUserId || auction.winnerId === currentUserId);
-    
+    const isWinner =
+      auction.winnerId?._id === currentUserId ||
+      auction.winnerId === currentUserId;
+
     if (activeTab === "all") return true;
     if (activeTab === "won") return isWinner || auction.status === "won";
-    if (activeTab === "lost") return !isWinner && (auction.status === "lost" || auction.status === "outbid");
+    if (activeTab === "lost")
+      return (
+        !isWinner && (auction.status === "lost" || auction.status === "outbid")
+      );
     return true;
   });
 
@@ -122,9 +142,7 @@ export default function MyAuctionCarsScreen() {
             >
               {tab.label}
             </Text>
-            {activeTab === tab.key && (
-              <View style={styles.tabIndicator} />
-            )}
+            {activeTab === tab.key && <View style={styles.tabIndicator} />}
           </TouchableOpacity>
         ))}
       </View>
@@ -145,26 +163,52 @@ export default function MyAuctionCarsScreen() {
           keyExtractor={(item) => item.id || item._id}
           renderItem={({ item }) => {
             const vehicle = item.vehicles?.[0]?.vehicleId;
-            const vehicleData = typeof vehicle === 'object' ? vehicle : null;
-            const actualVehicleId = vehicleData?._id || vehicleData?.id || vehicle;
-            const isWinner = (item.winnerId?._id === currentUserId || item.winnerId === currentUserId);
+            const vehicleData = typeof vehicle === "object" ? vehicle : null;
+            const actualVehicleId =
+              vehicleData?._id || vehicleData?.id || vehicle;
+            const isWinner =
+              item.winnerId?._id === currentUserId ||
+              item.winnerId === currentUserId;
 
             return (
               <View style={styles.cardWrapper}>
                 <MyAuctionCarCard
-                  image={vehicleData?.images?.[0] || require("../assets/images/AuthBg.png")}
+                  image={
+                    vehicleData?.images?.[0] ||
+                    require("../assets/images/AuthBg.png")
+                  }
                   title={item.title || "AUCTION"}
-                  status={isWinner ? "won" : (item.status as AuctionStatus || (item.isActive ? "active" : "ending_soon"))}
-                  timeRemaining={formatTimeRemaining(item.endDate || item.endTime)}
-                  bidders={item.biddersCount || 0}
+                  status={
+                    isWinner
+                      ? "won"
+                      : !item.isActive ||
+                          new Date(item.endDate || item.endTime) < new Date()
+                        ? "lost"
+                        : (item.status as AuctionStatus) || "active"
+                  }
+                  timeRemaining={formatTimeRemaining(
+                    item.endDate || item.endTime,
+                  )}
+                  bidders={
+                    item.participantsCount || item.participants?.length || 0
+                  }
                   year={vehicleData?.year?.toString() || "—"}
                   mileage={`${(vehicleData?.mileage || 0).toLocaleString()} KM`}
-                  currentBid={(item.currentBid || vehicleData?.price || 0).toLocaleString()}
+                  currentBid={(
+                    item.currentBid ||
+                    vehicleData?.price ||
+                    0
+                  ).toLocaleString()}
                   startingPrice={(item.startingPrice || 0).toLocaleString()}
-                  onPress={() => router.push({
-                    pathname: "/winner",
-                    params: { vId: actualVehicleId, auctionId: item.id || item._id }
-                  })}
+                  onPress={() =>
+                    router.push({
+                      pathname: "/winner",
+                      params: {
+                        vId: actualVehicleId,
+                        auctionId: item.id || item._id,
+                      },
+                    })
+                  }
                 />
               </View>
             );
