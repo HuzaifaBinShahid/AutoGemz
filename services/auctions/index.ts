@@ -33,16 +33,40 @@ export interface AuctionsResponse {
   };
 }
 
-export const getAuctions = async (params: GetAuctionsParams): Promise<AuctionsResponse> => {
-  const response = await apiClient.get<AuctionsResponse>(AuctionUrls.GET_AUCTIONS, {
-    params,
-  });
+export const getAuctions = async (
+  params: GetAuctionsParams,
+): Promise<AuctionsResponse> => {
+  const response = await apiClient.get<AuctionsResponse>(
+    AuctionUrls.GET_AUCTIONS,
+    {
+      params,
+    },
+  );
   return response.data;
 };
 
-export const getMyBids = async (params: Partial<GetAuctionsParams> = {}): Promise<AuctionsResponse> => {
-  const response = await apiClient.get<AuctionsResponse>(AuctionUrls.GET_MY_BIDS, {
-    params,
-  });
+export const getMyBids = async (
+  params: Partial<GetAuctionsParams> = {},
+): Promise<AuctionsResponse> => {
+  const response = await apiClient.get<AuctionsResponse>(
+    AuctionUrls.GET_MY_BIDS,
+    {
+      params,
+    },
+  );
+  return response.data;
+};
+
+export const getAuctionById = async (
+  auctionId: string,
+): Promise<{ data: Auction }> => {
+  const response = await apiClient.get<{ data: Auction }>(
+    `/auctions/${auctionId}`,
+  );
+  return response.data;
+};
+
+export const participateInAuction = async (auctionId: string): Promise<any> => {
+  const response = await apiClient.post(`/auctions/${auctionId}/participate`);
   return response.data;
 };

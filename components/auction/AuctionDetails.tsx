@@ -8,6 +8,7 @@ interface AuctionDetailsProps {
   startPrice: string;
   finalPrice: string;
   location: string;
+  biddersCount?: number;
 }
 
 export function AuctionDetails({
@@ -15,6 +16,7 @@ export function AuctionDetails({
   startPrice,
   finalPrice,
   location,
+  biddersCount,
 }: AuctionDetailsProps) {
   const colorScheme = useColorScheme();
   const isDark = colorScheme === "dark";
@@ -24,6 +26,13 @@ export function AuctionDetails({
       <View style={styles.titleContainer}>
         <View style={styles.redLine} />
         <Text style={[styles.title, isDark && styles.titleDark]}>{title}</Text>
+        {biddersCount !== undefined && (
+          <Text
+            style={[styles.biddersCount, isDark && styles.biddersCountDark]}
+          >
+            {biddersCount} Bidders
+          </Text>
+        )}
       </View>
       <View style={styles.priceContainer}>
         <View style={styles.priceInfo}>
@@ -108,6 +117,15 @@ const styles = StyleSheet.create({
     color: "#494949",
   },
   locationDark: {
+    color: "#FFFFFF",
+  },
+  biddersCount: {
+    fontSize: 14,
+    fontFamily: "Mulish_400Regular",
+    color: "#494949",
+    marginLeft: 8,
+  },
+  biddersCountDark: {
     color: "#FFFFFF",
   },
 });

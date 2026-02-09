@@ -6,7 +6,12 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import ThemedCalendarIcon from "../../components/ui/svgs/ThemedCalendarIcon";
 import ThemedMeterIcon from "../../components/ui/svgs/ThemedMeterIcon";
 
-export type AuctionStatus = "ending_soon" | "won" | "scheduled" | "active";
+export type AuctionStatus =
+  | "ending_soon"
+  | "won"
+  | "scheduled"
+  | "active"
+  | "lost";
 
 interface MyAuctionCarCardProps {
   image: any;
@@ -36,7 +41,8 @@ export function MyAuctionCarCard({
   const colorScheme = useColorScheme();
   const isDark = colorScheme === "dark";
 
-  const showJoinLive = status !== "won" && status !== "scheduled";
+  const showJoinLive =
+    status !== "won" && status !== "scheduled" && status !== "lost";
   const showStatusBadge = status === "ending_soon";
   const statusDisplay = status === "won" ? "Winner" : timeRemaining;
 
@@ -58,9 +64,15 @@ export function MyAuctionCarCard({
       <View style={styles.statusTimeContainer}>
         {status === "won" ? (
           <LinearGradient
-            colors={["#27C840", "rgba(255, 255, 255, 0.1)", "rgba(255, 255, 255, 0.05)", "#27C840", "#27C840"]}
+            colors={[
+              "#27C840",
+              "rgba(255, 255, 255, 0.1)",
+              "rgba(255, 255, 255, 0.05)",
+              "#27C840",
+              "#27C840",
+            ]}
             locations={[0.03, 0.27, 0.74, 0.9059, 1.0]}
-            start={{ x: 0, y: 0}}
+            start={{ x: 0, y: 0 }}
             end={{ x: 0.75, y: 1 }}
             style={styles.statusTimeGradient}
           >
@@ -68,7 +80,13 @@ export function MyAuctionCarCard({
           </LinearGradient>
         ) : (
           <LinearGradient
-            colors={["rgba(220, 55, 41, 0.75)", "rgba(255, 255, 255, 0.1)", "rgba(255, 255, 255, 0.05)", "rgba(203, 61, 29, 0.55)", "rgba(220, 55, 41, 0.5)"]}
+            colors={[
+              "rgba(220, 55, 41, 0.75)",
+              "rgba(255, 255, 255, 0.1)",
+              "rgba(255, 255, 255, 0.05)",
+              "rgba(203, 61, 29, 0.55)",
+              "rgba(220, 55, 41, 0.5)",
+            ]}
             locations={[0.03, 0.27, 0.74, 0.9059, 1.0]}
             start={{ x: 0, y: 0 }}
             end={{ x: 0.75, y: 1 }}
@@ -83,7 +101,10 @@ export function MyAuctionCarCard({
         <View style={styles.titleRow}>
           <View style={styles.titleContainer}>
             <View style={styles.redLine} />
-            <Text style={[styles.title, isDark && styles.titleDark]} numberOfLines={1}>
+            <Text
+              style={[styles.title, isDark && styles.titleDark]}
+              numberOfLines={1}
+            >
               {title}
             </Text>
           </View>
@@ -95,11 +116,15 @@ export function MyAuctionCarCard({
         <View style={styles.detailsRow}>
           <View style={styles.detailItem}>
             <ThemedCalendarIcon />
-            <Text style={[styles.detailText, isDark && styles.detailTextDark]}>{year}</Text>
+            <Text style={[styles.detailText, isDark && styles.detailTextDark]}>
+              {year}
+            </Text>
           </View>
           <View style={styles.detailItem}>
             <ThemedMeterIcon />
-            <Text style={[styles.detailText, isDark && styles.detailTextDark]}>{mileage}</Text>
+            <Text style={[styles.detailText, isDark && styles.detailTextDark]}>
+              {mileage}
+            </Text>
           </View>
         </View>
 

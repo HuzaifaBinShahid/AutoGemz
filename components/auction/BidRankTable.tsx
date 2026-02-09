@@ -4,11 +4,17 @@ import { Image, StyleSheet, Text, View } from "react-native";
 
 interface BidRankTableProps {
   bids?: any[];
+  currentUserId?: string;
+  participants?: any[];
 }
 
 // Dummy data removed
 
-export function BidRankTable({ bids = [] }: BidRankTableProps) {
+export function BidRankTable({
+  bids = [],
+  currentUserId,
+  participants = [],
+}: BidRankTableProps) {
   const formatTimeAgo = (dateStr: string) => {
     const date = new Date(dateStr);
     const now = new Date();
@@ -28,8 +34,24 @@ export function BidRankTable({ bids = [] }: BidRankTableProps) {
     timeAgo: formatTimeAgo(b.createdAt),
     avatar: require("../../assets/images/AuthBg.png"), // Fallback for now
     isSelected: index === 0,
-    isCurrentUser: false, // Could be determined if we have user info
+    isCurrentUser:
+      b.bidderId?._id === currentUserId || b.bidderId?.id === currentUserId,
   }));
+
+  // If no bids, show participants with a placeholder status
+  const displayData =
+    tableBids.length > 0
+      ? tableBids
+      : participants.map((p, index) => ({
+          id: p._id || p.id,
+          rank: index + 1,
+          name: p.fullName || "Anonymous",
+          bidAmount: "—",
+          timeAgo: "Joined",
+          avatar: require("../../assets/images/AuthBg.png"),
+          isSelected: false,
+          isCurrentUser: p._id === currentUserId || p.id === currentUserId,
+        }));
   const colorScheme = useColorScheme();
   const isDark = colorScheme === "dark";
 
@@ -45,7 +67,9 @@ export function BidRankTable({ bids = [] }: BidRankTableProps) {
             <View style={styles.redDivider} />
           </View>
           <View style={[styles.headerCell, styles.rankColumn]}>
-            <Text style={[styles.headerLabel, isDark && styles.headerLabelDark]}>
+            <Text
+              style={[styles.headerLabel, isDark && styles.headerLabelDark]}
+            >
               RANK
             </Text>
           </View>
@@ -53,17 +77,19 @@ export function BidRankTable({ bids = [] }: BidRankTableProps) {
             <View style={styles.redDivider} />
           </View>
           <View style={[styles.headerCell, styles.bidColumn]}>
-            <Text style={[styles.headerLabel, isDark && styles.headerLabelDark]}>
+            <Text
+              style={[styles.headerLabel, isDark && styles.headerLabelDark]}
+            >
               BID
             </Text>
           </View>
           <View style={[styles.headerCell, styles.timeColumn]}>
-          <Text style={[styles.timerText, isDark && styles.timerTextDark]}>
-            AUCTION HISTORY
-          </Text>
+            <Text style={[styles.timerText, isDark && styles.timerTextDark]}>
+              AUCTION HISTORY
+            </Text>
           </View>
         </View>
-        {tableBids.map((bid) => (
+        {displayData.map((bid) => (
           <View
             key={bid.id}
             style={[
@@ -76,9 +102,9 @@ export function BidRankTable({ bids = [] }: BidRankTableProps) {
               <View style={styles.rankCellContent}>
                 <Image source={bid.avatar} style={styles.avatar} />
                 <View style={styles.rankTextContainer}>
-                  <Text 
+                  <Text
                     style={[
-                      styles.rankText, 
+                      styles.rankText,
                       isDark && styles.rankTextDark,
                       bid.isSelected && styles.rankTextSelected,
                     ]}
@@ -89,15 +115,15 @@ export function BidRankTable({ bids = [] }: BidRankTableProps) {
                     {bid.rank === 1
                       ? "st"
                       : bid.rank === 2
-                      ? "nd"
-                      : bid.rank === 3
-                      ? "rd"
-                      : "th"}{" "}
+                        ? "nd"
+                        : bid.rank === 3
+                          ? "rd"
+                          : "th"}{" "}
                     Place
                   </Text>
-                  <Text 
+                  <Text
                     style={[
-                      styles.nameText, 
+                      styles.nameText,
                       isDark && styles.nameTextDark,
                       bid.isSelected && styles.nameTextSelected,
                     ]}
@@ -116,9 +142,9 @@ export function BidRankTable({ bids = [] }: BidRankTableProps) {
               <View style={styles.grayDivider} />
             </View>
             <View style={[styles.tableCell, styles.bidColumn]}>
-              <Text 
+              <Text
                 style={[
-                  styles.bidAmount, 
+                  styles.bidAmount,
                   isDark && styles.bidAmountDark,
                   bid.isSelected && styles.bidAmountSelected,
                 ]}
@@ -132,9 +158,9 @@ export function BidRankTable({ bids = [] }: BidRankTableProps) {
               <View style={styles.grayDivider} />
             </View>
             <View style={[styles.tableCell, styles.timeColumn]}>
-              <Text 
+              <Text
                 style={[
-                  styles.timeText, 
+                  styles.timeText,
                   isDark && styles.timeTextDark,
                   bid.isSelected && styles.timeTextSelected,
                 ]}
